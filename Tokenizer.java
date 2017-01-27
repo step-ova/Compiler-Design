@@ -53,11 +53,20 @@ public class Tokenizer {
 	public Token getNextToken() {
 		try {
 			char c = (char) br.read();
-			StringBuilder sb = new StringBuilder(c);
+			StringBuilder sb = new StringBuilder();
+			sb.append(c);
 			String firstChar = sb.toString();
-
+			
+			
+			if(Character.isWhitespace(c)){
+				while(Character.isWhitespace(c)){
+					br.mark(1);
+					c = (char) br.read();
+				}
+				br.reset();
+			}
 			// Check if it is a letter
-			if (IS_LETTER_PATTERN.run(firstChar)) {
+			else if (IS_LETTER_PATTERN.run(firstChar)) {
 				c = (char) br.read();
 
 				// while c is alphanumeric
@@ -92,6 +101,7 @@ public class Tokenizer {
 				}
 
 				if (c == '.') {
+					sb.append(c);
 					return getFractionToken(sb);
 
 				} else {
@@ -125,14 +135,39 @@ public class Tokenizer {
 				return new Token("CLOSEBRAC", sb.toString(), br.getLineNumber());
 
 			} else if (firstChar.equals("<")) {
-				return new Token("GREATERTHAN", sb.toString(), br.getLineNumber());
+
+				br.mark(100);
+				c = (char) br.read();
+				
+				char symbol = '>';
+				
+				if(c == symbol){
+					sb.append(symbol);
+					return new Token("NOTEQUAL", sb.toString(), br.getLineNumber());
+				}
+				else{
+					br.reset();
+					return new Token("LESSTHAN", sb.toString(), br.getLineNumber());
+				}
 
 			} else if (firstChar.equals(">")) {
-				return new Token("LESSTHAN", sb.toString(), br.getLineNumber());
+				return new Token("GREATERTHAN", sb.toString(), br.getLineNumber());
 
 			} else if (firstChar.equals("=")) {
-				return new Token("SEMICOLON", sb.toString(), br.getLineNumber());
-
+				br.mark(0);
+				c = (char) br.read();
+				
+				char symbol = '=';
+				
+				if(c == symbol){
+					sb.append(symbol);
+					return new Token("EQUALEQUAL", sb.toString(), br.getLineNumber());
+				}
+				else{
+					br.reset();
+					return new Token("EQUAL", sb.toString(), br.getLineNumber());
+				}
+				
 			} else if (firstChar.equals("+")) {
 				return new Token("PLUSSIGN", sb.toString(), br.getLineNumber());
 
@@ -165,15 +200,17 @@ public class Tokenizer {
 	}
 
 	private Token getFractionToken(StringBuilder sb) throws IOException {
-		br.mark(Integer.MAX_VALUE);
+		br.mark(50);
+		//reads char after .
 		char c = (char) br.read();
 		int counter = 0;
+		boolean is_all_zero = true;
 
 		while (true) {
 
 			if (IS_DIGIT_PATTERN.run(String.valueOf(c))) {
 				sb.append(c);
-				br.mark(Integer.MAX_VALUE);
+				br.mark(50);
 
 				if (c == '0') {
 					counter++;
@@ -181,6 +218,7 @@ public class Tokenizer {
 				// c is non digit
 				else {
 					counter = 0;
+					is_all_zero = false;
 				}
 
 				c = (char) br.read();
@@ -208,18 +246,40 @@ public class Tokenizer {
 
 			return new Token("FLOAT", sb.toString(), br.getLineNumber());
 		}
-		// We have something like (digit*).(digit*)0
+		// We have something like (digit*).(digit*)0 OR (digit*).(0+)(non_digit)
 		else {
 			// number of times we have to backtrack
-			int backtrack = counter + 1;
-			for (int i = 0; i < backtrack; i++) {
+			
+			int indexOfDot = sb.toString().indexOf('.');
+			
+			//If we have something like 123.0a, we return 123.0
+			if(sb.toString().length() - indexOfDot == 2){
 				br.reset();
+				return new Token("FLOAT", sb.toString(), br.getLineNumber());
 			}
+			///If we have something like 123.00000, return 123.0
+			else if(is_all_zero){
+				for(int i =0; i < counter-1; i++){
+					br.reset();
+				}
+				
+				sb.setLength(sb.length() - counter +1);
+				return new Token("FLOAT", sb.toString(), br.getLineNumber());
+			}
+			//if we have something like 123.1230000
+			else{
+				int backtrack = counter + 1;
+				for (int i = 0; i < backtrack; i++) {
+					br.reset();
+				}
 
-			// remove all 0 characters
-			sb.setLength(sb.length() - counter);
+				// remove all 0 characters
+				sb.setLength(sb.length() - counter);
 
-			return new Token("FLOAT", sb.toString(), br.getLineNumber());
+				return new Token("FLOAT", sb.toString(), br.getLineNumber());
+			}
+			
+			
 		}
 
 	}
