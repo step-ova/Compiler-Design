@@ -37,10 +37,15 @@ public class Tokenizer {
 	Automaton IS_ALPHANUM_PATTERN = new RegExp(LETTER_REGEX).toAutomaton();
 	Automaton IS_INTEGER_PATTERN = new RegExp(INTEGER_REGEX).toAutomaton();
 
-	String[] RESERVED_WORDS = { "IF", "THEN", "ELSE", "FOR", "CLASS", "INT", "FLOAT", "GET", "PUT", "RETURN", "PROGRAM",
-			"AND", "NOT", "OR" };
+	private static final String[] RESERVED_WORDS = { "IF", "THEN", "ELSE", "FOR", "CLASS", "INT", "FLOAT", "GET", "PUT",
+			"RETURN", "PROGRAM", "AND", "NOT", "OR" };
+
+	private boolean multi_line_comment_open;
 
 	public Tokenizer(String filename) {
+
+		multi_line_comment_open = false;
+
 		try {
 			br = new LineNumberReader(new FileReader(filename));
 		} catch (Exception e) {
@@ -50,23 +55,104 @@ public class Tokenizer {
 
 	}
 
-	public Token getNextToken() {
+	public Token getNextToken() throws InvalidTokenException {
+
 		try {
-			char c = (char) br.read();
+			int eof = br.read();
+			char c = (char) eof;
+
+			while (Character.isWhitespace(c)) {
+				eof = br.read();
+				c = (char) eof;
+			}
+
+			// returns null if eof
+			if (eof == -1) {
+				if (multi_line_comment_open) {
+					multi_line_comment_open = false;
+					throw new InvalidTokenException(
+							"COMPILER ERROR: End of file reached. Missing \"*/\" to close multi line comment");
+				}
+				return null;
+			}
+
 			StringBuilder sb = new StringBuilder();
 			sb.append(c);
 			String firstChar = sb.toString();
-			
-			
-			if(Character.isWhitespace(c)){
-				while(Character.isWhitespace(c)){
-					br.mark(1);
-					c = (char) br.read();
+
+			while (multi_line_comment_open) {
+				// get closing multi-line comment
+				while (true) {
+
+					if (eof == -1) {
+						throw new InvalidTokenException(
+								"COMPILER ERROR: End of file reached. Missing \"*/\" to close multi line comment");
+					}
+
+					else if (c != '*') {
+						eof = br.read();
+						c = (char) eof;
+						continue;
+					}
+
+					char nextChar = (char) br.read();
+					br.mark(1);// in case the next char is not a "/". To accept
+								// a * in comments
+
+					if (nextChar == '/') {
+						multi_line_comment_open = false;
+						return new Token("CLOSEMULTILINECOMMENT", "*/", br.getLineNumber());
+					}
+
+					else {
+						c = nextChar;
+						br.reset();
+						continue;
+					}
 				}
-				br.reset();
 			}
+
+			if (firstChar.equals("/")) {
+				br.mark(1);
+				c = (char) br.read();
+
+				char symbol = '/';
+				char symbol2 = '*';
+
+				// Start of //, ignore inline comment until \n
+				if (c == symbol) {
+
+					sb.append(c);
+					int line = br.getLineNumber();
+
+					// remove all comments
+					while (c != '\n') {
+						c = (char) br.read();
+					}
+
+					return new Token("INLINECOMMENT", sb.toString(), line);
+				}
+
+				// Start of "/*", ignore multi-line comment
+				else if (c == symbol2) {
+
+					sb.append(c);
+					int line = br.getLineNumber();
+
+					multi_line_comment_open = true;
+
+					return new Token("OPENMULTILINECOMMENT", sb.toString(), line);
+
+				} else {
+					br.reset();
+					return new Token("DIVIDESIGN", sb.toString(), br.getLineNumber());
+				}
+
+			}
+
 			// Check if it is a letter
 			else if (IS_LETTER_PATTERN.run(firstChar)) {
+				br.mark(1);
 				c = (char) br.read();
 
 				// while c is alphanumeric
@@ -76,19 +162,23 @@ public class Tokenizer {
 								// alphanumeric
 					c = (char) br.read();
 				}
-
 				// go back to char that was not alphanumeric
 				br.reset();
 
-				// remove last char from StringBuilder because is not
-				// alphanumeric
-				sb.setLength(sb.length() - 1);
-
-				// Check if final string is a reserved word
-				if (Arrays.asList(RESERVED_WORDS).contains(sb.toString())) {
-					return new Token(sb.toString().toUpperCase(), sb.toString(), br.getLineNumber());
-				} else {
+				// 1 character id
+				if (sb.length() == 1) {
 					return new Token("ID", sb.toString(), br.getLineNumber());
+				} else {
+					// remove last char from StringBuilder because is not
+					// alphanumeric
+					sb.setLength(sb.length());
+
+					// Check if final string is a reserved word
+					if (isReservedWord(sb.toString(), RESERVED_WORDS)) {
+						return new Token(sb.toString().toUpperCase(), sb.toString(), br.getLineNumber());
+					} else {
+						return new Token("ID", sb.toString(), br.getLineNumber());
+					}
 				}
 
 			} else if (IS_NON_ZERO_PATTERN.run(firstChar)) {
@@ -108,13 +198,24 @@ public class Tokenizer {
 					// go back to char that was not digit
 					br.reset();
 					// remove last char from StringBuilder because is not digit
-					sb.setLength(sb.length() - 1);
+					sb.setLength(sb.length());
 
 					return new Token("INTEGER", sb.toString(), br.getLineNumber());
 				}
 
 			} else if (firstChar.equals("0")) {
-				
+				br.mark(1);
+				c = (char) br.read();
+
+				if (c == '.') {
+					sb.append(c);
+					return getFractionToken(sb);
+				}
+
+				else {
+					br.reset();
+					return new Token("INTEGER", sb.toString(), br.getLineNumber());
+				}
 
 			} else if (firstChar.equals("{")) {
 				return new Token("OPENCURLYBRAC", sb.toString(), br.getLineNumber());
@@ -136,38 +237,52 @@ public class Tokenizer {
 
 			} else if (firstChar.equals("<")) {
 
-				br.mark(100);
+				br.mark(1);
 				c = (char) br.read();
-				
+
 				char symbol = '>';
-				
-				if(c == symbol){
+				char symbol2 = '=';
+
+				if (c == symbol) {
 					sb.append(symbol);
 					return new Token("NOTEQUAL", sb.toString(), br.getLineNumber());
-				}
-				else{
+				} else if (c == symbol2) {
+					sb.append(symbol);
+					return new Token("LESSTHANEQUAL", sb.toString(), br.getLineNumber());
+				} else {
 					br.reset();
 					return new Token("LESSTHAN", sb.toString(), br.getLineNumber());
 				}
 
 			} else if (firstChar.equals(">")) {
-				return new Token("GREATERTHAN", sb.toString(), br.getLineNumber());
+
+				br.mark(1);
+				c = (char) br.read();
+
+				char symbol = '=';
+
+				if (c == symbol) {
+					sb.append(symbol);
+					return new Token("GREATERTHANEQUAL", sb.toString(), br.getLineNumber());
+				} else {
+					br.reset();
+					return new Token("GREATERTHAN", sb.toString(), br.getLineNumber());
+				}
 
 			} else if (firstChar.equals("=")) {
-				br.mark(0);
+				br.mark(1);
 				c = (char) br.read();
-				
+
 				char symbol = '=';
-				
-				if(c == symbol){
+
+				if (c == symbol) {
 					sb.append(symbol);
 					return new Token("EQUALEQUAL", sb.toString(), br.getLineNumber());
-				}
-				else{
+				} else {
 					br.reset();
 					return new Token("EQUAL", sb.toString(), br.getLineNumber());
 				}
-				
+
 			} else if (firstChar.equals("+")) {
 				return new Token("PLUSSIGN", sb.toString(), br.getLineNumber());
 
@@ -176,9 +291,6 @@ public class Tokenizer {
 
 			} else if (firstChar.equals("*")) {
 				return new Token("MULTIPLYSIGN", sb.toString(), br.getLineNumber());
-
-			} else if (firstChar.equals("/")) {
-				return new Token("DIVIDESIGN", sb.toString(), br.getLineNumber());
 
 			} else if (firstChar.equals(";")) {
 				return new Token("SEMICOLON", sb.toString(), br.getLineNumber());
@@ -189,35 +301,38 @@ public class Tokenizer {
 			} else if (firstChar.equals(".")) {
 				return new Token("DOT", sb.toString(), br.getLineNumber());
 
+			} else {
+				StringBuilder invalid = new StringBuilder();
+				invalid.append("Invalid characther: ");
+				invalid.append(firstChar);
+				throw new InvalidTokenException(invalid.toString());
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		return new Token("test", "test", 1);
-
+		return new Token("This should never be called", "", 0);
 	}
 
 	private Token getFractionToken(StringBuilder sb) throws IOException {
 		br.mark(50);
-		//reads char after .
+		// reads char after "."
 		char c = (char) br.read();
-		int counter = 0;
+		int zero_counter = 0;
 		boolean is_all_zero = true;
 
 		while (true) {
 
+			// if between 0-9
 			if (IS_DIGIT_PATTERN.run(String.valueOf(c))) {
 				sb.append(c);
-				br.mark(50);
 
 				if (c == '0') {
-					counter++;
+					zero_counter++;
 				}
-				// c is non digit
+				// c is between 1-9
 				else {
-					counter = 0;
+					zero_counter = 0;
 					is_all_zero = false;
 				}
 
@@ -228,59 +343,90 @@ public class Tokenizer {
 		}
 
 		char lastchar = sb.toString().charAt(sb.length() - 1);
-		// We have something like "(digit*).(non_digit)"
+		// We have something like "(digit*).(not_a_digit)"
 		if (lastchar == '.') {
-			// go back to dot
+			// go back to "."
 			br.reset();
-			// remove last char from StringBuilder because it was a
-			// dot
+			// remove last char from StringBuilder because it was a "."
 			sb.setLength(sb.length() - 1);
 
 			return new Token("INTEGER", sb.toString(), br.getLineNumber());
 
 		}
-		// We have something like (digit*).(digit*)
-		else if (counter == 0) {
-			// go back to non digit char
+		// We entered the else and we have something like
+		// (digit*).(digit*)(non_zero_digit)
+		else if (zero_counter == 0) {
+			// go back to "."
 			br.reset();
+
+			// Just used for forward calculation
+			String s = sb.toString();
+
+			// number of digits after the '.'
+			int forward = s.length() - s.indexOf('.') - 1;
+
+			// undo backtrack to digit
+			for (int i = 0; i < forward; i++) {
+				br.read();
+			}
 
 			return new Token("FLOAT", sb.toString(), br.getLineNumber());
 		}
 		// We have something like (digit*).(digit*)0 OR (digit*).(0+)(non_digit)
 		else {
-			// number of times we have to backtrack
-			
+
+			// reset to "."
+			br.reset();
+
+			// To calculate the number of times to undo backtrack
 			int indexOfDot = sb.toString().indexOf('.');
-			
-			//If we have something like 123.0a, we return 123.0
-			if(sb.toString().length() - indexOfDot == 2){
-				br.reset();
+
+			// If we have something like 123.0a, we return 123.0
+			if (sb.toString().length() - indexOfDot == 2) {
+				br.read();
 				return new Token("FLOAT", sb.toString(), br.getLineNumber());
 			}
-			///If we have something like 123.00000, return 123.0
-			else if(is_all_zero){
-				for(int i =0; i < counter-1; i++){
-					br.reset();
-				}
-				
-				sb.setLength(sb.length() - counter +1);
+			/// If we have something like (digit*).(zero+) ex: 123.00000, return
+			/// 123.0
+			else if (is_all_zero) {
+
+				br.read();
+
+				sb.setLength(sb.length() - zero_counter + 1); // remove
+																// exceeding 0's
 				return new Token("FLOAT", sb.toString(), br.getLineNumber());
 			}
-			//if we have something like 123.1230000
-			else{
-				int backtrack = counter + 1;
-				for (int i = 0; i < backtrack; i++) {
-					br.reset();
+			// if we have something like (digit*).(digit*)(zero+) ex
+			// 123.01230123000
+			else {
+
+				// Just used for forward calculation
+				String s = sb.toString();
+
+				// number of digits after the '.'
+				int forward = s.length() - s.indexOf('.') - zero_counter - 1;
+
+				// undo backtrack to digit
+				for (int i = 0; i < forward; i++) {
+					br.read();
 				}
 
 				// remove all 0 characters
-				sb.setLength(sb.length() - counter);
+				sb.setLength(sb.length() - zero_counter);
 
 				return new Token("FLOAT", sb.toString(), br.getLineNumber());
 			}
-			
-			
+
 		}
 
+	}
+
+	private boolean isReservedWord(String word, String[] array) {
+		for (String s : array) {
+			if (s.equalsIgnoreCase(word)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

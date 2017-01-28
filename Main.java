@@ -5,15 +5,27 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Tokenizer t = new Tokenizer(FILE_NAME);
+		Token token;
 		
-		System.out.println(t.getNextToken().toString());
-		System.out.println(t.getNextToken().toString());
-		System.out.println(t.getNextToken().toString());
-		System.out.println(t.getNextToken().toString());
-		System.out.println(t.getNextToken().toString());
-		System.out.println(t.getNextToken().toString());
-		System.out.println(t.getNextToken().toString());
-		System.out.println(t.getNextToken().toString());
+		
+		while(true){	
+			try{
+				
+				token = t.getNextToken();
+				if(token == null){
+					break;
+				}
+				else{
+					System.out.println(token.toString());
+				}
+
+			}
+			catch (InvalidTokenException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		
 
 	}
 
