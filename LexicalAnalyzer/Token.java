@@ -1,3 +1,4 @@
+package LexicalAnalyzer;
 public class Token {
 
 	private String token;

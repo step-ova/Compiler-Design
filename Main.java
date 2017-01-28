@@ -1,3 +1,7 @@
+import LexicalAnalyzer.InvalidTokenException;
+import LexicalAnalyzer.Token;
+import LexicalAnalyzer.Tokenizer;
+
 public class Main {
 
 	private static String FILE_NAME = "test.txt";

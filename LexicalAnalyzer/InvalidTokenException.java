@@ -1,3 +1,4 @@
+package LexicalAnalyzer;
 
 public class InvalidTokenException extends Exception {
 	

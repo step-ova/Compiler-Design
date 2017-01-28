@@ -1,3 +1,4 @@
+package LexicalAnalyzer;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -53,6 +54,11 @@ public class Tokenizer {
 			System.out.println("Problem with reading " + filename);
 		}
 
+	}
+	
+	public Tokenizer(LineNumberReader lnr){
+		multi_line_comment_open = false;
+		br = lnr;
 	}
 
 	public Token getNextToken() throws InvalidTokenException {
@@ -383,17 +389,7 @@ public class Tokenizer {
 			// reset to "."
 			br.reset();
 
-			// To calculate the number of times to undo backtrack
-			int indexOfDot = sb.toString().indexOf('.');
-
-			// If we have something like 123.0a, we return 123.0
-			if (sb.toString().length() - indexOfDot == 3) {
-				br.read();
-				return new Token("FLOAT", sb.toString(), br.getLineNumber());
-			}
-			/// If we have something like (digit*).(zero+) ex: 123.00000, return
-			/// 123.0
-			else if (is_all_zero) {
+			if (is_all_zero) {
 
 				br.read();
 				br.read();
