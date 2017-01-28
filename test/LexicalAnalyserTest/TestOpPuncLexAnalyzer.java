@@ -446,7 +446,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 			rtk2 = t.getNextToken();
 
 		} catch (InvalidTokenException e) {
-			if (!e.getMessage().equals(Tokenizer.COMPILER_ERROR_NOT_CLOSED_COMMENT)) {
+			if (!e.getMessage().equals(Tokenizer.generateErrorMessage(Tokenizer.COMPILER_ERROR_NOT_CLOSED_COMMENT, 0))) {
 				fail();
 			}
 		}
@@ -467,7 +467,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 			rtk1 = t.getNextToken();
 
 		} catch (InvalidTokenException e) {
-			if (!e.getMessage().equals(Tokenizer.COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN)) {
+			if (!e.getMessage().equals(Tokenizer.generateErrorMessage(Tokenizer.COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN, 0))) {
 				fail();
 			}
 		}
@@ -584,7 +584,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 			rtk3 = t.getNextToken();
 		}
 		catch (InvalidTokenException e) {
-			if (!e.getMessage().equals(Tokenizer.COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN)) {
+			if (!e.getMessage().equals(Tokenizer.generateErrorMessage(Tokenizer.COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN, 0))) {
 				fail();
 			}
 		}

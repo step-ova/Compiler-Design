@@ -240,7 +240,7 @@ public class TestIDLexAnalyzer extends CommonTestLexAnalyzer {
 			rtk1 = t.getNextToken();
 
 		} catch (InvalidTokenException e) {
-			if (!e.getMessage().equals(Tokenizer.INVALID_CHARACTER + "_")) {
+			if (!e.getMessage().equals(Tokenizer.generateErrorMessage('_', 0))) {
 				fail();
 			}
 			;

@@ -10,7 +10,7 @@ public class Tokenizer {
 	public static final String INVALID_CHARACTER = "Invalid characther: ";
 	public static final String COMPILER_ERROR_NOT_CLOSED_COMMENT = "COMPILER ERROR: End of file reached. Missing \"*/\" to close multi line comment";
 	public static final String COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN = "COMPILER ERROR: There is a close comment \"*/\" without one being opened";
-
+	
 	private LineNumberReader br;
 	private boolean multi_line_comment_open;
 	
@@ -24,6 +24,8 @@ public class Tokenizer {
 	private static Automaton IS_NON_ZERO_PATTERN = new RegExp(NONZERO_REGEX).toAutomaton();
 	private static Automaton IS_LETTER_PATTERN = new RegExp(LETTER_REGEX).toAutomaton();
 	private static Automaton IS_ALPHANUM_PATTERN = new RegExp(ALPHANUM_REGEX).toAutomaton();
+	
+	private static final String LINE_NUMBER_STRING = " ==== Line number: "; //for error messages
 
 	private static final String[] RESERVED_WORDS = { "IF", "THEN", "ELSE", "FOR", "CLASS", "INT", "FLOAT", "GET", "PUT",
 			"RETURN", "PROGRAM", "AND", "NOT", "OR" };
@@ -49,20 +51,16 @@ public class Tokenizer {
 	public Token getNextToken() throws InvalidTokenException {
 
 		try {
-			int eof = br.read();
-			char c = (char) eof;
+			int end_of_file = br.read();
+			char c = (char) end_of_file;
 
 			while (Character.isWhitespace(c)) {
-				eof = br.read();
-				c = (char) eof;
+				end_of_file = br.read();
+				c = (char) end_of_file;
 			}
 
 			// returns null if eof
-			if (eof == -1) {
-				if (multi_line_comment_open) {
-					multi_line_comment_open = false;
-					throw new InvalidTokenException(COMPILER_ERROR_NOT_CLOSED_COMMENT);
-				}
+			if (end_of_file == -1) {
 				return null;
 			}
 
@@ -74,13 +72,14 @@ public class Tokenizer {
 				// get closing multi-line comment
 				while (true) {
 
-					if (eof == -1) {
-						throw new InvalidTokenException(COMPILER_ERROR_NOT_CLOSED_COMMENT);
+					if (end_of_file == -1) {
+						multi_line_comment_open = false;
+						throw new InvalidTokenException(generateErrorMessage(COMPILER_ERROR_NOT_CLOSED_COMMENT, br.getLineNumber()));
 					}
 
 					else if (c != '*') {
-						eof = br.read();
-						c = (char) eof;
+						end_of_file = br.read();
+						c = (char) end_of_file;
 						continue;
 					}
 
@@ -116,7 +115,7 @@ public class Tokenizer {
 
 					// remove all comments
 					while (c != '\n') {
-						int end_of_file = br.read();
+						end_of_file = br.read();
 						c = (char) end_of_file;
 						
 						if(end_of_file == -1){
@@ -290,7 +289,7 @@ public class Tokenizer {
 				
 				char symbol = '/';
 				if (c == symbol) {
-					throw new InvalidTokenException(COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN);
+					throw new InvalidTokenException(generateErrorMessage(COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN, br.getLineNumber()));
 				}
 				else{
 					return new Token("MULTIPLYSIGN", sb.toString(), br.getLineNumber());
@@ -306,10 +305,7 @@ public class Tokenizer {
 				return new Token("DOT", sb.toString(), br.getLineNumber());
 
 			} else {
-				StringBuilder invalid = new StringBuilder();
-				invalid.append(INVALID_CHARACTER);
-				invalid.append(firstChar);
-				throw new InvalidTokenException(invalid.toString());
+				throw new InvalidTokenException(generateErrorMessage(c, br.getLineNumber()));
 			}
 
 		} catch (IOException e) {
@@ -422,5 +418,22 @@ public class Tokenizer {
 			}
 		}
 		return false;
+	}
+	
+	public static String generateErrorMessage(String errorMessage, int lineNumber){
+		StringBuilder sb = new StringBuilder();
+		sb.append(errorMessage);
+		sb.append(LINE_NUMBER_STRING);
+		sb.append(lineNumber);
+		return sb.toString();
+	}
+	
+	public static String generateErrorMessage(char errorChar, int lineNumber){
+		StringBuilder sb = new StringBuilder();
+		sb.append(INVALID_CHARACTER);
+		sb.append(errorChar);
+		sb.append(LINE_NUMBER_STRING);
+		sb.append(lineNumber);
+		return sb.toString();
 	}
 }
