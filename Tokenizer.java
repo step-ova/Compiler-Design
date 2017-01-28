@@ -127,7 +127,13 @@ public class Tokenizer {
 
 					// remove all comments
 					while (c != '\n') {
-						c = (char) br.read();
+						int end_of_file = br.read();
+						c = (char) end_of_file;
+						
+						if(end_of_file == -1){
+							return null;
+						}
+						
 					}
 
 					return new Token("INLINECOMMENT", sb.toString(), line);
@@ -186,7 +192,7 @@ public class Tokenizer {
 
 				while (IS_DIGIT_PATTERN.run(String.valueOf(c))) {
 					sb.append(c);
-					br.mark(1); // save spot in case the character is not digit
+					br.mark(50); // save spot in case the character is not digit
 					c = (char) br.read();
 				}
 
@@ -204,7 +210,7 @@ public class Tokenizer {
 				}
 
 			} else if (firstChar.equals("0")) {
-				br.mark(1);
+				br.mark(50);
 				c = (char) br.read();
 
 				if (c == '.') {
@@ -315,7 +321,6 @@ public class Tokenizer {
 	}
 
 	private Token getFractionToken(StringBuilder sb) throws IOException {
-		br.mark(50);
 		// reads char after "."
 		char c = (char) br.read();
 		int zero_counter = 0;
@@ -363,7 +368,7 @@ public class Tokenizer {
 			String s = sb.toString();
 
 			// number of digits after the '.'
-			int forward = s.length() - s.indexOf('.') - 1;
+			int forward = s.length() - s.indexOf('.');
 
 			// undo backtrack to digit
 			for (int i = 0; i < forward; i++) {
@@ -382,7 +387,7 @@ public class Tokenizer {
 			int indexOfDot = sb.toString().indexOf('.');
 
 			// If we have something like 123.0a, we return 123.0
-			if (sb.toString().length() - indexOfDot == 2) {
+			if (sb.toString().length() - indexOfDot == 3) {
 				br.read();
 				return new Token("FLOAT", sb.toString(), br.getLineNumber());
 			}
@@ -390,6 +395,7 @@ public class Tokenizer {
 			/// 123.0
 			else if (is_all_zero) {
 
+				br.read();
 				br.read();
 
 				sb.setLength(sb.length() - zero_counter + 1); // remove
@@ -403,8 +409,8 @@ public class Tokenizer {
 				// Just used for forward calculation
 				String s = sb.toString();
 
-				// number of digits after the '.'
-				int forward = s.length() - s.indexOf('.') - zero_counter - 1;
+				// number of digits after the '.', including the .
+				int forward = s.length() - s.indexOf('.') - zero_counter;
 
 				// undo backtrack to digit
 				for (int i = 0; i < forward; i++) {
