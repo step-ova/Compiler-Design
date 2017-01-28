@@ -1,6 +1,5 @@
-package JUnitTestCases;
+package test.LexicalAnalyserTest;
 
-import org.junit.After;
 import org.junit.Test;
 
 import LexicalAnalyzer.InvalidTokenException;
@@ -10,13 +9,9 @@ import LexicalAnalyzer.Tokenizer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.LineNumberReader;
-import java.io.StringReader;
 
-public class TestFractionLexAnalyzer {
+public class TestFractionLexAnalyzer extends CommonTestLexAnalyzer {
 
-	private Tokenizer t;
-	
 	private final String t1 = "123.";
 	private final String t2 = "123.123";
 	private final String t3 = "123.010203";
@@ -29,322 +24,269 @@ public class TestFractionLexAnalyzer {
 	private final String t10 = "0123.123";
 	private final String t11 = "123.0.0";
 	private final String t12 = "123.00.0";
-	
-	
+
 	@Test
-	public void test1(){
-		
+	public void test1() {
+
 		t = new Tokenizer(getTokenizer(t1));
-		
+
 		Token tk1 = new Token("INTEGER", "123", 0);
 		Token tk2 = new Token("DOT", ".", 0);
-		
+
 		Token rtk1 = null;
 		Token rtk2 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
 			rtk2 = t.getNextToken();
-			
-		}
-		catch(InvalidTokenException e){
+
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assert(tk1.equals(rtk1) && tk2.equals(rtk2));
+
+		assert (tk1.equals(rtk1) && tk2.equals(rtk2));
 	}
-	
 
 	@Test
-	public void test2(){
+	public void test2() {
 
 		t = new Tokenizer(getTokenizer(t2));
-		
-		Token tk1 = new Token("FLOAT",t2,0);
-		
+
+		Token tk1 = new Token("FLOAT", t2, 0);
+
 		Token rtk1 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
-		}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assertEquals(tk1,rtk1);
+
+		assertEquals(tk1, rtk1);
 	}
-	
+
 	@Test
-	public void test3(){
+	public void test3() {
 
 		t = new Tokenizer(getTokenizer(t3));
-		
-		Token tk1 = new Token("FLOAT",t3,0);
-		
+
+		Token tk1 = new Token("FLOAT", t3, 0);
+
 		Token rtk1 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
-		}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assertEquals(tk1,rtk1);
+
+		assertEquals(tk1, rtk1);
 	}
-	
+
 	@Test
-	public void test4(){
+	public void test4() {
 
 		t = new Tokenizer(getTokenizer(t4));
-		
-		Token tk1 = new Token("FLOAT",t4,0);
-		
+
+		Token tk1 = new Token("FLOAT", t4, 0);
+
 		Token rtk1 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
-		}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assertEquals(tk1,rtk1);
+
+		assertEquals(tk1, rtk1);
 	}
-	
+
 	@Test
-	public void test5(){
+	public void test5() {
 
 		t = new Tokenizer(getTokenizer(t5));
-		
-		Token tk1 = new Token("FLOAT","123.0",0);
+
+		Token tk1 = new Token("FLOAT", "123.0", 0);
 		Token tk2 = new Token("INTEGER", "0", 0);
 		Token tk3 = new Token("INTEGER", "0", 0);
-		
-		
+
 		Token rtk1 = null;
 		Token rtk2 = null;
 		Token rtk3 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
 			rtk2 = t.getNextToken();
 			rtk3 = t.getNextToken();
-		}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assert(	tk1.equals(rtk1) 
-				&& tk2.equals(rtk2) 
-				&& tk3.equals(rtk3));
+
+		assert (tk1.equals(rtk1) && tk2.equals(rtk2) && tk3.equals(rtk3));
 	}
-	
+
 	@Test
-	public void test6(){
+	public void test6() {
 
 		t = new Tokenizer(getTokenizer(t6));
-		
-		Token tk1 = new Token("FLOAT","123.123",0);
+
+		Token tk1 = new Token("FLOAT", "123.123", 0);
 		Token tk2 = new Token("INTEGER", "0", 0);
-				
-		
+
 		Token rtk1 = null;
 		Token rtk2 = null;
-				
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
 			rtk2 = t.getNextToken();
-					}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assert(	tk1.equals(rtk1) 
-				&& tk2.equals(rtk2) );
+
+		assert (tk1.equals(rtk1) && tk2.equals(rtk2));
 	}
-	
+
 	@Test
-	public void test7(){
-		
+	public void test7() {
+
 		t = new Tokenizer(getTokenizer(t7));
-		
-		Token tk1 = new Token("FLOAT","123.123",0);
+
+		Token tk1 = new Token("FLOAT", "123.123", 0);
 		Token tk2 = new Token("INTEGER", "0", 0);
 		Token tk3 = new Token("INTEGER", "0", 0);
 		Token tk4 = new Token("INTEGER", "0", 0);
-		
-		
+
 		Token rtk1 = null;
 		Token rtk2 = null;
 		Token rtk3 = null;
 		Token rtk4 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
 			rtk2 = t.getNextToken();
 			rtk3 = t.getNextToken();
 			rtk4 = t.getNextToken();
-		}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assert(	tk1.equals(rtk1) 
-				&& tk2.equals(rtk2) 
-				&& tk3.equals(rtk3)
-				&& tk4.equals(rtk4));
+
+		assert (tk1.equals(rtk1) && tk2.equals(rtk2) && tk3.equals(rtk3) && tk4.equals(rtk4));
 	}
 
 	@Test
-	public void test8(){
-		
+	public void test8() {
+
 		t = new Tokenizer(getTokenizer(t8));
-		
-		Token tk1 = new Token("INTEGER","123",0);
+
+		Token tk1 = new Token("INTEGER", "123", 0);
 		Token tk2 = new Token("DOT", ".", 0);
 		Token tk3 = new Token("ID", "a", 0);
-		
-		
+
 		Token rtk1 = null;
 		Token rtk2 = null;
 		Token rtk3 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
 			rtk2 = t.getNextToken();
 			rtk3 = t.getNextToken();
-		}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assert(	tk1.equals(rtk1) 
-				&& tk2.equals(rtk2) 
-				&& tk3.equals(rtk3));
+
+		assert (tk1.equals(rtk1) && tk2.equals(rtk2) && tk3.equals(rtk3));
 	}
-	
+
 	@Test
-	public void test9(){
-		
+	public void test9() {
+
 		t = new Tokenizer(getTokenizer(t9));
-		
-		Token tk1 = new Token("FLOAT","123.123",0);
+
+		Token tk1 = new Token("FLOAT", "123.123", 0);
 		Token tk2 = new Token("ID", "a", 0);
-		
-		
+
 		Token rtk1 = null;
 		Token rtk2 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
 			rtk2 = t.getNextToken();
-		}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assert(	tk1.equals(rtk1) 
-				&& tk2.equals(rtk2));
+
+		assert (tk1.equals(rtk1) && tk2.equals(rtk2));
 	}
-	
+
 	@Test
-	public void test10(){
-		
+	public void test10() {
+
 		t = new Tokenizer(getTokenizer(t10));
-		
+
 		Token tk1 = new Token("INTEGER", "0", 0);
-		Token tk2 = new Token("FLOAT","123.123",0);
-		
-		
+		Token tk2 = new Token("FLOAT", "123.123", 0);
+
 		Token rtk1 = null;
 		Token rtk2 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
 			rtk2 = t.getNextToken();
-		}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assert(	tk1.equals(rtk1) 
-				&& tk2.equals(rtk2));
+
+		assert (tk1.equals(rtk1) && tk2.equals(rtk2));
 	}
-	
+
 	@Test
-	public void test11(){
-		
+	public void test11() {
+
 		t = new Tokenizer(getTokenizer(t11));
-		
-		Token tk1 = new Token("FLOAT","123.0",0);
+
+		Token tk1 = new Token("FLOAT", "123.0", 0);
 		Token tk2 = new Token("DOT", ".", 0);
 		Token tk3 = new Token("INTEGER", "0", 0);
-		
-		
+
 		Token rtk1 = null;
 		Token rtk2 = null;
 		Token rtk3 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
 			rtk2 = t.getNextToken();
 			rtk3 = t.getNextToken();
-		}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assert(	tk1.equals(rtk1) 
-				&& tk2.equals(rtk2) 
-				&& tk3.equals(rtk3));
+
+		assert (tk1.equals(rtk1) && tk2.equals(rtk2) && tk3.equals(rtk3));
 	}
-	
+
 	@Test
-	public void test12(){
-		
+	public void test12() {
+
 		t = new Tokenizer(getTokenizer(t12));
-		
-		Token tk1 = new Token("FLOAT","123.0",0);
+
+		Token tk1 = new Token("FLOAT", "123.0", 0);
 		Token tk2 = new Token("FLOAT", "0.0", 0);
-		
-		
+
 		Token rtk1 = null;
 		Token rtk2 = null;
-		
-		try{
+
+		try {
 			rtk1 = t.getNextToken();
 			rtk2 = t.getNextToken();
-			
+
 			System.out.println(rtk1);
 			System.out.println(rtk2);
-		}
-		catch(InvalidTokenException e){
+		} catch (InvalidTokenException e) {
 			fail();
 		}
-		
-		assert(	tk1.equals(rtk1) 
-				&& tk2.equals(rtk2));
+
+		assert (tk1.equals(rtk1) && tk2.equals(rtk2));
 	}
+
 	
-	
-	//Checks after each @Test if there are not more token to be taken
-		@After
-		public void checkLastToken() {
-			try {
-				if(t.getNextToken() != null){
-					fail("Next token is not null");
-				}
-			} catch (InvalidTokenException e) {
-				e.printStackTrace();
-			}
-		}
-	
-	
-	private LineNumberReader getTokenizer(String s){
-	 return new LineNumberReader(new StringReader(s));	
-	}
-	
-	
-	
+
 }

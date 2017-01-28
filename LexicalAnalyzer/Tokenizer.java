@@ -2,14 +2,13 @@ package LexicalAnalyzer;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import dk.brics.automaton.Automaton;
 import dk.brics.automaton.RegExp;
 
 public class Tokenizer {
+	
+	public static final String INVALID_CHARACTER = "Invalid characther: ";
+	public static final String COMPILER_ERROR_NOT_CLOSED_COMMENT = "COMPILER ERROR: End of file reached. Missing \"*/\" to close multi line comment";
 
 	private LineNumberReader br;
 	private boolean multi_line_comment_open;
@@ -61,8 +60,7 @@ public class Tokenizer {
 			if (eof == -1) {
 				if (multi_line_comment_open) {
 					multi_line_comment_open = false;
-					throw new InvalidTokenException(
-							"COMPILER ERROR: End of file reached. Missing \"*/\" to close multi line comment");
+					throw new InvalidTokenException(COMPILER_ERROR_NOT_CLOSED_COMMENT);
 				}
 				return null;
 			}
@@ -76,8 +74,7 @@ public class Tokenizer {
 				while (true) {
 
 					if (eof == -1) {
-						throw new InvalidTokenException(
-								"COMPILER ERROR: End of file reached. Missing \"*/\" to close multi line comment");
+						throw new InvalidTokenException(COMPILER_ERROR_NOT_CLOSED_COMMENT);
 					}
 
 					else if (c != '*') {
@@ -179,6 +176,7 @@ public class Tokenizer {
 				}
 
 			} else if (IS_NON_ZERO_PATTERN.run(firstChar)) {
+				br.mark(1);
 				c = (char) br.read();
 
 				while (IS_DIGIT_PATTERN.run(String.valueOf(c))) {
@@ -194,10 +192,9 @@ public class Tokenizer {
 				} else {
 					// go back to char that was not digit
 					br.reset();
-					// remove last char from StringBuilder because is not digit
-					sb.setLength(sb.length());
-
+					
 					return new Token("INTEGER", sb.toString(), br.getLineNumber());
+					
 				}
 
 			} else if (firstChar.equals("0")) {
@@ -300,7 +297,7 @@ public class Tokenizer {
 
 			} else {
 				StringBuilder invalid = new StringBuilder();
-				invalid.append("Invalid characther: ");
+				invalid.append(INVALID_CHARACTER);
 				invalid.append(firstChar);
 				throw new InvalidTokenException(invalid.toString());
 			}
