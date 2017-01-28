@@ -10,6 +10,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 
+/*
+ * Tests floating point numbers
+ * If there is another token available after the running each test
+ * then the test fails
+ */
 public class TestFractionLexAnalyzer extends CommonTestLexAnalyzer {
 
 	private final String t1 = "123.";
@@ -24,6 +29,8 @@ public class TestFractionLexAnalyzer extends CommonTestLexAnalyzer {
 	private final String t10 = "0123.123";
 	private final String t11 = "123.0.0";
 	private final String t12 = "123.00.0";
+	private final String t13 = "0.0";
+	private final String t14 = "000.000";
 
 	@Test
 	public void test1() {
@@ -278,8 +285,6 @@ public class TestFractionLexAnalyzer extends CommonTestLexAnalyzer {
 			rtk1 = t.getNextToken();
 			rtk2 = t.getNextToken();
 
-			System.out.println(rtk1);
-			System.out.println(rtk2);
 		} catch (InvalidTokenException e) {
 			fail();
 		}
@@ -287,6 +292,57 @@ public class TestFractionLexAnalyzer extends CommonTestLexAnalyzer {
 		assert (tk1.equals(rtk1) && tk2.equals(rtk2));
 	}
 
-	
+	@Test
+	public void test13() {
 
+		t = new Tokenizer(getTokenizer(t13));
+
+		Token tk1 = new Token("FLOAT", "0.0", 0);
+
+		Token rtk1 = null;
+
+		try {
+			rtk1 = t.getNextToken();
+
+		} catch (InvalidTokenException e) {
+			fail();
+		}
+
+		assert (tk1.equals(rtk1));
+	}
+
+	@Test
+	public void test14() {
+
+		t = new Tokenizer(getTokenizer(t14));
+
+		Token tk1 = new Token("INTEGER", "0", 0);
+		Token tk2 = new Token("INTEGER", "0", 0);
+		Token tk3 = new Token("FLOAT", "0.0", 0);
+		Token tk4 = new Token("INTEGER", "0", 0);
+		Token tk5 = new Token("INTEGER", "0", 0);
+
+		Token rtk1 = null;
+		Token rtk2 = null;
+		Token rtk3 = null;
+		Token rtk4 = null;
+		Token rtk5 = null;
+
+		try {
+			rtk1 = t.getNextToken();
+			rtk2 = t.getNextToken();
+			rtk3 = t.getNextToken();
+			rtk4 = t.getNextToken();
+			rtk5 = t.getNextToken();
+
+		} catch (InvalidTokenException e) {
+			fail();
+		}
+
+		assert (tk1.equals(rtk1) 
+				&& tk2.equals(rtk2)
+				&& tk3.equals(rtk3)
+				&& tk4.equals(rtk4)
+				&& tk5.equals(rtk5));
+	}
 }

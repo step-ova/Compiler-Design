@@ -22,7 +22,7 @@ public class CommonTestLexAnalyzer {
 				fail("Next token is not null");
 			}
 		} catch (InvalidTokenException e) {
-			System.out.println(e.getMessage());
+			fail(e.getMessage());
 		}
 	}
 

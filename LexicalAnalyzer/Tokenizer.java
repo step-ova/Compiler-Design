@@ -9,6 +9,7 @@ public class Tokenizer {
 	
 	public static final String INVALID_CHARACTER = "Invalid characther: ";
 	public static final String COMPILER_ERROR_NOT_CLOSED_COMMENT = "COMPILER ERROR: End of file reached. Missing \"*/\" to close multi line comment";
+	public static final String COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN = "COMPILER ERROR: There is a close comment \"*/\" without one being opened";
 
 	private LineNumberReader br;
 	private boolean multi_line_comment_open;
@@ -119,7 +120,7 @@ public class Tokenizer {
 						c = (char) end_of_file;
 						
 						if(end_of_file == -1){
-							return null;
+							return new Token("INLINECOMMENT", sb.toString(), line);
 						}
 						
 					}
@@ -241,7 +242,7 @@ public class Tokenizer {
 					sb.append(symbol);
 					return new Token("NOTEQUAL", sb.toString(), br.getLineNumber());
 				} else if (c == symbol2) {
-					sb.append(symbol);
+					sb.append(symbol2);
 					return new Token("LESSTHANEQUAL", sb.toString(), br.getLineNumber());
 				} else {
 					br.reset();
@@ -284,7 +285,16 @@ public class Tokenizer {
 				return new Token("MINUSSIGN", sb.toString(), br.getLineNumber());
 
 			} else if (firstChar.equals("*")) {
-				return new Token("MULTIPLYSIGN", sb.toString(), br.getLineNumber());
+				br.mark(1);
+				c = (char) br.read();
+				
+				char symbol = '/';
+				if (c == symbol) {
+					throw new InvalidTokenException(COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN);
+				}
+				else{
+					return new Token("MULTIPLYSIGN", sb.toString(), br.getLineNumber());
+				}
 
 			} else if (firstChar.equals(";")) {
 				return new Token("SEMICOLON", sb.toString(), br.getLineNumber());
