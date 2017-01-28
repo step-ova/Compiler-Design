@@ -12,36 +12,21 @@ import dk.brics.automaton.RegExp;
 public class Tokenizer {
 
 	private LineNumberReader br;
-
+	private boolean multi_line_comment_open;
+	
 	private static final String DIGIT_REGEX = "[0-9]";
 	private static final String NONZERO_REGEX = "[1-9]";
 	private static final String LETTER_REGEX = "([a-z]|[A-Z])";
-
 	private static final String UNDERSCORE = "_";
 	private static final String ALPHANUM_REGEX = "(" + LETTER_REGEX + "|" + DIGIT_REGEX + "|" + UNDERSCORE + ")";
-	private static final String ID_REGEX = LETTER_REGEX + ALPHANUM_REGEX + "*";
 
-	private static final String INTEGER_REGEX = "(" + NONZERO_REGEX + DIGIT_REGEX + "*" + "|" + "0" + ")";
-	private static final String FRACTION_REGEX = "(\\." + DIGIT_REGEX + "*" + NONZERO_REGEX + "|" + "\\.0)";
-	private static final String FLOAT_REGEX = "(" + INTEGER_REGEX + FRACTION_REGEX + ")";
-
-	// private static final Pattern DIGIT_PATTERN =
-	// Pattern.compile(DIGIT_REGEX);
-	// private static final Pattern NON_ZERO_PATTERN =
-	// Pattern.compile(NONZERO_REGEX);
-	// private static final Pattern LETTER_PATTERN =
-	// Pattern.compile(LETTER_REGEX);
-
-	Automaton IS_DIGIT_PATTERN = new RegExp(DIGIT_REGEX).toAutomaton();
-	Automaton IS_NON_ZERO_PATTERN = new RegExp(NONZERO_REGEX).toAutomaton();
-	Automaton IS_LETTER_PATTERN = new RegExp(LETTER_REGEX).toAutomaton();
-	Automaton IS_ALPHANUM_PATTERN = new RegExp(LETTER_REGEX).toAutomaton();
-	Automaton IS_INTEGER_PATTERN = new RegExp(INTEGER_REGEX).toAutomaton();
+	private static Automaton IS_DIGIT_PATTERN = new RegExp(DIGIT_REGEX).toAutomaton();
+	private static Automaton IS_NON_ZERO_PATTERN = new RegExp(NONZERO_REGEX).toAutomaton();
+	private static Automaton IS_LETTER_PATTERN = new RegExp(LETTER_REGEX).toAutomaton();
+	private static Automaton IS_ALPHANUM_PATTERN = new RegExp(ALPHANUM_REGEX).toAutomaton();
 
 	private static final String[] RESERVED_WORDS = { "IF", "THEN", "ELSE", "FOR", "CLASS", "INT", "FLOAT", "GET", "PUT",
 			"RETURN", "PROGRAM", "AND", "NOT", "OR" };
-
-	private boolean multi_line_comment_open;
 
 	public Tokenizer(String filename) {
 
