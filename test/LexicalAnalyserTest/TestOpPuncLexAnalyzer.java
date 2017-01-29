@@ -46,382 +46,102 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 
 	@Test
 	public void test1() {
-
-		t = new Tokenizer(getTokenizer(t1));
-
-		Token tk1 = new Token("EQUALEQUAL", t1, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("EQUALEQUAL", t1));
 	}
 
 	@Test
 	public void test2() {
-
-		t = new Tokenizer(getTokenizer(t2));
-
-		Token tk1 = new Token("NOTEQUAL", t2, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("NOTEQUAL", t2));
 	}
 
 	@Test
 	public void test3() {
-
-		t = new Tokenizer(getTokenizer(t3));
-
-		Token tk1 = new Token("LESSTHAN", t3, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("LESSTHAN", t3));
 	}
 
 	@Test
 	public void test4() {
-
-		t = new Tokenizer(getTokenizer(t4));
-
-		Token tk1 = new Token("GREATERTHAN", t4, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("GREATERTHAN", t4));
 	}
 
 	@Test
 	public void test5() {
-
-		t = new Tokenizer(getTokenizer(t5));
-
-		Token tk1 = new Token("LESSTHANEQUAL", t5, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("LESSTHANEQUAL", t5));
 	}
 
 	@Test
 	public void test6() {
-
-		t = new Tokenizer(getTokenizer(t6));
-
-		Token tk1 = new Token("GREATERTHANEQUAL", t6, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("GREATERTHANEQUAL", t6));
 	}
 
 	@Test
 	public void test7() {
-
-		t = new Tokenizer(getTokenizer(t7));
-
-		Token tk1 = new Token("SEMICOLON", t7, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("SEMICOLON", t7));
 	}
 
 	@Test
 	public void test8() {
-
-		t = new Tokenizer(getTokenizer(t8));
-
-		Token tk1 = new Token("COMMA", t8, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("COMMA", t8));
 	}
 
 	@Test
 	public void test9() {
-
-		t = new Tokenizer(getTokenizer(t9));
-
-		Token tk1 = new Token("DOT", t9, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("DOT", t9));
 	}
 
 	@Test
 	public void test10() {
-
-		t = new Tokenizer(getTokenizer(t10));
-
-		Token tk1 = new Token("PLUSSIGN", t10, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("PLUSSIGN", t10));
 	}
 
 	@Test
 	public void test11() {
-
-		t = new Tokenizer(getTokenizer(t11));
-
-		Token tk1 = new Token("MINUSSIGN", t11, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("MINUSSIGN", t11));
 	}
 
 	@Test
 	public void test12() {
-
-		t = new Tokenizer(getTokenizer(t12));
-
-		Token tk1 = new Token("MULTIPLYSIGN", t12, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("MULTIPLYSIGN", t12));
 	}
 
 	@Test
 	public void test13() {
-
-		t = new Tokenizer(getTokenizer(t13));
-
-		Token tk1 = new Token("DIVIDESIGN", t13, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("DIVIDESIGN", t13));
 	}
 
 	@Test
 	public void test14() {
-
-		t = new Tokenizer(getTokenizer(t14));
-
-		Token tk1 = new Token("EQUAL", t14, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("EQUAL", t14));
 	}
 
 	@Test
 	public void test15() {
-
-		t = new Tokenizer(getTokenizer(t15));
-
-		Token tk1 = new Token("OPENPAREN", t15, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("OPENPAREN", t15));
 	}
 
 	@Test
 	public void test16() {
-
-		t = new Tokenizer(getTokenizer(t16));
-
-		Token tk1 = new Token("CLOSEPAREN", t16, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("CLOSEPAREN", t16));
 	}
 
 	@Test
 	public void test17() {
-
-		t = new Tokenizer(getTokenizer(t17));
-
-		Token tk1 = new Token("OPENCURLYBRAC", t17, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("OPENCURLYBRAC", t17));
 	}
 
 	@Test
 	public void test18() {
-
-		t = new Tokenizer(getTokenizer(t18));
-
-		Token tk1 = new Token("CLOSECURLYBRAC", t18, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("CLOSECURLYBRAC", t18));
 	}
 
 	@Test
 	public void test19() {
-
-		t = new Tokenizer(getTokenizer(t19));
-
-		Token tk1 = new Token("OPENBRAC", t19, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("OPENBRAC", t19));
 	}
 
 	@Test
 	public void test20() {
-
-		t = new Tokenizer(getTokenizer(t20));
-
-		Token tk1 = new Token("CLOSEBRAC", t20, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("CLOSEBRAC", t20));
 	}
 
 	@Test
@@ -477,21 +197,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 
 	@Test
 	public void test23() {
-
-		t = new Tokenizer(getTokenizer(t23));
-
-		Token tk1 = new Token("INLINECOMMENT", t23, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("INLINECOMMENT", t23));
 	}
 
 	@Test

@@ -35,192 +35,52 @@ public class TestIDLexAnalyzer extends CommonTestLexAnalyzer {
 
 	@Test
 	public void test1() {
-
-		t = new Tokenizer(getTokenizer(t1));
-
-		Token tk1 = new Token("ID", t1, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("ID", t1));
 	}
 
 	@Test
 	public void test2() {
-
-		t = new Tokenizer(getTokenizer(t2));
-
-		Token tk1 = new Token("ID", t2, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("ID", t2));
 	}
 
 	@Test
 	public void test3() {
-
-		t = new Tokenizer(getTokenizer(t3));
-
-		Token tk1 = new Token("ID", t3, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("ID", t3));
 	}
 
 	@Test
 	public void test4() {
-
-		t = new Tokenizer(getTokenizer(t4));
-
-		Token tk1 = new Token("ID", t4, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("ID", t4));
 	}
 
 	@Test
 	public void test5() {
-
-		t = new Tokenizer(getTokenizer(t5));
-
-		Token tk1 = new Token("ID", t5, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("ID", t5));
 	}
 
 	@Test
 	public void test6() {
-
-		t = new Tokenizer(getTokenizer(t6));
-
-		Token tk1 = new Token("ID", t6, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("ID", t6));
 	}
 
 	@Test
 	public void test7() {
-
-		t = new Tokenizer(getTokenizer(t7));
-
-		Token tk1 = new Token("ID", t7, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("ID", t7));
 	}
 
 	@Test
 	public void test8() {
-
-		t = new Tokenizer(getTokenizer(t8));
-
-		Token tk1 = new Token("ID", t8, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("ID", t8));
 	}
 
 	@Test
 	public void test9() {
-
-		t = new Tokenizer(getTokenizer(t9));
-
-		Token tk1 = new Token("ID", t9, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("ID", t9));
 	}
 
 	@Test
 	public void test10() {
-
-		t = new Tokenizer(getTokenizer(t10));
-
-		Token tk1 = new Token("ID", t10, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("ID", t10));
 	}
 
 	@Test

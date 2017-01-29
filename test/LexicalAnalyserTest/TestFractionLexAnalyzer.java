@@ -56,56 +56,17 @@ public class TestFractionLexAnalyzer extends CommonTestLexAnalyzer {
 
 	@Test
 	public void test2() {
-
-		t = new Tokenizer(getTokenizer(t2));
-
-		Token tk1 = new Token("FLOAT", t2, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assertEquals(tk1, rtk1);
+		assert (genericSingleTokenTestCase("FLOAT", t2));
 	}
 
 	@Test
 	public void test3() {
-
-		t = new Tokenizer(getTokenizer(t3));
-
-		Token tk1 = new Token("FLOAT", t3, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assertEquals(tk1, rtk1);
+		assert (genericSingleTokenTestCase("FLOAT", t3));
 	}
 
 	@Test
 	public void test4() {
-
-		t = new Tokenizer(getTokenizer(t4));
-
-		Token tk1 = new Token("FLOAT", t4, 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assertEquals(tk1, rtk1);
+		assert (genericSingleTokenTestCase("FLOAT", t4));
 	}
 
 	@Test
@@ -294,21 +255,7 @@ public class TestFractionLexAnalyzer extends CommonTestLexAnalyzer {
 
 	@Test
 	public void test13() {
-
-		t = new Tokenizer(getTokenizer(t13));
-
-		Token tk1 = new Token("FLOAT", "0.0", 0);
-
-		Token rtk1 = null;
-
-		try {
-			rtk1 = t.getNextToken();
-
-		} catch (InvalidTokenException e) {
-			fail();
-		}
-
-		assert (tk1.equals(rtk1));
+		assert (genericSingleTokenTestCase("FLOAT", t13));
 	}
 
 	@Test
