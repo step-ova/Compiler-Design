@@ -147,7 +147,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 	@Test
 	public void test21() {
 
-		t = new Tokenizer(getTokenizer(t21));
+		tokenizer = new Tokenizer(getTokenizer(t21));
 
 		Token tk1 = new Token("OPENMULTILINECOMMENT", t21, 0);
 
@@ -155,7 +155,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 		Token rtk2 = null;
 
 		try {
-			rtk1 = t.getNextToken();
+			rtk1 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			fail();
@@ -163,7 +163,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 
 		// Should be invalid
 		try {
-			rtk2 = t.getNextToken();
+			rtk2 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			if (!e.getMessage().equals(Tokenizer.generateErrorMessage(Tokenizer.COMPILER_ERROR_NOT_CLOSED_COMMENT, 0))) {
@@ -177,14 +177,14 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 	@Test
 	public void test22() {
 
-		t = new Tokenizer(getTokenizer(t22));
+		tokenizer = new Tokenizer(getTokenizer(t22));
 
 
 		Token rtk1 = null;
 		
 		//should be invalid
 		try {
-			rtk1 = t.getNextToken();
+			rtk1 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			if (!e.getMessage().equals(Tokenizer.generateErrorMessage(Tokenizer.COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN, 0))) {
@@ -203,14 +203,14 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 	@Test
 	public void test24() {
 
-		t = new Tokenizer(getTokenizer(t24));
+		tokenizer = new Tokenizer(getTokenizer(t24));
 
 		Token tk1 = new Token("INLINECOMMENT", "//", 0);
 
 		Token rtk1 = null;
 
 		try {
-			rtk1 = t.getNextToken();
+			rtk1 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			fail();
@@ -222,7 +222,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 	@Test
 	public void test25() {
 
-		t = new Tokenizer(getTokenizer(t25));
+		tokenizer = new Tokenizer(getTokenizer(t25));
 
 		Token tk1 = new Token("OPENMULTILINECOMMENT", "/*", 0);
 		Token tk2 = new Token("CLOSEMULTILINECOMMENT", "*/", 0);
@@ -231,8 +231,8 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 		Token rtk2 = null;
 
 		try {
-			rtk1 = t.getNextToken();
-			rtk2 = t.getNextToken();
+			rtk1 = tokenizer.getNextToken();
+			rtk2 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			fail();
@@ -245,7 +245,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 	@Test
 	public void test26() {
 
-		t = new Tokenizer(getTokenizer(t26));
+		tokenizer = new Tokenizer(getTokenizer(t26));
 
 		Token tk1 = new Token("OPENMULTILINECOMMENT", "/*", 0);
 		Token tk2 = new Token("CLOSEMULTILINECOMMENT", "*/", 0);
@@ -254,8 +254,8 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 		Token rtk2 = null;
 
 		try {
-			rtk1 = t.getNextToken();
-			rtk2 = t.getNextToken();
+			rtk1 = tokenizer.getNextToken();
+			rtk2 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			fail();
@@ -268,7 +268,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 	@Test
 	public void test27() {
 
-		t = new Tokenizer(getTokenizer(t27));
+		tokenizer = new Tokenizer(getTokenizer(t27));
 
 		Token tk1 = new Token("OPENMULTILINECOMMENT", "/*", 0);
 		Token tk2 = new Token("CLOSEMULTILINECOMMENT", "*/", 0);
@@ -278,8 +278,8 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 		Token rtk3 = null;
 
 		try {
-			rtk1 = t.getNextToken();
-			rtk2 = t.getNextToken();
+			rtk1 = tokenizer.getNextToken();
+			rtk2 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			fail();
@@ -287,7 +287,7 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 		
 		//invalid close
 		try{
-			rtk3 = t.getNextToken();
+			rtk3 = tokenizer.getNextToken();
 		}
 		catch (InvalidTokenException e) {
 			if (!e.getMessage().equals(Tokenizer.generateErrorMessage(Tokenizer.COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN, 0))) {
@@ -303,12 +303,12 @@ public class TestOpPuncLexAnalyzer extends CommonTestLexAnalyzer {
 	@Test
 	public void test28() {
 
-		t = new Tokenizer(getTokenizer(t28));
+		tokenizer = new Tokenizer(getTokenizer(t28));
 
 		Token rtk1 = null;
 
 		try {
-			rtk1 = t.getNextToken();
+			rtk1 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			if (!e.getMessage().equals(Tokenizer.INVALID_CHARACTER + "/")) {

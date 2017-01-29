@@ -88,7 +88,7 @@ public class TestIDLexAnalyzer extends CommonTestLexAnalyzer {
 
 		// String: _abc
 
-		t = new Tokenizer(getTokenizer(t11));
+		tokenizer = new Tokenizer(getTokenizer(t11));
 
 		Token tk2 = new Token("ID", "abc", 0);
 
@@ -97,7 +97,7 @@ public class TestIDLexAnalyzer extends CommonTestLexAnalyzer {
 
 		// should throw exception
 		try {
-			rtk1 = t.getNextToken();
+			rtk1 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			if (!e.getMessage().equals(Tokenizer.generateErrorMessage('_', 0))) {
@@ -108,7 +108,7 @@ public class TestIDLexAnalyzer extends CommonTestLexAnalyzer {
 
 		// abc
 		try {
-			rtk2 = t.getNextToken();
+			rtk2 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			fail();
@@ -122,7 +122,7 @@ public class TestIDLexAnalyzer extends CommonTestLexAnalyzer {
 
 		// String: 1abc
 
-		t = new Tokenizer(getTokenizer(t12));
+		tokenizer = new Tokenizer(getTokenizer(t12));
 
 		Token tk1 = new Token("INTEGER", "1", 0);
 		Token tk2 = new Token("ID", "abc", 0);
@@ -131,8 +131,8 @@ public class TestIDLexAnalyzer extends CommonTestLexAnalyzer {
 		Token rtk2 = null;
 
 		try {
-			rtk1 = t.getNextToken();
-			rtk2 = t.getNextToken();
+			rtk1 = tokenizer.getNextToken();
+			rtk2 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			fail();
@@ -147,7 +147,7 @@ public class TestIDLexAnalyzer extends CommonTestLexAnalyzer {
 		// String: if Then eLSE FOR clasS int float gEt put return program and
 		// not or
 
-		t = new Tokenizer(getTokenizer(t13));
+		tokenizer = new Tokenizer(getTokenizer(t13));
 
 		Token tk1 = new Token("IF", "if", 0);
 		Token tk2 = new Token("THEN", "Then", 0);
@@ -180,20 +180,20 @@ public class TestIDLexAnalyzer extends CommonTestLexAnalyzer {
 		Token rtk14 = null;
 
 		try {
-			rtk1 = t.getNextToken();
-			rtk2 = t.getNextToken();
-			rtk3 = t.getNextToken();
-			rtk4 = t.getNextToken();
-			rtk5 = t.getNextToken();
-			rtk6 = t.getNextToken();
-			rtk7 = t.getNextToken();
-			rtk8 = t.getNextToken();
-			rtk9 = t.getNextToken();
-			rtk10 = t.getNextToken();
-			rtk11 = t.getNextToken();
-			rtk12 = t.getNextToken();
-			rtk13 = t.getNextToken();
-			rtk14 = t.getNextToken();
+			rtk1 = tokenizer.getNextToken();
+			rtk2 = tokenizer.getNextToken();
+			rtk3 = tokenizer.getNextToken();
+			rtk4 = tokenizer.getNextToken();
+			rtk5 = tokenizer.getNextToken();
+			rtk6 = tokenizer.getNextToken();
+			rtk7 = tokenizer.getNextToken();
+			rtk8 = tokenizer.getNextToken();
+			rtk9 = tokenizer.getNextToken();
+			rtk10 = tokenizer.getNextToken();
+			rtk11 = tokenizer.getNextToken();
+			rtk12 = tokenizer.getNextToken();
+			rtk13 = tokenizer.getNextToken();
+			rtk14 = tokenizer.getNextToken();
 
 		} catch (InvalidTokenException e) {
 			fail();

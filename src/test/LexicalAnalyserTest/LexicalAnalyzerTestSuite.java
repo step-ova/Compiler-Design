@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	TestFractionLexAnalyzer.class,
 	TestIDLexAnalyzer.class, 
-	TestOpPuncLexAnalyzer.class
+	TestOpPuncLexAnalyzer.class,
+	TestRandomCodeLexAnalyzer.class
 })
 
 public class LexicalAnalyzerTestSuite {

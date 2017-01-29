@@ -192,7 +192,6 @@ public class Tokenizer {
 				} else {
 					// go back to char that was not digit
 					br.reset();
-					
 					return new Token("INTEGER", sb.toString(), br.getLineNumber());
 					
 				}
@@ -292,6 +291,7 @@ public class Tokenizer {
 					throw new InvalidTokenException(generateErrorMessage(COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN, br.getLineNumber()));
 				}
 				else{
+					br.reset();
 					return new Token("MULTIPLYSIGN", sb.toString(), br.getLineNumber());
 				}
 
@@ -432,7 +432,7 @@ public class Tokenizer {
 		StringBuilder sb = new StringBuilder();
 		sb.append(INVALID_CHARACTER);
 		sb.append(errorChar);
-		sb.append(LINE_NUMBER_STRING);
+		sb.append(" . Line number: ");
 		sb.append(lineNumber);
 		return sb.toString();
 	}
