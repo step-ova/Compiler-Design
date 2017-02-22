@@ -1,0 +1,49 @@
+Prog, class, program
+ClassDeclStar, class
+ClassDecl, class
+VarDeclStarFuncDefStar, id, int, float
+VarA, semicolon, openparen, openbrac
+FuncDefStar, id, int, float
+ProgBody, program
+FuncHead, id, int, float
+FuncDef, id, int, float
+FuncDefWithoutTypeId, openparen
+FuncBody, opencurlybrac
+StatementStar, id, if, for, get, put, return
+VarDeclStarstatementStar, id, if, for, get, put, return, int, float
+A1, id, dot, openbrac, equal
+A2, id
+VarDeclWithoutTypeId, semicolon, openbrac
+ArraySizeStar, openbrac
+Statement, id, if, for, get, put, return
+StatementWithoutAssignStat, if, for, get, put, return
+AssignStat, id
+AssignStatWithoutVariable, equal
+StatBlock, id, opencurlybrac, if, for, get, put, return
+Expr, id, openparen, plussign, minussign, not, int, float
+RelExpr2, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal
+RelExpr, id, openparen, plussign, minussign, not, int, float
+ArithExpr, id, openparen, plussign, minussign, not, int, float
+ArithExpr1, plussign, minussign, or
+Sign, plussign, minussign
+Term, id, openparen, plussign, minussign, not, int, float
+Term1, multiplysign, dividesign, and
+Factor, id, openparen, plussign, minussign, not, int, float
+VariableFactor, id
+Var1, openparen, dot, openbrac
+Variable, id
+Var2, dot, openbrac
+Indice, openbrac
+ArraySize, openbrac
+Type, id, int, float
+TypeWithoutId, int, float
+FParams, id, int, float
+FParamsTailStar, comma
+AParams, id, openparen, plussign, minussign, not, int, float
+AParamsTailsStar, comma
+FParamsTail, comma
+AParamsTails, comma
+AssignOp, equal
+RelOp, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal
+AddOp, plussign, minussign, or
+MultOp, multiplysign, dividesign, and

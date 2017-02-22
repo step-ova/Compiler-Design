@@ -1,0 +1,49 @@
+Prog, $
+ClassDeclStar, program
+ClassDecl, class, program
+VarDeclStarFuncDefStar, closecurlybrac
+VarA, closecurlybrac
+FuncDefStar, closecurlybrac, $
+ProgBody, $
+FuncHead, opencurlybrac
+FuncDef, id, closecurlybrac, int, float, $
+FuncDefWithoutTypeId, id, closecurlybrac, int, float
+FuncBody, semicolon
+StatementStar, closecurlybrac
+VarDeclStarstatementStar, closecurlybrac
+A1, closecurlybrac
+A2, closecurlybrac
+VarDeclWithoutTypeId, id, closecurlybrac, if, for, get, put, return, int, float
+ArraySizeStar, semicolon, closeparen, comma
+Statement, id, closecurlybrac, semicolon, if, else, for, get, put, return
+StatementWithoutAssignStat, id, closecurlybrac, if, for, get, put, return
+AssignStat, semicolon, closeparen
+AssignStatWithoutVariable, semicolon
+StatBlock, semicolon, else
+Expr, semicolon, closeparen, comma
+RelExpr2, semicolon, closeparen, comma
+RelExpr, semicolon
+ArithExpr, semicolon, closeparen, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal
+ArithExpr1, semicolon, closeparen, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal
+Sign, id, openparen, plussign, minussign, not, int, float
+Term, semicolon, closeparen, plussign, minussign, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or
+Term1, semicolon, closeparen, plussign, minussign, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or
+Factor, semicolon, closeparen, plussign, minussign, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or, multiplysign, dividesign, and
+VariableFactor, semicolon, closeparen, plussign, minussign, closebrac, comma, equal, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or, multiplysign, dividesign, and
+Var1, semicolon, closeparen, plussign, minussign, closebrac, comma, equal, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or, multiplysign, dividesign, and
+Variable, closeparen, equal
+Var2, closeparen, equal
+Indice, semicolon, openparen, closeparen, plussign, minussign, dot, openbrac, closebrac, comma, equal, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or, multiplysign, dividesign, and
+ArraySize, semicolon, closeparen, openbrac, comma
+Type, id
+TypeWithoutId, id, semicolon, closeparen, plussign, minussign, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or, multiplysign, dividesign, and
+FParams, closeparen
+FParamsTailStar, closeparen
+AParams, closeparen
+AParamsTailsStar, closeparen
+FParamsTail, closeparen, comma
+AParamsTails, closeparen, comma
+AssignOp, id, openparen, plussign, minussign, not, int, float
+RelOp, id, openparen, plussign, minussign, not, int, float
+AddOp, id, openparen, plussign, minussign, not, int, float
+MultOp, id, openparen, plussign, minussign, not, int, float
