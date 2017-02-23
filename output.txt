@@ -1,4 +1,0 @@
-Token, Lexeme, LineNumber
-PROGRAM,program,0
-OPENCURLYBRAC,{,0
-CLOSECURLYBRAC,},0

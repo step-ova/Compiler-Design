@@ -10,6 +10,18 @@ public class Token {
 		this.lexeme = lexeme;
 		this.position = position;
 	}
+	
+	public String getTokenName(){
+		return token;
+	}
+	
+	public String getTokenLexeme(){
+		return lexeme;
+	}
+	
+	public int getTokenPosition(){
+		return position;
+	}
 
 	@Override
 	public String toString() {

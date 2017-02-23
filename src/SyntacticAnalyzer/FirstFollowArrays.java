@@ -62,5 +62,40 @@ public class FirstFollowArrays {
 
 		}
 	}
+	
+	
+	public boolean followContains(Enum top, String lookahead){
+		for(ArrayList<Enum> followSets : follow){
+			if(followSets.get(0) == top){
+				return containsSymbol(followSets, lookahead);
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean firstContains(Enum top, String lookahead){
+		for(ArrayList<Enum> firstSets: first){
+			if(firstSets.get(0) == top){
+				return containsSymbol(firstSets,lookahead);
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	/*
+	 * Checks if the Enum arraylist contains the lookahead symbol
+	 */
+	private boolean containsSymbol(ArrayList<Enum> symbols, String lookahead){
+		for(Enum sym : symbols){
+			if(sym.name().equalsIgnoreCase(lookahead)){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 }
