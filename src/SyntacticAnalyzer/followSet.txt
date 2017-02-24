@@ -25,7 +25,7 @@ RelExpr2, semicolon, closeparen, comma
 RelExpr, semicolon
 ArithExpr, semicolon, closeparen, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal
 ArithExpr1, semicolon, closeparen, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal
-Sign, id, openparen, plussign, minussign, not, int, float
+Sign, id, openparen, plussign, minussign, not, integer, float
 Term, semicolon, closeparen, plussign, minussign, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or
 Term1, semicolon, closeparen, plussign, minussign, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or
 Factor, semicolon, closeparen, plussign, minussign, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or, multiplysign, dividesign, and
@@ -36,14 +36,15 @@ Var2, closeparen, equal
 Indice, semicolon, openparen, closeparen, plussign, minussign, dot, openbrac, closebrac, comma, equal, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or, multiplysign, dividesign, and
 ArraySize, semicolon, closeparen, openbrac, comma
 Type, id
-TypeWithoutId, id, semicolon, closeparen, plussign, minussign, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or, multiplysign, dividesign, and
+TypeWithoutId, id
 FParams, closeparen
 FParamsTailStar, closeparen
 AParams, closeparen
 AParamsTailsStar, closeparen
 FParamsTail, closeparen, comma
 AParamsTails, closeparen, comma
-AssignOp, id, openparen, plussign, minussign, not, int, float
-RelOp, id, openparen, plussign, minussign, not, int, float
-AddOp, id, openparen, plussign, minussign, not, int, float
-MultOp, id, openparen, plussign, minussign, not, int, float
+AssignOp, id, openparen, plussign, minussign, not, integer, float
+RelOp, id, openparen, plussign, minussign, not, integer, float
+AddOp, id, openparen, plussign, minussign, not, integer, float
+MultOp, id, openparen, plussign, minussign, not, integer, float
+Num, semicolon, closeparen, plussign, minussign, closebrac, comma, equalequal, notequal, lessthan, greaterthan, lessthanequal, greaterthanequal, or, multiplysign, dividesign, and

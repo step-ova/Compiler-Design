@@ -35,6 +35,7 @@ public class Parser {
 
 		while (stack.peek() != Symbols.terminals.$) {
 			Enum x = stack.peek();
+			System.out.println(x.name());
 
 			// TODO: handle epsilon case
 			if (allSymbols.isTerminal(x.name())) {
@@ -64,7 +65,7 @@ public class Parser {
 			}
 		}
 
-		if (tok != null || error == true) {
+		if (!tok.getTokenName().equals("$") || error == true) {
 			return false;
 		} else {
 			return true;
@@ -77,8 +78,8 @@ public class Parser {
 
 		Enum x = stack.peek();
 
-		// tok == null means end of file
-		if (tok == null || firstFollowArrays.followContains(x, tok.getTokenName())) {
+		
+		if (tok.getTokenName().equals("$") || firstFollowArrays.followContains(x, tok.getTokenName())) {
 			stack.pop();
 		} else {
 			while (firstFollowArrays.firstContains(x, tok.getTokenName())

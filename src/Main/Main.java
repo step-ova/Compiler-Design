@@ -8,6 +8,9 @@ import java.util.PropertyResourceBundle;
 import LexicalAnalyzer.InvalidTokenException;
 import LexicalAnalyzer.Token;
 import LexicalAnalyzer.Tokenizer;
+import SyntacticAnalyzer.Parser;
+import SyntacticAnalyzer.SymbolTable;
+import SyntacticAnalyzer.Symbols;
 
 public class Main {
 
@@ -23,13 +26,25 @@ public class Main {
 		Tokenizer t = new Tokenizer(INPUT_FILE_NAME);
 		
 		initializeOutputFiles();
+		
+		
+		Parser p = new Parser(t);
+		
+		try {
+			System.out.println(p.parse());
+		} catch (InvalidTokenException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
+		/*
 		Token token;
 		while (true) {
 			try {
 
 				token = t.getNextToken();
-				if (token == null) {
+				if (token.getTokenName().equals("$")) {
 					break;
 				} else {
 					
@@ -47,9 +62,16 @@ public class Main {
 				pw_error_file.println(errorMessage);
 			}
 		}
+		*/
 		
 		pw_output_file.close();
 		pw_error_file.close();
+		
+		
+		SymbolTable table = new SymbolTable();
+		System.out.println(table.isError(0, 1));
+		
+		
 
 	}
 	

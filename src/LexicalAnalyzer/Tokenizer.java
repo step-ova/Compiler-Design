@@ -61,7 +61,7 @@ public class Tokenizer {
 
 			// returns null if eof
 			if (end_of_file == -1) {
-				return null;
+				return new Token("$", "end of file", br.getLineNumber());
 			}
 
 			StringBuilder sb = new StringBuilder();

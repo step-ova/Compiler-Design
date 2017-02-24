@@ -14,8 +14,8 @@ public class Symbols {
 		ID,
 		OPENCURLYBRAC,
 		CLOSECURLYBRAC,
-		PROGRAM,
 		SEMICOLON,
+		PROGRAM,
 		OPENPAREN,
 		CLOSEPAREN,
 		IF,
@@ -106,7 +106,8 @@ public class Symbols {
 		AssignOp,
 		RelOp,
 		AddOp,
-		MultOp
+		MultOp,
+		Num
 	}
 	
 	private enum TYPE{
