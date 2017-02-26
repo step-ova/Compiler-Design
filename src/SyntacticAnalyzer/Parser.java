@@ -10,7 +10,7 @@ import LexicalAnalyzer.Tokenizer;
 public class Parser {
 
 	private Symbols allSymbols = new Symbols();
-	private SymbolTable symboltable = new SymbolTable();
+	private ParsingTable parsingTable = new ParsingTable();
 
 	private Tokenizer t;
 	private FirstFollowArrays firstFollowArrays;
@@ -37,7 +37,6 @@ public class Parser {
 			Enum x = stack.peek();
 			System.out.println(x.name());
 
-			// TODO: handle epsilon case
 			if (allSymbols.isTerminal(x.name())) {
 				if (tok.getTokenName().equalsIgnoreCase(x.name())) {
 					stack.pop();
@@ -54,9 +53,9 @@ public class Parser {
 				int nonTerminalSymbolTableIndex = allSymbols.getNonTerminalIndex(x.name());
 				int terminalSymbolTableIndex = allSymbols.getTerminalIndex(tok.getTokenName());
 
-				if (!symboltable.isError(nonTerminalSymbolTableIndex, terminalSymbolTableIndex)) {
+				if (!parsingTable.isError(nonTerminalSymbolTableIndex, terminalSymbolTableIndex)) {
 					stack.pop();
-					inverseRHSPush(symboltable.getRule(nonTerminalSymbolTableIndex, terminalSymbolTableIndex));
+					inverseRHSPush(parsingTable.getRule(nonTerminalSymbolTableIndex, terminalSymbolTableIndex));
 				} else {
 					skipErrors(tok);
 					error = true;

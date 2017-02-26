@@ -10,17 +10,17 @@ import java.util.Scanner;
  * Parsing table with the rules inside as an arraylist of Enums
  * Where there is no values, we insert null
  */
-public class SymbolTable {
+public class ParsingTable {
 	
 	private Symbols allSymbols = new Symbols(); 
 	
-	private ArrayList<ArrayList<ArrayList<Enum>>> symbolTable;
+	private ArrayList<ArrayList<ArrayList<Enum>>> parsingTable;
 
 	private final String fileLocat = (new File("").getAbsolutePath().toString()) + "\\src\\" + "\\SyntacticAnalyzer\\";
 
-	private final String sTableFileName = "symboltable.txt";
+	private final String sTableFileName = "parsingtable.txt";
 
-	public SymbolTable() {
+	public ParsingTable() {
 		Scanner sc = null;
 
 		try {
@@ -30,14 +30,14 @@ public class SymbolTable {
 			e.printStackTrace();
 		}
 
-		symbolTable = new ArrayList<ArrayList<ArrayList<Enum>>>();
+		parsingTable = new ArrayList<ArrayList<ArrayList<Enum>>>();
 
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 
 			ArrayList<ArrayList<Enum>> enumArray = new ArrayList<ArrayList<Enum>>();
 
-			// if line contains symbol table values
+			// if line contains parsing table values
 			if (line.contains(",")) {
 				String[] values = line.split(",", -1);
 
@@ -71,7 +71,7 @@ public class SymbolTable {
 					enumArray.add(enumValues);
 				}
 				
-				symbolTable.add(enumArray);
+				parsingTable.add(enumArray);
 			}
 		}
 
@@ -87,12 +87,12 @@ public class SymbolTable {
 	}
 	
 	public ArrayList<Enum> getRule(int nonTerminalIndex, int terminalIndex){
-		return symbolTable.get(nonTerminalIndex).get(terminalIndex);
+		return parsingTable.get(nonTerminalIndex).get(terminalIndex);
 	}
 	
 	
-	public void printSymbolTable(){
-		for(ArrayList<ArrayList<Enum>> arr1 : symbolTable){
+	public void printParsingTable(){
+		for(ArrayList<ArrayList<Enum>> arr1 : parsingTable){
 			StringBuilder sb = new StringBuilder();
 			for(ArrayList<Enum> arr2 : arr1){
 				

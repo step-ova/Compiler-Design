@@ -9,7 +9,7 @@ import LexicalAnalyzer.InvalidTokenException;
 import LexicalAnalyzer.Token;
 import LexicalAnalyzer.Tokenizer;
 import SyntacticAnalyzer.Parser;
-import SyntacticAnalyzer.SymbolTable;
+import SyntacticAnalyzer.ParsingTable;
 import SyntacticAnalyzer.Symbols;
 
 public class Main {
@@ -66,10 +66,6 @@ public class Main {
 		
 		pw_output_file.close();
 		pw_error_file.close();
-		
-		
-		SymbolTable table = new SymbolTable();
-		System.out.println(table.isError(0, 1));
 		
 		
 
