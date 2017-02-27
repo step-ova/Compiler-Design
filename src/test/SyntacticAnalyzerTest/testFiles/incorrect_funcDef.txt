@@ -1,0 +1,12 @@
+class Array{
+	
+	float funcDef(int array[100] , ){
+
+	};
+
+	
+};
+
+program{
+
+};

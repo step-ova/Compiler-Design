@@ -22,7 +22,7 @@ public class CommonTestLexAnalyzer {
 	@After
 	public void checkLastToken() {
 		try {
-			if (tokenizer.getNextToken() != null) {
+			if (!tokenizer.getNextToken().getTokenName().equalsIgnoreCase("$")) {
 				fail("Next token is not null");
 			}
 		} catch (InvalidTokenException e) {

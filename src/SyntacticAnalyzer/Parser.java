@@ -21,8 +21,17 @@ public class Parser {
 
 	@SuppressWarnings("rawtypes")
 	Stack<Enum> stack = new Stack<Enum>();
+	
+	public Parser(Tokenizer t){
+		
+		this.t = t;
+		
+		firstFollowArrays = new FirstFollowArrays();
+		
+	}
 
 	public Parser(Tokenizer t, PrintWriter pw_derivation_file, PrintWriter pw_syntax_error_file) {
+		
 		this.t = t;
 
 		firstFollowArrays = new FirstFollowArrays();
@@ -44,7 +53,11 @@ public class Parser {
 
 		while (stack.peek() != Symbols.terminals.$) {
 			Enum x = stack.peek();
-			pw_derivation_file.println(x.name());
+			
+			if(pw_derivation_file != null){
+				pw_derivation_file.println(x.name());
+			}
+			
 
 			if (allSymbols.isTerminal(x.name())) {
 				if (tok.getTokenName().equalsIgnoreCase(x.name())) {
@@ -82,14 +95,21 @@ public class Parser {
 	}
 
 	public void skipErrors(Token tok) throws InvalidTokenException {
-		pw_syntax_error_file.println("Syntax error: " + tok.getTokenLexeme() +  " at line number " + tok.getTokenPosition());
+		
+		if(pw_syntax_error_file != null){
+			pw_syntax_error_file.println("Syntax error: " + tok.getTokenLexeme() +  " at line number " + tok.getTokenPosition());
+		}
+		
 		
 		tok = t.getNextToken();
 		Enum x = stack.peek();
 		
 		
 		if (tok.getTokenName().equals("$") || firstFollowArrays.followContains(x, tok.getTokenName())) {
-			pw_syntax_error_file.println("Popping...");
+			if(pw_syntax_error_file != null){
+				pw_syntax_error_file.println("Popping...");
+			}
+			
 			stack.pop();
 		} 
 		
@@ -98,7 +118,11 @@ public class Parser {
 					|| (firstFollowArrays.firstContains(x, "EPSILON")
 							&& firstFollowArrays.followContains(x, tok.getTokenName()))) 
 			{
-				pw_syntax_error_file.println("Seeking...");
+				
+				if(pw_syntax_error_file != null){
+					pw_syntax_error_file.println("Seeking...");
+				}
+				
 				tok = t.getNextToken();
 			}
 		}

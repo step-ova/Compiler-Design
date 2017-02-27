@@ -1,0 +1,53 @@
+class Car {
+	
+	int array(){
+	
+		return(array + array);
+		return(array - array);
+		return(array or array);
+		return(array * array);
+		return(array / array);
+		return(array and array);
+
+		return((array) and (array + array) or array);
+
+		return(((((array) + array) / array) or array) and array);
+
+
+	};
+	
+	
+
+
+};
+
+program{
+	
+	return(array + array);
+		return(array - array);
+		return(array or array);
+		return(array * array);
+		return(array / array);
+		return(array and array);
+
+		return((array) and (array + array) or array);
+
+		return(((((array) + array) / array) or array) and array);
+
+
+};
+
+int funcDef(){
+
+	return(array + array);
+		return(array - array);
+		return(array or array);
+		return(array * array);
+		return(array / array);
+		return(array and array);
+
+		return((array) and (array + array) or array);
+
+		return(((((array) + array) / array) or array) and array);
+
+};

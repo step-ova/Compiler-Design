@@ -1,0 +1,10 @@
+class Test{
+	
+	int array[[1]];
+	
+};
+
+program{
+
+
+};
