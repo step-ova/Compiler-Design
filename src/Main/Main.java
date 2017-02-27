@@ -17,18 +17,20 @@ public class Main {
 	private static final String INPUT_FILE_NAME = "input.txt";
 	private static final String OUTPUT_FILE_NAME = "output.txt";
 	private static final String OUPUT_ERROR_FILE = "lexical_error.txt";
+	private static final String OUTPUT_SYNTAX_DERIVATION_FILE = "derivation_syntax.txt";
+	private static final String OUTPUT_SYNTAX_ERROR_FILE = "syntax_error.txt";
 
 	private static PrintWriter pw_output_file;
 	private static PrintWriter pw_error_file;
+	private static PrintWriter pw_derivation_file;
+	private static PrintWriter pw_syntax_error_file;
 
 	public static void main(String[] args) {
 
-		Tokenizer t = new Tokenizer(INPUT_FILE_NAME);
-		
 		initializeOutputFiles();
 		
-		
-		Parser p = new Parser(t);
+		Tokenizer t = new Tokenizer(INPUT_FILE_NAME);
+		Parser p = new Parser(t, pw_derivation_file, pw_syntax_error_file);
 		
 		try {
 			System.out.println(p.parse());
@@ -37,36 +39,8 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-
-		/*
-		Token token;
-		while (true) {
-			try {
-
-				token = t.getNextToken();
-				if (token.getTokenName().equals("$")) {
-					break;
-				} else {
-					
-					String tokenString = token.toString();
-					
-					System.out.println(tokenString);
-					pw_output_file.println(tokenString);
-				}
-
-			} catch (InvalidTokenException e) {
-				
-				String errorMessage = e.getMessage();
-				
-				System.out.println(errorMessage);
-				pw_error_file.println(errorMessage);
-			}
-		}
-		*/
 		
-		pw_output_file.close();
-		pw_error_file.close();
-		
+		closeOutputFiles();
 		
 
 	}
@@ -76,6 +50,8 @@ public class Main {
 		try {
 			pw_output_file = new PrintWriter(new FileOutputStream(OUTPUT_FILE_NAME));
 			pw_error_file = new PrintWriter(new FileOutputStream(OUPUT_ERROR_FILE));
+			pw_derivation_file = new PrintWriter(new FileOutputStream(OUTPUT_SYNTAX_DERIVATION_FILE));
+			pw_syntax_error_file = new PrintWriter(new FileOutputStream(OUTPUT_SYNTAX_ERROR_FILE));
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -83,6 +59,11 @@ public class Main {
 		}
 		
 		pw_output_file.println("Token, Lexeme, LineNumber");
+	}
+	
+	public static void closeOutputFiles(){
+		pw_output_file.close();
+		pw_error_file.close();
 	}
 
 

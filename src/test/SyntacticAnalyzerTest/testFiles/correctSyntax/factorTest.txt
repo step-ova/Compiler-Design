@@ -1,0 +1,89 @@
+class Car {
+	
+	int array(){
+		return(array);
+		return(array[1]);
+		return(array.array.array[1][2][1]);
+	
+		return(123);
+		return(123.123);
+	
+		return((((((((array))))))));
+		return((array.array.array[1][2][1]));
+		return(((123)));
+		return(((((123.123)))));
+	
+		return(not array);
+	
+		return(+ array);
+		return(- array);
+		return(+ 123);
+		return(- 123.123);
+	
+		return(+array);
+		return(-array);
+		return(+123);
+		return(-123.123);
+	};
+	
+	
+
+
+};
+
+program{
+	
+	return(array);
+	return(array[1]);
+	return(array.array.array[1][2][1]);
+
+	return(123);
+	return(123.123);
+
+	return((((((((array))))))));
+	return((array.array.array[1][2][1]));
+	return(((123)));
+	return(((((123.123)))));
+
+	return(not array);
+
+	return(+ array);
+	return(- array);
+	return(+ 123);
+	return(- 123.123);
+
+	return(+array);
+	return(-array);
+	return(+123);
+	return(-123.123);
+
+
+};
+
+int funcDef(){
+
+	return(array);
+	return(array[1]);
+	return(array.array.array[1][2][1]);
+
+	return(123);
+	return(123.123);
+
+	return((((((((array))))))));
+	return((array.array.array[1][2][1]));
+	return(((123)));
+	return(((((123.123)))));
+
+	return(not array);
+
+	return(+ array);
+	return(- array);
+	return(+ 123);
+	return(- 123.123);
+
+	return(+array);
+	return(-array);
+	return(+123);
+	return(-123.123);
+
+};

@@ -8,7 +8,7 @@ public class Token {
 	public Token(String token, String lexeme, int position) {
 		this.token = token.toUpperCase();
 		this.lexeme = lexeme;
-		this.position = position;
+		this.position = position + 1;
 	}
 	
 	public String getTokenName(){
