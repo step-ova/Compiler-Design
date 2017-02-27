@@ -15,12 +15,12 @@ import SyntacticAnalyzer.Symbols;
 public class Main {
 
 	private static final String INPUT_FILE_NAME = "input.txt";
-	private static final String OUTPUT_FILE_NAME = "output.txt";
+	private static final String OUTPUT_TOKEN_FILE_NAME = "output.txt";
 	private static final String OUPUT_ERROR_FILE = "lexical_error.txt";
 	private static final String OUTPUT_SYNTAX_DERIVATION_FILE = "derivation_syntax.txt";
 	private static final String OUTPUT_SYNTAX_ERROR_FILE = "syntax_error.txt";
 
-	private static PrintWriter pw_output_file;
+	private static PrintWriter pw_token_output_file;
 	private static PrintWriter pw_error_file;
 	private static PrintWriter pw_derivation_file;
 	private static PrintWriter pw_syntax_error_file;
@@ -30,12 +30,11 @@ public class Main {
 		initializeOutputFiles();
 		
 		Tokenizer t = new Tokenizer(INPUT_FILE_NAME);
-		Parser p = new Parser(t, pw_derivation_file, pw_syntax_error_file);
+		Parser p = new Parser(t, pw_token_output_file, pw_derivation_file, pw_syntax_error_file);
 		
 		try {
 			System.out.println(p.parse());
 		} catch (InvalidTokenException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -48,7 +47,7 @@ public class Main {
 	
 	public static void initializeOutputFiles(){
 		try {
-			pw_output_file = new PrintWriter(new FileOutputStream(OUTPUT_FILE_NAME));
+			pw_token_output_file = new PrintWriter(new FileOutputStream(OUTPUT_TOKEN_FILE_NAME));
 			pw_error_file = new PrintWriter(new FileOutputStream(OUPUT_ERROR_FILE));
 			pw_derivation_file = new PrintWriter(new FileOutputStream(OUTPUT_SYNTAX_DERIVATION_FILE));
 			pw_syntax_error_file = new PrintWriter(new FileOutputStream(OUTPUT_SYNTAX_ERROR_FILE));
@@ -58,12 +57,14 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		pw_output_file.println("Token, Lexeme, LineNumber");
+		pw_token_output_file.println("Token, Lexeme, LineNumber");
 	}
 	
 	public static void closeOutputFiles(){
-		pw_output_file.close();
+		pw_token_output_file.close();
 		pw_error_file.close();
+		pw_derivation_file.close();
+		pw_syntax_error_file.close();
 	}
 
 

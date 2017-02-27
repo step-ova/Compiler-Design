@@ -16,8 +16,10 @@ public class Parser {
 	private Tokenizer t;
 	private FirstFollowArrays firstFollowArrays;
 	
+	private PrintWriter pw_token_output_file;
 	private PrintWriter pw_derivation_file;
 	private PrintWriter pw_syntax_error_file;
+	
 
 	@SuppressWarnings("rawtypes")
 	Stack<Enum> stack = new Stack<Enum>();
@@ -30,11 +32,13 @@ public class Parser {
 		
 	}
 
-	public Parser(Tokenizer t, PrintWriter pw_derivation_file, PrintWriter pw_syntax_error_file) {
+	public Parser(Tokenizer t, PrintWriter pw_token_output_file, PrintWriter pw_derivation_file, PrintWriter pw_syntax_error_file) {
 		
 		this.t = t;
 
 		firstFollowArrays = new FirstFollowArrays();
+		
+		this.pw_token_output_file = pw_token_output_file;
 		
 		this.pw_derivation_file = pw_derivation_file;
 		
@@ -47,7 +51,7 @@ public class Parser {
 		stack.push(Symbols.terminals.$);
 		stack.push(Symbols.non_terminals.Prog);
 
-		Token tok = t.getNextToken();
+		Token tok = getNextTokenAndPrintToTokenOutputFile();
 
 		boolean error = false;
 
@@ -62,7 +66,7 @@ public class Parser {
 			if (allSymbols.isTerminal(x.name())) {
 				if (tok.getTokenName().equalsIgnoreCase(x.name())) {
 					stack.pop();
-					tok = t.getNextToken();
+					tok = getNextTokenAndPrintToTokenOutputFile();
 				} else if (x.name().equalsIgnoreCase("epsilon")) {
 					stack.pop();
 				} else {
@@ -101,7 +105,7 @@ public class Parser {
 		}
 		
 		
-		tok = t.getNextToken();
+		tok = getNextTokenAndPrintToTokenOutputFile();
 		Enum x = stack.peek();
 		
 		
@@ -123,7 +127,7 @@ public class Parser {
 					pw_syntax_error_file.println("Seeking...");
 				}
 				
-				tok = t.getNextToken();
+				tok = getNextTokenAndPrintToTokenOutputFile();
 			}
 		}
 	}
@@ -132,5 +136,15 @@ public class Parser {
 		for (int i = rule.size() - 1; i >= 0; i--) {
 			stack.push(rule.get(i));
 		}
+	}
+	
+	private Token getNextTokenAndPrintToTokenOutputFile() throws InvalidTokenException{
+		Token temp;
+		temp = t.getNextToken();
+		if(pw_token_output_file != null){
+			pw_token_output_file.println(temp.toString());
+		}
+		
+		return temp;
 	}
 }
