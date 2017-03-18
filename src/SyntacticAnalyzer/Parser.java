@@ -7,6 +7,7 @@ import java.util.Stack;
 import LexicalAnalyzer.InvalidTokenException;
 import LexicalAnalyzer.Token;
 import LexicalAnalyzer.Tokenizer;
+import Semantic.SemanticStack;
 
 public class Parser {
 
@@ -15,6 +16,8 @@ public class Parser {
 
 	private Tokenizer t;
 	private FirstFollowArrays firstFollowArrays;
+	
+	private SemanticStack semanticStack; //TODO: initialize this shit
 	
 	private PrintWriter pw_token_output_file;
 	private PrintWriter pw_derivation_file;
@@ -38,6 +41,8 @@ public class Parser {
 
 		firstFollowArrays = new FirstFollowArrays();
 		
+		semanticStack = new SemanticStack();
+		
 		this.pw_token_output_file = pw_token_output_file;
 		
 		this.pw_derivation_file = pw_derivation_file;
@@ -57,17 +62,29 @@ public class Parser {
 
 		while (stack.peek() != Symbols.terminals.$) {
 			Enum x = stack.peek();
+			String symbolName = x.name();
 			
 			if(pw_derivation_file != null){
-				pw_derivation_file.println(x.name());
+				pw_derivation_file.println(symbolName);
 			}
 			
-
-			if (allSymbols.isTerminal(x.name())) {
-				if (tok.getTokenName().equalsIgnoreCase(x.name())) {
+			//Semantic part
+			if(allSymbols.isSemanticAction(symbolName)){
+				semanticStack.push(symbolName);
+				stack.pop();
+				continue;
+			}
+			
+			//regular parsing algorithm
+			else if (allSymbols.isTerminal(symbolName)) {
+				if (tok.getTokenName().equalsIgnoreCase(symbolName)) {
+					
+					//semantic part
+					pushTokenLexemeInSemanticStackIfFlagIsSet(tok.getTokenLexeme());
+					
 					stack.pop();
 					tok = getNextTokenAndPrintToTokenOutputFile();
-				} else if (x.name().equalsIgnoreCase("epsilon")) {
+				} else if (symbolName.equalsIgnoreCase("epsilon")) {
 					stack.pop();
 				} else {
 					skipErrors(tok);
@@ -146,5 +163,15 @@ public class Parser {
 		}
 		
 		return temp;
+	}
+	
+	public void pushTokenLexemeInSemanticStackIfFlagIsSet(String lexeme){
+		if(semanticStack.isGetSymbolsFlagOn()){
+			semanticStack.push(lexeme);
+		}
+	}
+	
+	public void printSymbolTable(){
+		semanticStack.printSymbolTable();
 	}
 }

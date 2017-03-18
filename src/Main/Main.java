@@ -38,6 +38,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+		p.printSymbolTable();
 		
 		closeOutputFiles();
 		

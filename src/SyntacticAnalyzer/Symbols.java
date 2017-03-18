@@ -110,9 +110,29 @@ public class Symbols {
 		Num
 	}
 	
+	public enum semantic_actions{
+		
+		startClassEntryAndTable,
+		closeCurrentScope,
+		startAccumulation,
+		stopAccumulation,
+		startParameterAccumulation,
+		stopParameterAccumulation,
+		createFuncTable
+		
+//		createGlobalTable,
+//		createClassEntryAndTable, 
+//		createProgramTable,
+//		createFuncTable,
+//		createVariableEntry,
+//		createParameterEntry,
+	
+	}
+	
 	private enum TYPE{
 		TERMINAL,
-		NON_TERMINAL
+		NON_TERMINAL,
+		SEMANTIC_ACTION
 	}
 	
 	
@@ -123,6 +143,10 @@ public class Symbols {
 
 	public boolean isNonTerminal(String symbol) {
 		return isType(TYPE.NON_TERMINAL, symbol);
+	}
+	
+	public boolean isSemanticAction(String symbol) {
+		return isType(TYPE.SEMANTIC_ACTION, symbol);
 	}
 
 	// Type terminal == 1
@@ -135,7 +159,9 @@ public class Symbols {
 			enumValues = terminals.class.getEnumConstants();
 		} else if (type == TYPE.NON_TERMINAL) {
 			enumValues = non_terminals.class.getEnumConstants();
-		}
+		} else if (type == TYPE.SEMANTIC_ACTION) {
+			enumValues = semantic_actions.class.getEnumConstants();
+		} 
 
 		for (Object e : enumValues) {
 			if (((Enum) e).name().equalsIgnoreCase(symbol)) {
@@ -157,8 +183,11 @@ public class Symbols {
 		return getTypeIndex(TYPE.NON_TERMINAL, symbol);
 	}
 	
-	// Type terminal == 1
-	// type non_terminal == 2
+	private int getSemanticActionIndex(String symbol) {
+		return getTypeIndex(TYPE.SEMANTIC_ACTION, symbol);
+	}
+	
+	//return -1 if not found
 	private int getTypeIndex(TYPE type, String symbol){
 		
 		Enum[] enumValues = null;
@@ -167,6 +196,8 @@ public class Symbols {
 			enumValues = terminals.values();
 		} else if (type == TYPE.NON_TERMINAL) {
 			enumValues = non_terminals.values();
+		}else if (type == TYPE.SEMANTIC_ACTION) {
+			enumValues = semantic_actions.values();
 		}
 		
 		for (int i = 0; i < enumValues.length; i++) {
@@ -181,13 +212,19 @@ public class Symbols {
 		
 		int terminalIndex = getTerminalIndex(symbol);
 		int nonTerminalIndex = getNonTerminalIndex(symbol);
+		int semanticActionIndex = getSemanticActionIndex(symbol);
 		
 		if(terminalIndex != -1){
 			return terminals.values()[terminalIndex];
 		}
-		else{
+		else if(nonTerminalIndex != -1){
 			return non_terminals.values()[nonTerminalIndex];
 		}
+		else {
+			return semantic_actions.values()[semanticActionIndex];
+		}
 	}
+
+	
 	
 }

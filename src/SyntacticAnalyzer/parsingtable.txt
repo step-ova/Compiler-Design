@@ -1,6 +1,6 @@
 ClassDeclStar ProgBody,,,,,ClassDeclStar ProgBody,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ClassDecl ClassDeclStar,,,,,epsilon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-class id opencurlybrac VarDeclStarFuncDefStar closecurlybrac semicolon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+startAccumulation class id stopAccumulation startClassEntryAndTable opencurlybrac VarDeclStarFuncDefStar closecurlybrac semicolon closeCurrentScope,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,Type id VarA,,epsilon,,,,,,,,,,,,,,,,,,,Type id VarA,Type id VarA,,,,,,,,,,,,,
 ,,,,VarDeclWithoutTypeId VarDeclStarFuncDefStar,,FuncDefWithoutTypeId FuncDefStar,,,,,,,,,,,,,VarDeclWithoutTypeId VarDeclStarFuncDefStar,,,,,,,,,,,,,,,,,
 ,FuncDef FuncDefStar,,epsilon,,,,,,,,,,,,,,,,,,,FuncDef FuncDefStar,FuncDef FuncDefStar,,,,,,,,,,,,,epsilon
