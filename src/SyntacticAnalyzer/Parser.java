@@ -117,12 +117,12 @@ public class Parser {
 
 	public void skipErrors(Token tok) throws InvalidTokenException {
 		
+		tok = getNextTokenAndPrintToTokenOutputFile();
+		
 		if(pw_syntax_error_file != null){
 			pw_syntax_error_file.println("Syntax error: " + tok.getTokenLexeme() +  " at line number " + tok.getTokenPosition());
 		}
 		
-		
-		tok = getNextTokenAndPrintToTokenOutputFile();
 		Enum x = stack.peek();
 		
 		

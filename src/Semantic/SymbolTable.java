@@ -41,6 +41,33 @@ public class SymbolTable {
 			currentScope = classScope;
 
 		}
+		else if(type.equals("variable") || type.equals("parameter")){
+			
+			String[] identifierArray = identifier.split(" ");
+			
+			//True if "int" or "float", false if it is class
+			boolean properlyDefinied = checkIfIntOrFloat(identifierArray[0]);
+			//0 if no dimensions array
+			int numberOfDimensions = checkNumberOfDimensionsArray(identifier);
+			String structure;
+			
+			if(!properlyDefinied){
+				structure = "class";
+			}
+			else if(numberOfDimensions != 0){
+				structure = "array";
+			}
+			else{
+				structure = "number";
+			}
+			
+			
+			
+			//new variable entry with no child (null)
+			SymbolTableScopeEntry variableEntry = new EntryVariableST(properlyDefinied, null, type , structure, numberOfDimensions );
+			currentScope.insert(identifierArray[1], variableEntry);
+		}
+		
 	}
 
 	/*
@@ -86,6 +113,45 @@ public class SymbolTable {
 		}
 		);
 	}
+	
+	private int findNumberOfOccurences(String value, String pattern){
+		int lastIndex = 0;
+		int count = 0;
+		
+		while (lastIndex != -1) {
 
+		    lastIndex = value.indexOf(pattern, lastIndex);
+
+		    if (lastIndex != -1) {
+		        count++;
+		        lastIndex += pattern.length();
+		    }
+		}
+		
+		return count;
+	}
+	
+	private boolean checkIfIntOrFloat(String type){
+		//If identifier is a class
+		if(! (type.equals("int") || type.equals("float"))){
+			return false;
+		}
+		//is int or float
+		return true;
+	}
+	
+	/*
+	 * returns 0 if the array has no dimensions
+	 */
+	private int checkNumberOfDimensionsArray(String identifier){
+		//If we have an array
+		if(identifier.endsWith("]")){
+			//Get the number of dimensions by look at the number of open brackets
+			return findNumberOfOccurences(identifier, "[");
+		}
+		
+		return 0;
+		
+	}
 
 }

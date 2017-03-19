@@ -118,8 +118,9 @@ public class Symbols {
 		stopAccumulation,
 		startParameterAccumulation,
 		stopParameterAccumulation,
-		createFuncTable
-		
+		createFuncTable,
+		cancelAccumulation,
+		createVariableEntry
 //		createGlobalTable,
 //		createClassEntryAndTable, 
 //		createProgramTable,
@@ -155,12 +156,12 @@ public class Symbols {
 
 		Object[] enumValues = null;
 
-		if (type == TYPE.TERMINAL) {
+		if (type == TYPE.SEMANTIC_ACTION) {
+			enumValues = semantic_actions.class.getEnumConstants();
+		} else if (type == TYPE.TERMINAL) {
 			enumValues = terminals.class.getEnumConstants();
 		} else if (type == TYPE.NON_TERMINAL) {
 			enumValues = non_terminals.class.getEnumConstants();
-		} else if (type == TYPE.SEMANTIC_ACTION) {
-			enumValues = semantic_actions.class.getEnumConstants();
 		} 
 
 		for (Object e : enumValues) {
