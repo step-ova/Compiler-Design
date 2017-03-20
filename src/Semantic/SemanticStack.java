@@ -28,7 +28,7 @@ public class SemanticStack {
 	}
 	
 	
-	public void push(Object item) {
+	public void push(Object item) throws SemanticException {
 
 		String symbol = (String) item;
 

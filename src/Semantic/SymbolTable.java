@@ -6,26 +6,36 @@ public class SymbolTable {
 	private SymbolTableScope globalScope = new SymbolTableScope("GlobalScope", null); 
 
 	private SymbolTableScope currentScope = globalScope;
-
+	
+	/*
+	 * Recursively goes upward to find the symbol
+	 * Returns false if symbol is not found 
+	 * Returns true if symbol found
+	 */
 	public boolean search(SymbolTableScope symtblScope, String symbol) {
 		SymbolTableScope searchCurrentScope = symtblScope;
 		boolean hasSymbol = searchCurrentScope.hasSymbol(symbol);
 
 		while (!hasSymbol) {
 			searchCurrentScope = searchCurrentScope.getParentScope();
-
-			if (searchCurrentScope == globalScope) {
-				return globalScope.hasSymbol(symbol);
+			
+			if (searchCurrentScope == null) {
+				return false;
 			}
-
+			
 			hasSymbol = searchCurrentScope.hasSymbol(symbol);
 		}
 
-		return true;
+		return hasSymbol;
 
 	}
 
-	public void insertClassEntryAndEnterScope(String identifier) {
+	public void insertClassEntryAndEnterScope(String identifier) throws SemanticException {
+		
+		if(search(currentScope,identifier)){
+			throw new SemanticException("Duplicate class found: " + identifier);
+		}
+		
 		String identifierScope = identifier + "Scope";
 		// Create new scope with parent as current scope
 		SymbolTableScope classScope = new SymbolTableScope(identifierScope, currentScope);
@@ -39,7 +49,12 @@ public class SymbolTable {
 		currentScope = classScope;
 	}
 
-	public void insertFunctionWithoutParametersAndEnterScope(String returnType, String functionName) {
+	public void insertFunctionWithoutParametersAndEnterScope(String returnType, String functionName) throws SemanticException {
+		
+		if(search(currentScope,functionName)){
+			throw new SemanticException("Duplicate identifier found for function name: " + functionName);
+		}
+		
 		String identifierScope = functionName + "Scope";
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
@@ -52,7 +67,12 @@ public class SymbolTable {
 	}
 
 	public void insertFunctionWithParametersAndEnterScope(String returnType, String functionName,
-			int numberOfParameters, String parameters) {
+			int numberOfParameters, String parameters) throws SemanticException {
+		
+		if(search(currentScope,functionName)){
+			throw new SemanticException("Duplicate identifier found for function name: " + functionName);
+		}
+		
 		String identifierScope = functionName + "Scope";
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
@@ -65,6 +85,7 @@ public class SymbolTable {
 	}
 
 	public void insertProgramFunctionAndEnterScope() {
+		
 		// Create new scope with parent as current scope
 		SymbolTableScope classScope = new SymbolTableScope("programScope", currentScope);
 
@@ -80,12 +101,16 @@ public class SymbolTable {
 	/*
 	 * inserts Variable or parameter
 	 */
-	public void insertEntry(String kindOfVariable, String identifier) {
+	public void insertEntry(String kindOfVariable, String identifier) throws SemanticException {
 
 		if (kindOfVariable.equals("variable") || kindOfVariable.equals("parameter")) {
 
 			String[] identifierArray = identifier.split(" ");
-
+			
+			if(search(currentScope, identifierArray[1])){
+				throw new SemanticException("Duplicate symbol found: " + identifierArray[1]);
+			}
+			
 			// True if "int" or "float", false if it is class
 			boolean properlyDefinied = checkIfIntOrFloat(identifierArray[0]);
 			// 0 if no dimensions array
@@ -107,9 +132,9 @@ public class SymbolTable {
 						structure, identifierArray[0] , numberOfDimensions);
 			}
 			else{
-				String returnType = getReturnType(identifier);
+				String type = getVariableOrParameterType(identifier);
 				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable,
-						structure, returnType, numberOfDimensions);
+						structure, type, numberOfDimensions);
 			}
 
 			// new variable entry with no child (null)
@@ -204,9 +229,9 @@ public class SymbolTable {
 	}
 	
 	/*
-	 * Gets the return type for a variable or parameter
+	 * Gets the type for a variable or parameter
 	 */
-	private String getReturnType(String identifier){
+	private String getVariableOrParameterType(String identifier){
 		StringBuilder returnType = new StringBuilder();
 		String trimmedIdentifier = identifier.trim();
 		String[] splitIdentifier = trimmedIdentifier.split(" ");
