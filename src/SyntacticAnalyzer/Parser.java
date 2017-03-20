@@ -17,7 +17,7 @@ public class Parser {
 	private Tokenizer t;
 	private FirstFollowArrays firstFollowArrays;
 	
-	private SemanticStack semanticStack; //TODO: initialize this shit
+	private SemanticStack semanticStack;
 	
 	private PrintWriter pw_token_output_file;
 	private PrintWriter pw_derivation_file;

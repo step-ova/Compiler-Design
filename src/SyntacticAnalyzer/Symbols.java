@@ -112,21 +112,21 @@ public class Symbols {
 	
 	public enum semantic_actions{
 		
-		startClassEntryAndTable,
-		closeCurrentScope,
+		
+		
 		startAccumulation,
 		stopAccumulation,
+		startClassEntryAndTable,
+		closeCurrentScope,
+		cancelAccumulation,
+		createVariableEntry,
+		transferAccumulation,
 		startParameterAccumulation,
 		stopParameterAccumulation,
 		createFuncTable,
-		cancelAccumulation,
-		createVariableEntry
-//		createGlobalTable,
-//		createClassEntryAndTable, 
+		
 //		createProgramTable,
-//		createFuncTable,
-//		createVariableEntry,
-//		createParameterEntry,
+
 	
 	}
 	

@@ -7,8 +7,7 @@ import java.util.regex.Pattern;
 
 import SyntacticAnalyzer.Symbols;
 
-@SuppressWarnings("serial")
-public class SemanticStack extends Stack<Object> {
+public class SemanticStack {
 
 	private Symbols allSymbols = new Symbols();
 
@@ -23,20 +22,14 @@ public class SemanticStack extends Stack<Object> {
 	private boolean accumulatedParametersFlag;
 	//Contains a function's return type, identifier and all parameters
 	private ArrayList<StringBuilder> accumulatedParametersArrayList = new ArrayList<StringBuilder>();
-	
-	
-	
-	
-
 
 	// Constructor
 	public SemanticStack() {
 		super();
 	}
-
-	@Override
-	public Object push(Object item) {
-		Object pushedEntry = super.push(item);
+	
+	
+	public void push(Object item) {
 
 		String symbol = (String) item;
 
@@ -60,10 +53,24 @@ public class SemanticStack extends Stack<Object> {
 			} else if(symbol.equalsIgnoreCase("stopParameterAccumulation")){
 				accumulatedParametersFlag = false;
 				
-			}else if (symbol.equalsIgnoreCase("closeCurrentScope")) {
+			} else if (symbol.equalsIgnoreCase("closeCurrentScope")) {
 				symbolTable.closeCurrentScope();
 				
-			} 
+			} else if (symbol.equalsIgnoreCase("transferAccumulation")) {
+				
+				//Transfers accumulation because it is a function definition
+				
+				System.out.println("ACCSYM =" + accumulatedSymbols.toString());
+				
+				
+				accumulatedParametersFlag = true;
+				accumulatedParametersArrayList.add(new StringBuilder());
+				accumulatedParametersArrayList.get(0).append(accumulatedSymbols.toString());
+				
+				accumulateSymbolsFlag = false;
+				accumulatedSymbols.setLength(0); //reset accumulated symbols
+				
+			}
 
 			/*
 			 * These actions below insert something in the symbol table
@@ -72,9 +79,8 @@ public class SemanticStack extends Stack<Object> {
 			else if (symbol.equalsIgnoreCase("startClassEntryAndTable")) {
 				String[] accumulatedSymbolsArray = accumulatedSymbols.toString().trim().split(" ");
 				
-				String type = accumulatedSymbolsArray[0];
 				String classIdentifier = accumulatedSymbolsArray[1];
-				symbolTable.insertEntry(type, classIdentifier);
+				symbolTable.insertClassEntryAndEnterScope(classIdentifier);
 				
 				accumulatedSymbols.setLength(0); //reset stringbuilder
 				
@@ -83,9 +89,30 @@ public class SemanticStack extends Stack<Object> {
 			else if (symbol.equalsIgnoreCase("createFuncTable")) {
 				
 				//TODO:
-				String funcDef = accumulatedParametersArrayList.get(0).toString();
-				String functionIdentifier =  null;
+				int numberOfParameters = accumulatedParametersArrayList.size()-1;
+				String funcDef = accumulatedParametersArrayList.get(0).toString().trim();
+				String[] funcDefSplit = accumulatedParametersArrayList.get(0).toString().trim().split(" ");
+				String returnType = funcDefSplit[0];
+				String functionName = funcDefSplit[1]; 
 				
+				
+				if(numberOfParameters == 0){
+					symbolTable.insertFunctionWithoutParametersAndEnterScope(returnType, functionName);
+				}
+				else{
+					String allParametersTypes = getAllFunctionParameters();
+					
+					//create function table and enter scope
+					symbolTable.insertFunctionWithParametersAndEnterScope(returnType, functionName, numberOfParameters, allParametersTypes);
+					
+					//add all parameters in function scope
+					for(int i = 1; i< accumulatedParametersArrayList.size(); i++){
+						String parameter = accumulatedParametersArrayList.get(i).toString().trim();
+						symbolTable.insertEntry("parameter", parameter);
+						
+					}
+					
+				}
 				
 			} 
 			
@@ -97,14 +124,16 @@ public class SemanticStack extends Stack<Object> {
 				
 				symbolTable.insertEntry("variable", accumulatedString);
 				
-				if(type.equalsIgnoreCase("int") || type.equalsIgnoreCase("float")){
-					
-				}
+				accumulatedSymbols.setLength(0); //reset stringbuilder
 				
-				//we have a class variable
-				else{
-					
-				}
+//				if(type.equalsIgnoreCase("int") || type.equalsIgnoreCase("float")){
+//					
+//				}
+//				
+//				//we have a class variable
+//				else{
+//					
+//				}
 				
 			} 
 			
@@ -136,16 +165,54 @@ public class SemanticStack extends Stack<Object> {
 			}
 		}
 
-		return pushedEntry;
-
 	}
 
 	public boolean isGetSymbolsFlagOn() {
-		return accumulateSymbolsFlag;
+		return (accumulateSymbolsFlag || accumulatedParametersFlag);
 	}
 
 	public void printSymbolTable() {
 		symbolTable.printSymbolTable();
+	}
+	
+	/*
+	 * retuns all parameter types in the functionDefinition
+	 * ex: int[2][2],myClass2[3],float,myClass3
+	 */
+	private String getAllFunctionParameters(){
+		StringBuilder allParametersTypes = new StringBuilder();
+		for(int i = 1; i < accumulatedParametersArrayList.size(); i++){
+			String parameter = accumulatedParametersArrayList.get(i).toString().trim();
+			String[] splitParameter = parameter.split(" ");
+			boolean isArray = parameter.endsWith("]");
+			
+			if(!isArray){
+				allParametersTypes.append(splitParameter[0]);
+			}
+			//Is an array
+			else{
+				StringBuilder sbArray = new StringBuilder();
+				//Build the type + array ex: Class[1][2][3]
+				sbArray.append(splitParameter[0]);
+				
+				// x=2 is the starting position of first '['
+				for(int x = 2; x< splitParameter.length; x++){
+					sbArray.append(splitParameter[x]);
+				}
+				
+				allParametersTypes.append(sbArray.toString());
+				
+				
+			}
+			
+			allParametersTypes.append(',');
+			
+		}
+		
+		//remove last comma inserted
+		allParametersTypes.setLength(allParametersTypes.length()-1);
+		
+		return allParametersTypes.toString();
 	}
 
 }
