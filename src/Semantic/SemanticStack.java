@@ -60,8 +60,6 @@ public class SemanticStack {
 				
 				//Transfers accumulation because it is a function definition
 				
-				System.out.println("ACCSYM =" + accumulatedSymbols.toString());
-				
 				
 				accumulatedParametersFlag = true;
 				accumulatedParametersArrayList.add(new StringBuilder());
@@ -111,8 +109,9 @@ public class SemanticStack {
 						symbolTable.insertEntry("parameter", parameter);
 						
 					}
-					
 				}
+				
+				accumulatedParametersArrayList = new ArrayList<StringBuilder>();
 				
 			} 
 			
@@ -120,22 +119,15 @@ public class SemanticStack {
 				String accumulatedString = accumulatedSymbols.toString().trim();
 				int firstSeperation =  accumulatedString.indexOf(" ");
 				
-				String type = accumulatedString.substring(0, firstSeperation);
-				
 				symbolTable.insertEntry("variable", accumulatedString);
 				
 				accumulatedSymbols.setLength(0); //reset stringbuilder
 				
-//				if(type.equalsIgnoreCase("int") || type.equalsIgnoreCase("float")){
-//					
-//				}
-//				
-//				//we have a class variable
-//				else{
-//					
-//				}
-				
 			} 
+			
+			else if(symbol.equalsIgnoreCase("CreateProgramFunction")){
+				symbolTable.insertProgramFunctionAndEnterScope();
+			}
 			
 		} 
 		

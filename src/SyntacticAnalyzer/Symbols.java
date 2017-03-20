@@ -124,6 +124,7 @@ public class Symbols {
 		startParameterAccumulation,
 		stopParameterAccumulation,
 		createFuncTable,
+		CreateProgramFunction,
 		
 //		createProgramTable,
 

@@ -62,13 +62,23 @@ public class SymbolTable {
 
 		currentScope = functionScope;
 	}
+	
+	public void insertProgramFunctionAndEnterScope(){
+			// Create new scope with parent as current scope
+				SymbolTableScope classScope = new SymbolTableScope("programScope", currentScope);
+
+				// create a new program entry for the current table with a child as the programScope
+				SymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope);
+				currentScope.insert("program", scopeEntry);
+
+				// Change the scope to the new created scope
+				currentScope = classScope;
+	}
 
 	// TODO
 	public void insertEntry(String type, String identifier) {
 		
 		if (type.equals("variable") || type.equals("parameter")) {
-			
-			System.out.println(identifier);
 
 			String[] identifierArray = identifier.split(" ");
 
@@ -86,7 +96,6 @@ public class SymbolTable {
 				structure = "number";
 			}
 			
-			System.out.println(identifierArray.length);
 			// new variable entry with no child (null)
 			SymbolTableScopeEntry variableEntry = new EntryVariableST(properlyDefinied, null, type, structure,
 					numberOfDimensions);

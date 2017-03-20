@@ -35,7 +35,7 @@ public class EntryVariableST extends SymbolTableScopeEntry {
 		sb.append(kindOfVariable);
 		sb.append(" | Structure=");
 		sb.append(structure);
-		if(numberOfDimensions == 0 || structure.equalsIgnoreCase("array")){
+		if(numberOfDimensions != 0 || structure.equalsIgnoreCase("array")){
 			sb.append(" | NumberOfDimension=");
 			sb.append(numberOfDimensions);
 		}
