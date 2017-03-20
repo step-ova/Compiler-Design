@@ -1,6 +1,6 @@
 package Semantic;
 
-public class EntryFunctionST extends SymbolTableScopeEntry {
+public class EntryFunctionST extends AbstractSymbolTableScopeEntry {
 
 	private String returnType;
 	private int numberOfParameters;

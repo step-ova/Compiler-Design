@@ -2,9 +2,8 @@ package Semantic;
 
 public class SymbolTable {
 
-	private SymbolTableScope globalScope = new SymbolTableScope("GlobalScope", null); // parent
-																						// =
-																						// null
+	// parent = null
+	private SymbolTableScope globalScope = new SymbolTableScope("GlobalScope", null); 
 
 	private SymbolTableScope currentScope = globalScope;
 
@@ -25,60 +24,65 @@ public class SymbolTable {
 		return true;
 
 	}
-	
-	public void insertClassEntryAndEnterScope(String identifier){
+
+	public void insertClassEntryAndEnterScope(String identifier) {
 		String identifierScope = identifier + "Scope";
 		// Create new scope with parent as current scope
 		SymbolTableScope classScope = new SymbolTableScope(identifierScope, currentScope);
 
 		// create a new class entry for the current table with a child as
 		// the classScope
-		SymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope);
+		AbstractSymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope);
 		currentScope.insert(identifier, scopeEntry);
 
 		// Change the scope to the new created scope
 		currentScope = classScope;
 	}
-	
-	public void insertFunctionWithoutParametersAndEnterScope(String returnType, String functionName){
+
+	public void insertFunctionWithoutParametersAndEnterScope(String returnType, String functionName) {
 		String identifierScope = functionName + "Scope";
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
 
-		SymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, returnType, 0, null);
+		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, returnType, 0, null);
 		currentScope.insert(functionName, functionEntry);
 
 		currentScope = functionScope;
-		
+
 	}
-	
-	public void insertFunctionWithParametersAndEnterScope(String returnType, String functionName, int numberOfParameters, String parameters){
+
+	public void insertFunctionWithParametersAndEnterScope(String returnType, String functionName,
+			int numberOfParameters, String parameters) {
 		String identifierScope = functionName + "Scope";
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
-		
-		SymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, returnType, numberOfParameters, parameters);
+
+		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, returnType,
+				numberOfParameters, parameters);
 		currentScope.insert(functionName, functionEntry);
 
 		currentScope = functionScope;
 	}
-	
-	public void insertProgramFunctionAndEnterScope(){
-			// Create new scope with parent as current scope
-				SymbolTableScope classScope = new SymbolTableScope("programScope", currentScope);
 
-				// create a new program entry for the current table with a child as the programScope
-				SymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope);
-				currentScope.insert("program", scopeEntry);
+	public void insertProgramFunctionAndEnterScope() {
+		// Create new scope with parent as current scope
+		SymbolTableScope classScope = new SymbolTableScope("programScope", currentScope);
 
-				// Change the scope to the new created scope
-				currentScope = classScope;
+		// create a new program entry for the current table with a child as the
+		// programScope
+		AbstractSymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope);
+		currentScope.insert("program", scopeEntry);
+
+		// Change the scope to the new created scope
+		currentScope = classScope;
 	}
 
-	// TODO
-	public void insertEntry(String type, String identifier) {
-		
-		if (type.equals("variable") || type.equals("parameter")) {
+	/*
+	 * inserts Variable or parameter
+	 */
+	public void insertEntry(String kindOfVariable, String identifier) {
+
+		if (kindOfVariable.equals("variable") || kindOfVariable.equals("parameter")) {
 
 			String[] identifierArray = identifier.split(" ");
 
@@ -96,9 +100,19 @@ public class SymbolTable {
 				structure = "number";
 			}
 			
+			AbstractSymbolTableScopeEntry variableEntry;
+			
+			if(numberOfDimensions == 0){
+				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable,
+						structure, identifierArray[0] , numberOfDimensions);
+			}
+			else{
+				String returnType = getReturnType(identifier);
+				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable,
+						structure, returnType, numberOfDimensions);
+			}
+
 			// new variable entry with no child (null)
-			SymbolTableScopeEntry variableEntry = new EntryVariableST(properlyDefinied, null, type, structure,
-					numberOfDimensions);
 			currentScope.insert(identifierArray[1], variableEntry);
 		}
 
@@ -118,7 +132,10 @@ public class SymbolTable {
 	public void deleteScope() {
 
 	}
-
+	
+	/*
+	 * Prints symbol table
+	 */
 	public void printSymbolTable() {
 		printScopeValues(globalScope, 0);
 	}
@@ -145,7 +162,10 @@ public class SymbolTable {
 
 		});
 	}
-
+	
+	/*
+	 * Finds the number of occurrences of pattern in value
+	 */
 	private int findNumberOfOccurences(String value, String pattern) {
 		int lastIndex = 0;
 		int count = 0;
@@ -163,13 +183,9 @@ public class SymbolTable {
 		return count;
 	}
 
+	// True if is int or float, false if class like "MyClass2"
 	private boolean checkIfIntOrFloat(String type) {
-		// If identifier is a class
-		if (!(type.equals("int") || type.equals("float"))) {
-			return false;
-		}
-		// is int or float
-		return true;
+		return (type.equals("int") || type.equals("float"));
 	}
 
 	/*
@@ -185,6 +201,23 @@ public class SymbolTable {
 
 		return 0;
 
+	}
+	
+	/*
+	 * Gets the return type for a variable or parameter
+	 */
+	private String getReturnType(String identifier){
+		StringBuilder returnType = new StringBuilder();
+		String trimmedIdentifier = identifier.trim();
+		String[] splitIdentifier = trimmedIdentifier.split(" ");
+		
+		returnType.append(splitIdentifier[0]);
+		
+		for(int i = 2; i<splitIdentifier.length; i++){
+			returnType.append(splitIdentifier[i]);
+		}
+		
+		return returnType.toString();
 	}
 
 }

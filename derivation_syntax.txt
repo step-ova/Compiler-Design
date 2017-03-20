@@ -90,6 +90,16 @@ ArraySizeStar
 EPSILON
 stopParameterAccumulation
 FParamsTailStar
+FParamsTail
+COMMA
+startParameterAccumulation
+Type
+INT
+ID
+ArraySizeStar
+EPSILON
+stopParameterAccumulation
+FParamsTailStar
 EPSILON
 CLOSEPAREN
 createFuncTable

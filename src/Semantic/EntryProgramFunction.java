@@ -1,6 +1,6 @@
 package Semantic;
 
-public class EntryProgramFunction extends SymbolTableScopeEntry {
+public class EntryProgramFunction extends AbstractSymbolTableScopeEntry {
 
 	public EntryProgramFunction(boolean properlyDeclared, SymbolTableScope childScope) {
 		super(properlyDeclared, childScope);

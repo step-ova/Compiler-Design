@@ -15,8 +15,8 @@ public class SymbolTableScope {
 	}
 
 	//symbols kept in hashmap indexed by name
-	private HashMap<String, SymbolTableScopeEntry> tableEntries = 
-			new HashMap<String, SymbolTableScopeEntry>();
+	private HashMap<String, AbstractSymbolTableScopeEntry> tableEntries = 
+			new HashMap<String, AbstractSymbolTableScopeEntry>();
 	
 	// Parent scope to go up the tree if needed
 	private SymbolTableScope parentScope;
@@ -28,7 +28,7 @@ public class SymbolTableScope {
 		this.parentScope = parentScope;
 	}
 	
-	public void insert(String symbolName, SymbolTableScopeEntry scopeEntry){
+	public void insert(String symbolName, AbstractSymbolTableScopeEntry scopeEntry){
 		tableEntries.put(symbolName, scopeEntry);
 	}
 	
@@ -44,11 +44,11 @@ public class SymbolTableScope {
 		return tableEntries.get(symbol).getChildScope();
 	}
 
-	public HashMap<String, SymbolTableScopeEntry> getTableEntries() {
+	public HashMap<String, AbstractSymbolTableScopeEntry> getTableEntries() {
 		return tableEntries;
 	}
 
-	public void setTableEntries(HashMap<String, SymbolTableScopeEntry> tableEntries) {
+	public void setTableEntries(HashMap<String, AbstractSymbolTableScopeEntry> tableEntries) {
 		this.tableEntries = tableEntries;
 	}
 	

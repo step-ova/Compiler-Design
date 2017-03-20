@@ -25,7 +25,6 @@ public class SemanticStack {
 
 	// Constructor
 	public SemanticStack() {
-		super();
 	}
 	
 	
@@ -57,10 +56,7 @@ public class SemanticStack {
 				symbolTable.closeCurrentScope();
 				
 			} else if (symbol.equalsIgnoreCase("transferAccumulation")) {
-				
 				//Transfers accumulation because it is a function definition
-				
-				
 				accumulatedParametersFlag = true;
 				accumulatedParametersArrayList.add(new StringBuilder());
 				accumulatedParametersArrayList.get(0).append(accumulatedSymbols.toString());
@@ -86,9 +82,7 @@ public class SemanticStack {
 			
 			else if (symbol.equalsIgnoreCase("createFuncTable")) {
 				
-				//TODO:
 				int numberOfParameters = accumulatedParametersArrayList.size()-1;
-				String funcDef = accumulatedParametersArrayList.get(0).toString().trim();
 				String[] funcDefSplit = accumulatedParametersArrayList.get(0).toString().trim().split(" ");
 				String returnType = funcDefSplit[0];
 				String functionName = funcDefSplit[1]; 
@@ -117,7 +111,6 @@ public class SemanticStack {
 			
 			else if (symbol.equalsIgnoreCase("createVariableEntry")) {
 				String accumulatedString = accumulatedSymbols.toString().trim();
-				int firstSeperation =  accumulatedString.indexOf(" ");
 				
 				symbolTable.insertEntry("variable", accumulatedString);
 				
@@ -131,10 +124,7 @@ public class SemanticStack {
 			
 		} 
 		
-		
-		/*
-		 * is symbol
-		 */
+		//is symbol
 		else {
 			if (accumulateSymbolsFlag) {
 				accumulatedSymbols.append(symbol);
@@ -148,12 +138,7 @@ public class SemanticStack {
 				
 				lastSB.append(symbol);
 				lastSB.append(" ");
-				
-//				//We do not add comma or openparen or closeparen because they are useless
-//				if(! (symbol.equals(",") || symbol.equals("(") || symbol.equals(")")) ){
-//					lastSB.append(symbol);
-//					lastSB.append(" ");
-//				}
+
 			}
 		}
 

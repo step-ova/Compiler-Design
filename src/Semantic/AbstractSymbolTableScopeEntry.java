@@ -1,12 +1,12 @@
 package Semantic;
 
-abstract class SymbolTableScopeEntry {
+abstract class AbstractSymbolTableScopeEntry {
 	
 	private boolean properlyDeclared;
 	
 	private SymbolTableScope childScope;
 
-	public SymbolTableScopeEntry(boolean properlyDeclared, SymbolTableScope childScope) {
+	public AbstractSymbolTableScopeEntry(boolean properlyDeclared, SymbolTableScope childScope) {
 		super();
 		this.properlyDeclared = properlyDeclared;
 		this.childScope = childScope;
