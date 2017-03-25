@@ -7,7 +7,6 @@ import java.util.Stack;
 import LexicalAnalyzer.InvalidTokenException;
 import LexicalAnalyzer.Token;
 import LexicalAnalyzer.Tokenizer;
-import Semantic.SemanticException;
 import Semantic.SemanticStack;
 
 public class Parser {
@@ -33,22 +32,24 @@ public class Parser {
 
 		firstFollowArrays = new FirstFollowArrays();
 
+		semanticStack = new SemanticStack();
+
 	}
 
 	public Parser(Tokenizer t, PrintWriter pw_token_output_file, PrintWriter pw_derivation_file,
-			PrintWriter pw_syntax_error_file) {
+			PrintWriter pw_syntax_error_file, PrintWriter pw_semantic_error_file, PrintWriter pw_symbol_table_file) {
 
 		this.t = t;
 
 		firstFollowArrays = new FirstFollowArrays();
-
-		semanticStack = new SemanticStack();
 
 		this.pw_token_output_file = pw_token_output_file;
 
 		this.pw_derivation_file = pw_derivation_file;
 
 		this.pw_syntax_error_file = pw_syntax_error_file;
+
+		semanticStack = new SemanticStack(pw_semantic_error_file, pw_symbol_table_file);
 
 	}
 
@@ -58,55 +59,51 @@ public class Parser {
 
 		Token tok = getNextTokenAndPrintToTokenOutputFile();
 		boolean error = false;
-		try {
-			while (stack.peek() != Symbols.terminals.$) {
-				Enum x = stack.peek();
-				String symbolName = x.name();
+		while (stack.peek() != Symbols.terminals.$) {
+			Enum x = stack.peek();
+			String symbolName = x.name();
 
-				if (pw_derivation_file != null) {
-					pw_derivation_file.println(symbolName);
-				}
+			if (pw_derivation_file != null) {
+				pw_derivation_file.println(symbolName);
+			}
 
-				// Semantic part
-				if (allSymbols.isSemanticAction(symbolName)) {
-					semanticStack.push(symbolName);
+			// Semantic part
+			if (allSymbols.isSemanticAction(symbolName)) {
+				semanticStack.push(symbolName, tok.getTokenPosition());
+				stack.pop();
+				continue;
+			}
+
+			// regular parsing algorithm
+			else if (allSymbols.isTerminal(symbolName)) {
+				if (tok.getTokenName().equalsIgnoreCase(symbolName)) {
+
+					// semantic part
+					pushTokenLexemeInSemanticStackIfFlagIsSet(tok.getTokenLexeme(), tok.getTokenPosition());
+
 					stack.pop();
-					continue;
-				}
-
-				// regular parsing algorithm
-				else if (allSymbols.isTerminal(symbolName)) {
-					if (tok.getTokenName().equalsIgnoreCase(symbolName)) {
-
-						// semantic part
-						pushTokenLexemeInSemanticStackIfFlagIsSet(tok.getTokenLexeme());
-
-						stack.pop();
-						tok = getNextTokenAndPrintToTokenOutputFile();
-					} else if (symbolName.equalsIgnoreCase("epsilon")) {
-						stack.pop();
-					} else {
-						skipErrors(tok);
-						error = true;
-					}
-				}
-
-				else {
-					int nonTerminalSymbolTableIndex = allSymbols.getNonTerminalIndex(x.name());
-					int terminalSymbolTableIndex = allSymbols.getTerminalIndex(tok.getTokenName());
-
-					if (!parsingTable.isError(nonTerminalSymbolTableIndex, terminalSymbolTableIndex)) {
-						stack.pop();
-						inverseRHSPush(parsingTable.getRule(nonTerminalSymbolTableIndex, terminalSymbolTableIndex));
-					} else {
-						skipErrors(tok);
-						error = true;
-					}
-
+					tok = getNextTokenAndPrintToTokenOutputFile();
+				} else if (symbolName.equalsIgnoreCase("epsilon")) {
+					stack.pop();
+				} else {
+					skipErrors(tok);
+					error = true;
 				}
 			}
-		} catch (SemanticException e) {
-			System.out.println(e.getMessage() + " (line " + tok.getTokenPosition() + ")");
+
+			else {
+				int nonTerminalSymbolTableIndex = allSymbols.getNonTerminalIndex(x.name());
+				int terminalSymbolTableIndex = allSymbols.getTerminalIndex(tok.getTokenName());
+
+				if (!parsingTable.isError(nonTerminalSymbolTableIndex, terminalSymbolTableIndex)) {
+					stack.pop();
+					inverseRHSPush(parsingTable.getRule(nonTerminalSymbolTableIndex, terminalSymbolTableIndex));
+				} else {
+					skipErrors(tok);
+					error = true;
+				}
+
+			}
 		}
 
 		if (!tok.getTokenName().equals("$") || error == true) {
@@ -166,9 +163,9 @@ public class Parser {
 		return temp;
 	}
 
-	public void pushTokenLexemeInSemanticStackIfFlagIsSet(String lexeme) throws SemanticException {
+	public void pushTokenLexemeInSemanticStackIfFlagIsSet(String lexeme, int locationInParse) {
 		if (semanticStack.isGetSymbolsFlagOn()) {
-			semanticStack.push(lexeme);
+			semanticStack.push(lexeme, locationInParse);
 		}
 	}
 

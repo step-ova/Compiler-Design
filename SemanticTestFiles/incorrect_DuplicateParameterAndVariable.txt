@@ -1,4 +1,4 @@
-class Utility
+class Utility1
 {
 int var1[4][5][7][8][9][1][0];
 float var2;
@@ -17,7 +17,7 @@ return (maxValue);
 };
 int findMin(int array[100])
 {
-int minValue;
+int array[100];
 int idx;
 minValue = array[100];
 for( int idx = 1; idx <= 99; idx = ( idx ) + 1)
@@ -29,6 +29,8 @@ maxValue = array[idx];
 return (minValue);
 };
 };
+
+
 program {
 int sample[100];
 int idx;

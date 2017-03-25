@@ -19,24 +19,31 @@ public class Main {
 	private static final String OUPUT_ERROR_FILE = "lexical_error.txt";
 	private static final String OUTPUT_SYNTAX_DERIVATION_FILE = "derivation_syntax.txt";
 	private static final String OUTPUT_SYNTAX_ERROR_FILE = "syntax_error.txt";
+	private static final String OUTPUT_SEMANTIC_ERROR_FILE = "semantic_error.txt";
+	private static final String OUTPUT_SYMBOL_TABLE = "symboltable.txt";
 
 	private static PrintWriter pw_token_output_file;
 	private static PrintWriter pw_error_file;
 	private static PrintWriter pw_derivation_file;
 	private static PrintWriter pw_syntax_error_file;
+	private static PrintWriter pw_semantic_error_file;
+	private static PrintWriter pw_symbol_table_file;
+	
 
 	public static void main(String[] args) {
 
 		initializeOutputFiles();
 		
 		Tokenizer t = new Tokenizer(INPUT_FILE_NAME);
-		Parser p = new Parser(t, pw_token_output_file, pw_derivation_file, pw_syntax_error_file);
+		Parser p = new Parser(t, pw_token_output_file, pw_derivation_file, pw_syntax_error_file, pw_semantic_error_file, pw_symbol_table_file);
 		
 		try {
-			System.out.println(p.parse());
+			p.parse();
 		} catch (InvalidTokenException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println( );
 		
 		p.printSymbolTable();
 		
@@ -52,6 +59,8 @@ public class Main {
 			pw_error_file = new PrintWriter(new FileOutputStream(OUPUT_ERROR_FILE));
 			pw_derivation_file = new PrintWriter(new FileOutputStream(OUTPUT_SYNTAX_DERIVATION_FILE));
 			pw_syntax_error_file = new PrintWriter(new FileOutputStream(OUTPUT_SYNTAX_ERROR_FILE));
+			pw_semantic_error_file = new PrintWriter(new FileOutputStream(OUTPUT_SEMANTIC_ERROR_FILE));
+			pw_symbol_table_file = new PrintWriter(new FileOutputStream(OUTPUT_SYMBOL_TABLE));
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -66,6 +75,8 @@ public class Main {
 		pw_error_file.close();
 		pw_derivation_file.close();
 		pw_syntax_error_file.close();
+		pw_semantic_error_file.close();
+		pw_symbol_table_file.close();
 	}
 
 

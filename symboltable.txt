@@ -1,0 +1,26 @@
+GlobalScope->
+	Name: Utility  | Type=Class | ProperlyDeclared=true | hasChild=true
+		UtilityScope->
+			Name: var2  | Kind=variable | Structure=number | Type=float | ProperlyDeclared=true | hasChild=false
+			Name: findMin  | Type=Function | ReturnType=int | NumberOfParameters=1| Parameters=int[100] | ProperlyDeclared=true | hasChild=true
+				findMinScope->
+					Name: minValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: array  | Kind=parameter | Structure=array | Type=int[100] | NumberOfDimension=1 | ProperlyDeclared=true | hasChild=false
+					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+			Name: var1  | Kind=variable | Structure=array | Type=int[4][5][7][8][9][1][0] | NumberOfDimension=7 | ProperlyDeclared=true | hasChild=false
+			Name: findMax  | Type=Function | ReturnType=int | NumberOfParameters=1| Parameters=int[100] | ProperlyDeclared=true | hasChild=true
+				findMaxScope->
+					Name: array  | Kind=parameter | Structure=array | Type=int[100] | NumberOfDimension=1 | ProperlyDeclared=true | hasChild=false
+					Name: maxValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+	Name: program  | Type=Class | ProperlyDeclared=true | hasChild=true
+		programScope->
+			Name: minValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+			Name: arrayUtility  | Kind=variable | Structure=class | Type=Utility[2][3][6][7] | NumberOfDimension=4 | ProperlyDeclared=false | hasChild=false
+			Name: maxValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+			Name: utility  | Kind=variable | Structure=class | Type=Utility | ProperlyDeclared=false | hasChild=false
+			Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+			Name: sample  | Kind=variable | Structure=array | Type=int[100] | NumberOfDimension=1 | ProperlyDeclared=true | hasChild=false
+	Name: randomize  | Type=Function | ReturnType=float | NumberOfParameters=0 | ProperlyDeclared=true | hasChild=true
+		randomizeScope->
+			Name: value  | Kind=variable | Structure=number | Type=float | ProperlyDeclared=true | hasChild=false

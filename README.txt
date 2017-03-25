@@ -20,9 +20,13 @@ src/LexicalAnalyzer has the Token, Tokenizer and InvalidTokenException class.
 
 src/SyntacticalAnalyzer has the FirstFollowArrays, Parser, ParsingTable, Symbols, firstSet.txt, followSet.txt and parsingtable.txt
 
+src/Semantic has the SymbolTable, SemanticStack and SymbolTableEntries
+
 src/test is where tests are. 
 LexicalAnalyzerTestSuite.java is a single class that runs all Lexical test cases.
 SyntacticAnalyzerTestSuite.java is a single class that runs all Syntactic test cases
+
+/SemanticTestFiles is where the semantic test files are located
 
 -------------------------------------------------------------------------------
 HOW TO USE

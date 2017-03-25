@@ -1,16 +1,29 @@
 package Semantic;
 
+import java.io.PrintWriter;
+
 public class SymbolTable {
 
 	// parent = null
-	private SymbolTableScope globalScope = new SymbolTableScope("GlobalScope", null); 
+	private SymbolTableScope globalScope = new SymbolTableScope("GlobalScope", null);
 
 	private SymbolTableScope currentScope = globalScope;
-	
+
+	private PrintWriter pw_semantic_error_file;
+	private PrintWriter pw_symbol_table_file;
+
+	public SymbolTable() {
+
+	}
+
+	public SymbolTable(PrintWriter pw_semantic_error_file, PrintWriter pw_symbol_table_file) {
+		this.pw_semantic_error_file = pw_semantic_error_file;
+		this.pw_symbol_table_file = pw_symbol_table_file;
+	}
+
 	/*
-	 * Recursively goes upward to find the symbol
-	 * Returns false if symbol is not found 
-	 * Returns true if symbol found
+	 * Recursively goes upward to find the symbol Returns false if symbol is not
+	 * found Returns true if symbol found
 	 */
 	public boolean search(SymbolTableScope symtblScope, String symbol) {
 		SymbolTableScope searchCurrentScope = symtblScope;
@@ -18,11 +31,11 @@ public class SymbolTable {
 
 		while (!hasSymbol) {
 			searchCurrentScope = searchCurrentScope.getParentScope();
-			
+
 			if (searchCurrentScope == null) {
 				return false;
 			}
-			
+
 			hasSymbol = searchCurrentScope.hasSymbol(symbol);
 		}
 
@@ -30,12 +43,17 @@ public class SymbolTable {
 
 	}
 
-	public void insertClassEntryAndEnterScope(String identifier) throws SemanticException {
-		
-		if(search(currentScope,identifier)){
-			throw new SemanticException("Duplicate class found: " + identifier);
+	public void insertClassEntryAndEnterScope(String identifier, int locationOfParse) {
+
+		if (search(currentScope, identifier)) {
+
+			String error = "Semantic error: Duplicate class found: " + identifier + " (line " +locationOfParse + ")";
+
+			pw_semantic_error_file.println(error);
+			System.out.println(error);
+
 		}
-		
+
 		String identifierScope = identifier + "Scope";
 		// Create new scope with parent as current scope
 		SymbolTableScope classScope = new SymbolTableScope(identifierScope, currentScope);
@@ -49,12 +67,17 @@ public class SymbolTable {
 		currentScope = classScope;
 	}
 
-	public void insertFunctionWithoutParametersAndEnterScope(String returnType, String functionName) throws SemanticException {
-		
-		if(search(currentScope,functionName)){
-			throw new SemanticException("Duplicate identifier found for function name: " + functionName);
+	public void insertFunctionWithoutParametersAndEnterScope(String returnType, String functionName, int locationOfParse) {
+
+		if (search(currentScope, functionName)) {
+
+			String error = "Duplicate identifier found for function name: " + functionName + " (line " +locationOfParse + ")";
+
+			pw_semantic_error_file.println(error);
+			System.out.println(error);
+
 		}
-		
+
 		String identifierScope = functionName + "Scope";
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
@@ -67,12 +90,17 @@ public class SymbolTable {
 	}
 
 	public void insertFunctionWithParametersAndEnterScope(String returnType, String functionName,
-			int numberOfParameters, String parameters) throws SemanticException {
-		
-		if(search(currentScope,functionName)){
-			throw new SemanticException("Duplicate identifier found for function name: " + functionName);
+			int numberOfParameters, String parameters, int locationOfParse) {
+
+		if (search(currentScope, functionName)) {
+
+			String error = "Duplicate identifier found for function name: " + functionName + " (line " +locationOfParse + ")";
+
+			pw_semantic_error_file.println(error);
+			System.out.println(error);
+
 		}
-		
+
 		String identifierScope = functionName + "Scope";
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
@@ -85,7 +113,7 @@ public class SymbolTable {
 	}
 
 	public void insertProgramFunctionAndEnterScope() {
-		
+
 		// Create new scope with parent as current scope
 		SymbolTableScope classScope = new SymbolTableScope("programScope", currentScope);
 
@@ -101,16 +129,25 @@ public class SymbolTable {
 	/*
 	 * inserts Variable or parameter
 	 */
-	public void insertEntry(String kindOfVariable, String identifier) throws SemanticException {
+	public void insertEntry(String kindOfVariable, String identifier, int locationOfParse) {
 
 		if (kindOfVariable.equals("variable") || kindOfVariable.equals("parameter")) {
 
 			String[] identifierArray = identifier.split(" ");
-			
-			if(search(currentScope, identifierArray[1])){
-				throw new SemanticException("Duplicate symbol found: " + identifierArray[1]);
+
+			if (search(currentScope, identifierArray[1])) {
+				String error;
+				if(kindOfVariable.equals("variable")){
+					error = "Duplicate variable found: " + identifierArray[1] + " (line " +locationOfParse + ")" ;
+				}
+				else{
+					error = "Duplicate parmeter found: " + identifierArray[1] + " (line " +locationOfParse + ")";
+				}
+
+				pw_semantic_error_file.println(error);
+				System.out.println(error);
 			}
-			
+
 			// True if "int" or "float", false if it is class
 			boolean properlyDefinied = checkIfIntOrFloat(identifierArray[0]);
 			// 0 if no dimensions array
@@ -126,15 +163,14 @@ public class SymbolTable {
 			}
 			
 			AbstractSymbolTableScopeEntry variableEntry;
-			
-			if(numberOfDimensions == 0){
-				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable,
-						structure, identifierArray[0] , numberOfDimensions);
-			}
-			else{
+
+			if (numberOfDimensions == 0) {
+				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable, structure,
+						identifierArray[0], numberOfDimensions);
+			} else {
 				String type = getVariableOrParameterType(identifier);
-				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable,
-						structure, type, numberOfDimensions);
+				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable, structure, type,
+						numberOfDimensions);
 			}
 
 			// new variable entry with no child (null)
@@ -153,11 +189,11 @@ public class SymbolTable {
 		}
 	}
 
-	// TODO
-	public void deleteScope() {
-
-	}
 	
+	public void deleteScope(SymbolTableScope scope) {
+		scope = null;
+	}
+
 	/*
 	 * Prints symbol table
 	 */
@@ -176,18 +212,20 @@ public class SymbolTable {
 		}
 
 		System.out.println(tabs.toString() + scope.getScopeName() + "->");
+		pw_symbol_table_file.println(tabs.toString() + scope.getScopeName() + "->");
 
 		tabs.append('\t');
 
 		scope.getTableEntries().forEach((k, v) -> {
 			System.out.println(tabs.toString() + "Name: " + k + " " + v.printEntry());
+			pw_symbol_table_file.println(tabs.toString() + "Name: " + k + " " + v.printEntry());
 			if (v.hasChildScope()) {
 				printScopeValues(v.getChildScope(), numberOfTabCharacthers + 2);
 			}
 
 		});
 	}
-	
+
 	/*
 	 * Finds the number of occurrences of pattern in value
 	 */
@@ -227,22 +265,46 @@ public class SymbolTable {
 		return 0;
 
 	}
-	
+
 	/*
 	 * Gets the type for a variable or parameter
 	 */
-	private String getVariableOrParameterType(String identifier){
+	private String getVariableOrParameterType(String identifier) {
 		StringBuilder returnType = new StringBuilder();
 		String trimmedIdentifier = identifier.trim();
 		String[] splitIdentifier = trimmedIdentifier.split(" ");
-		
+
 		returnType.append(splitIdentifier[0]);
-		
-		for(int i = 2; i<splitIdentifier.length; i++){
+
+		for (int i = 2; i < splitIdentifier.length; i++) {
 			returnType.append(splitIdentifier[i]);
 		}
-		
+
 		return returnType.toString();
 	}
+	
+	private boolean checkIfClassNameIsDefinied(String symbol){
+		
+		 if(globalScope.getTableEntries().containsKey(symbol)){
+			 if(globalScope.getTableEntries().get(symbol) instanceof EntryClassST){
+				 return true;
+			 }
+		}
+		 return false;
+	}
+	
+	private void tryToProperlyDeclareAllEntriesInSymbolTable(SymbolTableScope scope){
+		scope.getTableEntries().forEach((k, v) -> {
+			if(v.getChildScope() != null){
+				tryToProperlyDeclareAllEntriesInSymbolTable(v.getChildScope());
+			}
+			else if(!v.isProperlyDeclared()){
+				if(checkIfClassNameIsDefinied(k)){
+					v.setProperlyDeclared(true);
+				}
+			}
+		});
+	}
+
 
 }

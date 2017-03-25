@@ -1,5 +1,6 @@
 package Semantic;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
@@ -11,7 +12,7 @@ public class SemanticStack {
 
 	private Symbols allSymbols = new Symbols();
 
-	private SymbolTable symbolTable = new SymbolTable();
+	private SymbolTable symbolTable; 
 
 	// flag used in parser to accumulate symbols
 	// create a SymbolTableEntry and add it to the SymbolTable
@@ -25,10 +26,15 @@ public class SemanticStack {
 
 	// Constructor
 	public SemanticStack() {
+		symbolTable = new SymbolTable();
+	}
+	
+	public SemanticStack(PrintWriter pw_semantic_error_file, PrintWriter pw_symbol_table_file){
+		symbolTable = new SymbolTable(pw_semantic_error_file, pw_symbol_table_file);
 	}
 	
 	
-	public void push(Object item) throws SemanticException {
+	public void push(Object item, int locationInParse) {
 
 		String symbol = (String) item;
 
@@ -74,7 +80,7 @@ public class SemanticStack {
 				String[] accumulatedSymbolsArray = accumulatedSymbols.toString().trim().split(" ");
 				
 				String classIdentifier = accumulatedSymbolsArray[1];
-				symbolTable.insertClassEntryAndEnterScope(classIdentifier);
+				symbolTable.insertClassEntryAndEnterScope(classIdentifier, locationInParse);
 				
 				accumulatedSymbols.setLength(0); //reset stringbuilder
 				
@@ -89,18 +95,18 @@ public class SemanticStack {
 				
 				
 				if(numberOfParameters == 0){
-					symbolTable.insertFunctionWithoutParametersAndEnterScope(returnType, functionName);
+					symbolTable.insertFunctionWithoutParametersAndEnterScope(returnType, functionName, locationInParse);
 				}
 				else{
 					String allParametersTypes = getAllFunctionParameters();
 					
 					//create function table and enter scope
-					symbolTable.insertFunctionWithParametersAndEnterScope(returnType, functionName, numberOfParameters, allParametersTypes);
+					symbolTable.insertFunctionWithParametersAndEnterScope(returnType, functionName, numberOfParameters, allParametersTypes, locationInParse);
 					
 					//add all parameters in function scope
 					for(int i = 1; i< accumulatedParametersArrayList.size(); i++){
 						String parameter = accumulatedParametersArrayList.get(i).toString().trim();
-						symbolTable.insertEntry("parameter", parameter);
+						symbolTable.insertEntry("parameter", parameter, locationInParse);
 						
 					}
 				}
@@ -112,7 +118,7 @@ public class SemanticStack {
 			else if (symbol.equalsIgnoreCase("createVariableEntry")) {
 				String accumulatedString = accumulatedSymbols.toString().trim();
 				
-				symbolTable.insertEntry("variable", accumulatedString);
+				symbolTable.insertEntry("variable", accumulatedString, locationInParse);
 				
 				accumulatedSymbols.setLength(0); //reset stringbuilder
 				
