@@ -1,5 +1,8 @@
 package LexicalAnalyzer;
-public class Token {
+
+import Semantic.SemanticStackEntries.InterfaceSemanticStackEntries;
+
+public class Token implements InterfaceSemanticStackEntries {
 
 	private String token;
 	private String lexeme;

@@ -8,6 +8,7 @@ import LexicalAnalyzer.InvalidTokenException;
 import LexicalAnalyzer.Token;
 import LexicalAnalyzer.Tokenizer;
 import Semantic.SemanticStack;
+import Semantic.SemanticStack2;
 
 public class Parser {
 
@@ -18,6 +19,7 @@ public class Parser {
 	private FirstFollowArrays firstFollowArrays;
 
 	private SemanticStack semanticStack;
+	private SemanticStack2 semanticStack2;
 
 	private PrintWriter pw_token_output_file;
 	private PrintWriter pw_derivation_file;
@@ -33,6 +35,7 @@ public class Parser {
 		firstFollowArrays = new FirstFollowArrays();
 
 		semanticStack = new SemanticStack();
+		semanticStack2 = new SemanticStack2();
 
 	}
 
@@ -50,6 +53,8 @@ public class Parser {
 		this.pw_syntax_error_file = pw_syntax_error_file;
 
 		semanticStack = new SemanticStack(pw_semantic_error_file, pw_symbol_table_file);
+		
+		semanticStack2 = new SemanticStack2();
 
 	}
 
@@ -70,6 +75,7 @@ public class Parser {
 			// Semantic part
 			if (allSymbols.isSemanticAction(symbolName)) {
 				semanticStack.push(symbolName, tok.getTokenPosition());
+				semanticStack2.push(symbolName);
 				stack.pop();
 				continue;
 			}
@@ -77,7 +83,9 @@ public class Parser {
 			// regular parsing algorithm
 			else if (allSymbols.isTerminal(symbolName)) {
 				if (tok.getTokenName().equalsIgnoreCase(symbolName)) {
-
+					
+					semanticStack2.push(tok);
+					
 					// semantic part
 					pushTokenLexemeInSemanticStackIfFlagIsSet(tok.getTokenLexeme(), tok.getTokenPosition());
 
