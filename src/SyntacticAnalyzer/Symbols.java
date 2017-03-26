@@ -114,19 +114,12 @@ public class Symbols {
 		
 		
 		
-		startAccumulation,
-		stopAccumulation,
 		startClassEntryAndTable,
 		closeCurrentScope,
-		cancelAccumulation,
 		createVariableEntry,
-		transferAccumulation,
-		startParameterAccumulation,
-		stopParameterAccumulation,
 		createFuncTable,
 		CreateProgramFunction,
-		
-//		createProgramTable,
+		CreateParameterEntry
 
 	
 	}
