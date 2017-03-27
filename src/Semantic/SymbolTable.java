@@ -25,7 +25,7 @@ public class SymbolTable {
 	 * Recursively goes upward to find the symbol Returns false if symbol is not
 	 * found Returns true if symbol found
 	 */
-	public boolean search(SymbolTableScope symtblScope, String symbol) {
+	public boolean searchHigherScopes(SymbolTableScope symtblScope, String symbol) {
 		SymbolTableScope searchCurrentScope = symtblScope;
 		boolean hasSymbol = searchCurrentScope.hasSymbol(symbol);
 
@@ -42,10 +42,53 @@ public class SymbolTable {
 		return hasSymbol;
 
 	}
+	
+	/*
+	 * Searches the given scope if a symbol with the same type exists
+	 */
+	public boolean search(SymbolTableScope symtblScope, String symbol, AbstractSymbolTableScopeEntry entry){
+		Class<?> currentEntryClass = entry.getClass();
+		
+		
+		if(symtblScope.hasSymbol(symbol)){
+			AbstractSymbolTableScopeEntry searchEntry = symtblScope.getScopeEntry(symbol);
+			Class<?> searchEntryClass = searchEntry.getClass();
+
+			//if both entries are of the same type then we have to check their structure/return type etc
+			if(searchEntryClass == currentEntryClass){
+				
+				if(currentEntryClass == EntryVariableST.class){
+					EntryVariableST check1 = (EntryVariableST) searchEntry;
+					EntryVariableST check2 = (EntryVariableST) entry;
+					
+					//TODO: verify what is supposed to be equal
+					
+					String b = check1.getStructure();
+					int c = check1.getNumberOfDimensions();
+					String d = check1.getType().substring(0,1); //get first characters
+					
+					String f = check2.getStructure();
+					int g = check2.getNumberOfDimensions();
+					String h = check2.getType().substring(0,1); //get first characters
+					
+					return(b.equals(f) && c >= g);
+					
+					
+				}
+				
+				else if(currentEntryClass == null){
+					
+				}
+			}
+			return true;
+			
+		}
+		return false;
+	}
 
 	public void insertClassEntryAndEnterScope(String identifier, int locationOfParse) {
 
-		if (search(currentScope, identifier)) {
+		if (searchHigherScopes(currentScope, identifier)) {
 
 			String error = "Semantic error: Duplicate class found: " + identifier + " (line " +locationOfParse + ")";
 
@@ -69,7 +112,7 @@ public class SymbolTable {
 
 	public void insertFunctionWithoutParametersAndEnterScope(String returnType, String functionName, int locationOfParse) {
 
-		if (search(currentScope, functionName)) {
+		if (searchHigherScopes(currentScope, functionName)) {
 
 			String error = "Duplicate identifier found for function name: " + functionName + " (line " +locationOfParse + ")";
 
@@ -92,7 +135,7 @@ public class SymbolTable {
 	public void insertFunctionWithParametersAndEnterScope(String returnType, String functionName,
 			int numberOfParameters, String parameters, int locationOfParse) {
 
-		if (search(currentScope, functionName)) {
+		if (searchHigherScopes(currentScope, functionName)) {
 
 			String error = "Duplicate identifier found for function name: " + functionName + " (line " +locationOfParse + ")";
 
@@ -135,7 +178,7 @@ public class SymbolTable {
 
 			String[] identifierArray = identifier.split(" ");
 
-			if (search(currentScope, identifierArray[1])) {
+			if (searchHigherScopes(currentScope, identifierArray[1])) {
 				String error;
 				if(kindOfVariable.equals("variable")){
 					error = "Duplicate variable found: " + identifierArray[1] + " (line " +locationOfParse + ")" ;

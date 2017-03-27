@@ -4,7 +4,7 @@ public class EntryVariableST extends AbstractSymbolTableScopeEntry {
 
 	private String kindOfVariable; // variable or parameter
 	private String structure; // number, array, class
-	private String type;
+	private String type; //int[1][2], int, float, MyClass2
 	private int numberOfDimensions; //if array, otherwise 0
 
 	/*
@@ -28,6 +28,29 @@ public class EntryVariableST extends AbstractSymbolTableScopeEntry {
 		this.structure = structure;
 		this.type = type;
 		this.numberOfDimensions = numberOfDimensions;
+	}
+
+	public String getKindOfVariable() {
+		return kindOfVariable;
+	}
+
+	public String getStructure() {
+		return structure;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public int getNumberOfDimensions() {
+		return numberOfDimensions;
+	}
+
+	public boolean equalsSameType(String structure, String type, int numberOfDimensions){
+		return this.structure.equals(structure)
+				&& this.type.equals(type)
+				&& this.numberOfDimensions >= numberOfDimensions;
+				
 	}
 
 	@Override

@@ -52,6 +52,10 @@ public class SymbolTableScope {
 		this.tableEntries = tableEntries;
 	}
 	
+	public AbstractSymbolTableScopeEntry getScopeEntry(String key){
+		return tableEntries.get(key);
+	}
+	
 	
 	
 }
