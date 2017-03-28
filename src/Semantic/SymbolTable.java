@@ -112,7 +112,14 @@ public class SymbolTable {
 	public void insertFunctionWithParametersAndEnterScope(String returnType, String functionName,
 			int numberOfParameters, String parameters, int locationOfParse) {
 
-		if (searchHigherScopes(currentScope, functionName)) {
+		String identifierScope = functionName + "Scope";
+
+		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
+
+		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, returnType,
+				numberOfParameters, parameters);
+		
+		if (search(currentScope, functionName, functionEntry)) {
 
 			String error = "Duplicate identifier found for function name: " + functionName + " (line " +locationOfParse + ")";
 
@@ -120,15 +127,8 @@ public class SymbolTable {
 			System.out.println(error);
 
 		}
-
-		String identifierScope = functionName + "Scope";
-
-		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
-
-		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, returnType,
-				numberOfParameters, parameters);
+		
 		currentScope.insert(functionName, functionEntry);
-
 		currentScope = functionScope;
 	}
 
