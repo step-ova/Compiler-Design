@@ -65,15 +65,6 @@ public class SymbolTable {
 
 	public void insertClassEntryAndEnterScope(String identifier, int locationOfParse) {
 
-		if (searchHigherScopes(currentScope, identifier)) {
-
-			String error = "Semantic error: Duplicate class found: " + identifier + " (line " +locationOfParse + ")";
-
-			pw_semantic_error_file.println(error);
-			System.out.println(error);
-
-		}
-
 		String identifierScope = identifier + "Scope";
 		// Create new scope with parent as current scope
 		SymbolTableScope classScope = new SymbolTableScope(identifierScope, currentScope);
@@ -81,8 +72,17 @@ public class SymbolTable {
 		// create a new class entry for the current table with a child as
 		// the classScope
 		AbstractSymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope);
-		currentScope.insert(identifier, scopeEntry);
+		
+		if (search(currentScope, identifier, scopeEntry)) {
 
+			String error = "Semantic error: Duplicate class found: " + identifier + " (line " +locationOfParse + ")";
+
+			pw_semantic_error_file.println(error);
+			System.out.println(error);
+
+		}
+		
+		currentScope.insert(identifier, scopeEntry);
 		// Change the scope to the new created scope
 		currentScope = classScope;
 	}
