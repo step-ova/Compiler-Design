@@ -47,43 +47,20 @@ public class SymbolTable {
 	 * Searches the given scope if a symbol with the same type exists
 	 */
 	public boolean search(SymbolTableScope symtblScope, String symbol, AbstractSymbolTableScopeEntry entry){
-		Class<?> currentEntryClass = entry.getClass();
-		
-		
-		if(symtblScope.hasSymbol(symbol)){
-			AbstractSymbolTableScopeEntry searchEntry = symtblScope.getScopeEntry(symbol);
-			Class<?> searchEntryClass = searchEntry.getClass();
 
-			//if both entries are of the same type then we have to check their structure/return type etc
-			if(searchEntryClass == currentEntryClass){
-				
-				if(currentEntryClass == EntryVariableST.class){
-					EntryVariableST check1 = (EntryVariableST) searchEntry;
-					EntryVariableST check2 = (EntryVariableST) entry;
-					
-					//TODO: verify what is supposed to be equal
-					
-					String b = check1.getStructure();
-					int c = check1.getNumberOfDimensions();
-					String d = check1.getType().substring(0,1); //get first characters
-					
-					String f = check2.getStructure();
-					int g = check2.getNumberOfDimensions();
-					String h = check2.getType().substring(0,1); //get first characters
-					
-					return(b.equals(f) && c >= g);
-					
-					
-				}
-				
-				else if(currentEntryClass == null){
-					
-				}
-			}
-			return true;
-			
+		AbstractSymbolTableScopeEntry searchEntry = symtblScope.getScopeEntry(symbol);
+		
+		//if the entry does not exist
+		if(searchEntry == null){
+			return false;
 		}
-		return false;
+		
+		Class<?> currentEntryClass = entry.getClass();
+		Class<?> searchEntryClass = searchEntry.getClass();
+		
+		//TODO: If we allow operator overloading then check if types and parameters match
+		//we cannot have 2 entries with the same type (variable, function, class) with the same name
+		return symtblScope.hasSymbol(symbol) && searchEntryClass == currentEntryClass;
 	}
 
 	public void insertClassEntryAndEnterScope(String identifier, int locationOfParse) {
