@@ -155,19 +155,6 @@ public class SymbolTable {
 
 			String[] identifierArray = identifier.split(" ");
 
-			if (searchHigherScopes(currentScope, identifierArray[1])) {
-				String error;
-				if(kindOfVariable.equals("variable")){
-					error = "Duplicate variable found: " + identifierArray[1] + " (line " +locationOfParse + ")" ;
-				}
-				else{
-					error = "Duplicate parmeter found: " + identifierArray[1] + " (line " +locationOfParse + ")";
-				}
-
-				pw_semantic_error_file.println(error);
-				System.out.println(error);
-			}
-
 			// True if "int" or "float", false if it is class
 			boolean properlyDefinied = checkIfIntOrFloat(identifierArray[0]);
 			// 0 if no dimensions array
@@ -192,7 +179,20 @@ public class SymbolTable {
 				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable, structure, type,
 						numberOfDimensions);
 			}
+			
+			if (search(currentScope, identifierArray[1], variableEntry)) {
+				String error;
+				if(kindOfVariable.equals("variable")){
+					error = "Duplicate variable found: " + identifierArray[1] + " (line " +locationOfParse + ")" ;
+				}
+				else{
+					error = "Duplicate parmeter found: " + identifierArray[1] + " (line " +locationOfParse + ")";
+				}
 
+				pw_semantic_error_file.println(error);
+				System.out.println(error);
+			}
+			
 			// new variable entry with no child (null)
 			currentScope.insert(identifierArray[1], variableEntry);
 		}
