@@ -28,77 +28,18 @@ public class SemanticStack {
 		semanticStack.push(token);
 	}
 
-	public void push(String semanticAction) {
-		if (semanticAction.equalsIgnoreCase("closeCurrentScope")) {
-			symbolTable.closeCurrentScope();
+	public void push(String semanticAction, int parseCount) {
 
+		switch (parseCount) {
+		case 0:
+			firstPass(semanticAction);
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
 		}
 
-		else if (semanticAction.equalsIgnoreCase("startClassEntryAndTable")) {
-
-			Token identifierToken = (Token) semanticStack.pop();
-
-			String classIdentifier = identifierToken.getTokenLexeme();
-			int locationInParse = identifierToken.getTokenPosition();
-			symbolTable.insertClassEntryAndEnterScope(classIdentifier, locationInParse);
-
-		}
-
-		else if (semanticAction.equalsIgnoreCase("createVariableEntry")) {
-
-			int locationInParse = ((Token) semanticStack.peek()).getTokenPosition();
-
-			String accumulatedString = getVariableDeclTokens();
-
-			symbolTable.insertEntry("variable", accumulatedString, locationInParse);
-
-		}
-
-		// Pushes parameter entry in the semanticStack so the createFuncTable
-		// gets it from the stack.
-		else if (semanticAction.equalsIgnoreCase("createParameterEntry")) {
-
-			//int locationInParse = ((Token) semanticStack.peek()).getTokenPosition();
-
-			String accumulatedString = getVariableDeclTokens();
-
-			InterfaceSemanticStackEntries parameterEntry = new ParameterEntry(accumulatedString);
-
-			semanticStack.push(parameterEntry);
-
-		}
-
-		else if (semanticAction.equalsIgnoreCase("createFuncTable")) {
-
-			int locationInParse = ((Token) semanticStack.peek()).getTokenPosition();
-			ArrayList<InterfaceSemanticStackEntries> allParameters = getAllParameters();
-			int numberOfParameters = allParameters.size();
-
-			// Order of pop matters
-			String functionName = popAndGetTokenLexeme();
-			String returnType = popAndGetTokenLexeme();
-
-			if (numberOfParameters == 0) {
-				symbolTable.insertFunctionWithoutParametersAndEnterScope(returnType, functionName, locationInParse);
-			} else {
-				String allParametersTypes = getAllFunctionParameters(allParameters);
-
-				symbolTable.insertFunctionWithParametersAndEnterScope(returnType, functionName, numberOfParameters,
-						allParametersTypes, locationInParse);
-
-				for (InterfaceSemanticStackEntries parameter : allParameters) {
-					ParameterEntry parameterEntry = (ParameterEntry) parameter;
-					symbolTable.insertEntry("parameter", parameterEntry.getEntry(), locationInParse);
-				}
-
-			}
-		}
-
-		else if (semanticAction.equalsIgnoreCase("CreateProgramFunction")) {
-
-			symbolTable.insertProgramFunctionAndEnterScope();
-
-		}
 	}
 
 	private boolean isSemanticStackTopOfTokenType(String type) {
@@ -131,8 +72,8 @@ public class SemanticStack {
 		symbolLexeme = popAndGetTokenLexeme();
 		accumulatedSymbols.append(symbolLexeme);
 
-		//We need to reverse the words because the stack reverses
-		//the token order
+		// We need to reverse the words because the stack reverses
+		// the token order
 		return reverseWords(accumulatedSymbols.toString());
 	}
 
@@ -193,10 +134,10 @@ public class SemanticStack {
 	public void printSymbolTable() {
 		symbolTable.printSymbolTable();
 	}
-	
-	
-	//Reverses words in a string
-	//Inspired by https://discuss.leetcode.com/category/159/reverse-words-in-a-string
+
+	// Reverses words in a string
+	// Inspired by
+	// https://discuss.leetcode.com/category/159/reverse-words-in-a-string
 	private String reverseWords(String s) {
 
 		if (s.equals("")) {
@@ -221,6 +162,80 @@ public class SemanticStack {
 		sb.setLength(sb.length() - 1);
 
 		return sb.toString();
+	}
+
+	public void firstPass(String semanticAction) {
+		if (semanticAction.equalsIgnoreCase("closeCurrentScope")) {
+			symbolTable.closeCurrentScope();
+
+		}
+
+		else if (semanticAction.equalsIgnoreCase("startClassEntryAndTable")) {
+
+			Token identifierToken = (Token) semanticStack.pop();
+
+			String classIdentifier = identifierToken.getTokenLexeme();
+			int locationInParse = identifierToken.getTokenPosition();
+			symbolTable.insertClassEntryAndEnterScope(classIdentifier, locationInParse);
+
+		}
+
+		else if (semanticAction.equalsIgnoreCase("createVariableEntry")) {
+
+			int locationInParse = ((Token) semanticStack.peek()).getTokenPosition();
+
+			String accumulatedString = getVariableDeclTokens();
+
+			symbolTable.insertEntry("variable", accumulatedString, locationInParse);
+
+		}
+
+		// Pushes parameter entry in the semanticStack so the createFuncTable
+		// gets it from the stack.
+		else if (semanticAction.equalsIgnoreCase("createParameterEntry")) {
+
+			// int locationInParse = ((Token)
+			// semanticStack.peek()).getTokenPosition();
+
+			String accumulatedString = getVariableDeclTokens();
+
+			InterfaceSemanticStackEntries parameterEntry = new ParameterEntry(accumulatedString);
+
+			semanticStack.push(parameterEntry);
+
+		}
+
+		else if (semanticAction.equalsIgnoreCase("createFuncTable")) {
+
+			int locationInParse = ((Token) semanticStack.peek()).getTokenPosition();
+			ArrayList<InterfaceSemanticStackEntries> allParameters = getAllParameters();
+			int numberOfParameters = allParameters.size();
+
+			// Order of pop matters
+			String functionName = popAndGetTokenLexeme();
+			String returnType = popAndGetTokenLexeme();
+
+			if (numberOfParameters == 0) {
+				symbolTable.insertFunctionWithoutParametersAndEnterScope(returnType, functionName, locationInParse);
+			} else {
+				String allParametersTypes = getAllFunctionParameters(allParameters);
+
+				symbolTable.insertFunctionWithParametersAndEnterScope(returnType, functionName, numberOfParameters,
+						allParametersTypes, locationInParse);
+
+				for (InterfaceSemanticStackEntries parameter : allParameters) {
+					ParameterEntry parameterEntry = (ParameterEntry) parameter;
+					symbolTable.insertEntry("parameter", parameterEntry.getEntry(), locationInParse);
+				}
+
+			}
+		}
+
+		else if (semanticAction.equalsIgnoreCase("CreateProgramFunction")) {
+
+			symbolTable.insertProgramFunctionAndEnterScope();
+
+		}
 	}
 
 }

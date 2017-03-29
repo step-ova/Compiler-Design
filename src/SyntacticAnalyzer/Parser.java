@@ -22,6 +22,8 @@ public class Parser {
 	private PrintWriter pw_token_output_file;
 	private PrintWriter pw_derivation_file;
 	private PrintWriter pw_syntax_error_file;
+	
+	int parseCount = 0;
 
 	@SuppressWarnings("rawtypes")
 	Stack<Enum> stack = new Stack<Enum>();
@@ -37,7 +39,7 @@ public class Parser {
 	}
 
 	public Parser(Tokenizer t, PrintWriter pw_token_output_file, PrintWriter pw_derivation_file,
-			PrintWriter pw_syntax_error_file, PrintWriter pw_semantic_error_file, PrintWriter pw_symbol_table_file) {
+			PrintWriter pw_syntax_error_file, SemanticStack semanticStack) {
 
 		this.t = t;
 
@@ -49,7 +51,7 @@ public class Parser {
 
 		this.pw_syntax_error_file = pw_syntax_error_file;
 
-		semanticStack = new SemanticStack(pw_semantic_error_file, pw_symbol_table_file);
+		this.semanticStack = semanticStack;
 	}
 
 	public boolean parse() throws InvalidTokenException {
@@ -62,13 +64,13 @@ public class Parser {
 			Enum x = stack.peek();
 			String symbolName = x.name();
 
-			if (pw_derivation_file != null) {
+			if (pw_derivation_file != null && parseCount == 0) {
 				pw_derivation_file.println(symbolName);
 			}
 
 			// Semantic part
 			if (allSymbols.isSemanticAction(symbolName)) {
-				semanticStack.push(symbolName);
+				semanticStack.push(symbolName, parseCount);
 				stack.pop();
 				continue;
 			}
@@ -108,6 +110,8 @@ public class Parser {
 		if (!tok.getTokenName().equals("$") || error == true) {
 			return false;
 		} else {
+			parseCount++;
+			stack = new Stack<Enum>();
 			return true;
 		}
 
@@ -155,7 +159,7 @@ public class Parser {
 	private Token getNextTokenAndPrintToTokenOutputFile() throws InvalidTokenException {
 		Token temp;
 		temp = t.getNextToken();
-		if (pw_token_output_file != null) {
+		if (pw_token_output_file != null && parseCount == 0) {
 			pw_token_output_file.println(temp.toString());
 		}
 
@@ -164,5 +168,9 @@ public class Parser {
 
 	public void printSymbolTable() {
 		semanticStack.printSymbolTable();
+	}
+	
+	public void incrementParseCount(){
+		parseCount++;
 	}
 }
