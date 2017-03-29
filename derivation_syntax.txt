@@ -2815,3 +2815,4 @@ closeCurrentScope
 SEMICOLON
 FuncDefStar
 EPSILON
+CheckProperlyDeclaredAll

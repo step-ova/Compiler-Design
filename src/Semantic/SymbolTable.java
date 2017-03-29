@@ -42,24 +42,26 @@ public class SymbolTable {
 		return hasSymbol;
 
 	}
-	
+
 	/*
 	 * Searches the given scope if a symbol with the same type exists
 	 */
-	public boolean search(SymbolTableScope symtblScope, String symbol, AbstractSymbolTableScopeEntry entry){
+	public boolean search(SymbolTableScope symtblScope, String symbol, AbstractSymbolTableScopeEntry entry) {
 
 		AbstractSymbolTableScopeEntry searchEntry = symtblScope.getScopeEntry(symbol);
-		
-		//if the entry does not exist
-		if(searchEntry == null){
+
+		// if the entry does not exist
+		if (searchEntry == null) {
 			return false;
 		}
-		
+
 		Class<?> currentEntryClass = entry.getClass();
 		Class<?> searchEntryClass = searchEntry.getClass();
-		
-		//TODO: If we allow operator overloading then check if types and parameters match
-		//we cannot have 2 entries with the same type (variable, function, class) with the same name
+
+		// TODO: If we allow operator overloading then check if types and
+		// parameters match
+		// we cannot have 2 entries with the same type (variable, function,
+		// class) with the same name
 		return symtblScope.hasSymbol(symbol) && searchEntryClass == currentEntryClass;
 	}
 
@@ -72,38 +74,40 @@ public class SymbolTable {
 		// create a new class entry for the current table with a child as
 		// the classScope
 		AbstractSymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope);
-		
+
 		if (search(currentScope, identifier, scopeEntry)) {
 
-			String error = "Semantic error: Duplicate class found: " + identifier + " (line " +locationOfParse + ")";
+			String error = "Semantic error: Duplicate class found: " + identifier + " (line " + locationOfParse + ")";
 
 			pw_semantic_error_file.println(error);
 			System.out.println(error);
 
 		}
-		
+
 		currentScope.insert(identifier, scopeEntry);
 		// Change the scope to the new created scope
 		currentScope = classScope;
 	}
 
-	public void insertFunctionWithoutParametersAndEnterScope(String returnType, String functionName, int locationOfParse) {
+	public void insertFunctionWithoutParametersAndEnterScope(String returnType, String functionName,
+			int locationOfParse) {
 
 		String identifierScope = functionName + "Scope";
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
 
 		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, returnType, 0, null);
-		
+
 		if (search(currentScope, functionName, functionEntry)) {
 
-			String error = "Duplicate identifier found for function name: " + functionName + " (line " +locationOfParse + ")";
+			String error = "Duplicate identifier found for function name: " + functionName + " (line " + locationOfParse
+					+ ")";
 
 			pw_semantic_error_file.println(error);
 			System.out.println(error);
 
 		}
-		
+
 		currentScope.insert(functionName, functionEntry);
 		currentScope = functionScope;
 
@@ -118,16 +122,17 @@ public class SymbolTable {
 
 		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, returnType,
 				numberOfParameters, parameters);
-		
+
 		if (search(currentScope, functionName, functionEntry)) {
 
-			String error = "Duplicate identifier found for function name: " + functionName + " (line " +locationOfParse + ")";
+			String error = "Duplicate identifier found for function name: " + functionName + " (line " + locationOfParse
+					+ ")";
 
 			pw_semantic_error_file.println(error);
 			System.out.println(error);
 
 		}
-		
+
 		currentScope.insert(functionName, functionEntry);
 		currentScope = functionScope;
 	}
@@ -168,7 +173,7 @@ public class SymbolTable {
 			} else {
 				structure = "number";
 			}
-			
+
 			AbstractSymbolTableScopeEntry variableEntry;
 
 			if (numberOfDimensions == 0) {
@@ -179,20 +184,19 @@ public class SymbolTable {
 				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable, structure, type,
 						numberOfDimensions);
 			}
-			
+
 			if (search(currentScope, identifierArray[1], variableEntry)) {
 				String error;
-				if(kindOfVariable.equals("variable")){
-					error = "Duplicate variable found: " + identifierArray[1] + " (line " +locationOfParse + ")" ;
-				}
-				else{
-					error = "Duplicate parmeter found: " + identifierArray[1] + " (line " +locationOfParse + ")";
+				if (kindOfVariable.equals("variable")) {
+					error = "Duplicate variable found: " + identifierArray[1] + " (line " + locationOfParse + ")";
+				} else {
+					error = "Duplicate parmeter found: " + identifierArray[1] + " (line " + locationOfParse + ")";
 				}
 
 				pw_semantic_error_file.println(error);
 				System.out.println(error);
 			}
-			
+
 			// new variable entry with no child (null)
 			currentScope.insert(identifierArray[1], variableEntry);
 		}
@@ -209,7 +213,6 @@ public class SymbolTable {
 		}
 	}
 
-	
 	public void deleteScope(SymbolTableScope scope) {
 		scope = null;
 	}
@@ -302,29 +305,39 @@ public class SymbolTable {
 
 		return returnType.toString();
 	}
-	
-	private boolean checkIfClassNameIsDefinied(String symbol){
-		
-		 if(globalScope.getTableEntries().containsKey(symbol)){
-			 if(globalScope.getTableEntries().get(symbol) instanceof EntryClassST){
-				 return true;
-			 }
-		}
-		 return false;
-	}
-	
-	private void tryToProperlyDeclareAllEntriesInSymbolTable(SymbolTableScope scope){
-		scope.getTableEntries().forEach((k, v) -> {
-			if(v.getChildScope() != null){
-				tryToProperlyDeclareAllEntriesInSymbolTable(v.getChildScope());
+
+	private boolean checkIfClassNameIsDefinied(String symbol) {
+
+		if (globalScope.getTableEntries().containsKey(symbol)) {
+			if (globalScope.getTableEntries().get(symbol) instanceof EntryClassST) {
+				return true;
 			}
-			else if(!v.isProperlyDeclared()){
-				if(checkIfClassNameIsDefinied(k)){
-					v.setProperlyDeclared(true);
+		}
+		return false;
+	}
+
+	private void tryToProperlyDeclareAllEntriesInSymbolTable(SymbolTableScope scope) {
+		scope.getTableEntries().forEach((k, v) -> {
+			if (v.getChildScope() != null) {
+				tryToProperlyDeclareAllEntriesInSymbolTable(v.getChildScope());
+			} else if (!v.isProperlyDeclared()) {
+				if (v.getClass() == EntryVariableST.class) {
+					EntryVariableST entry = (EntryVariableST) v;
+					String classEntryType = entry.getTypeWithoutArray();
+					if (checkIfClassNameIsDefinied(classEntryType)) {
+						v.setProperlyDeclared(true);
+					}
+					else{
+						pw_semantic_error_file.println(classEntryType + " is undefined");
+					}
 				}
+
 			}
 		});
 	}
 
+	public void checkIfAllIsProperlyDeclared() {
+		tryToProperlyDeclareAllEntriesInSymbolTable(globalScope);
+	}
 
 }

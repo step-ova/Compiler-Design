@@ -119,7 +119,8 @@ public class Symbols {
 		createVariableEntry,
 		createFuncTable,
 		CreateProgramFunction,
-		CreateParameterEntry
+		CreateParameterEntry,
+		CheckProperlyDeclaredAll,
 
 	
 	}

@@ -236,6 +236,12 @@ public class SemanticStack {
 			symbolTable.insertProgramFunctionAndEnterScope();
 
 		}
+		else if (semanticAction.equalsIgnoreCase("CheckProperlyDeclaredAll")) {
+
+			symbolTable.checkIfAllIsProperlyDeclared();
+
+		}
+		
 	}
 
 }

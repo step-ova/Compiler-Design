@@ -1,4 +1,4 @@
-ClassDeclStar ProgBody,,,,,ClassDeclStar ProgBody,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+ClassDeclStar ProgBody CheckProperlyDeclaredAll,,,,,ClassDeclStar ProgBody CheckProperlyDeclaredAll,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ClassDecl ClassDeclStar,,,,,epsilon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 class id StartClassEntryAndTable opencurlybrac VarDeclStarFuncDefStar closecurlybrac semicolon CloseCurrentScope,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,Type id VarA,,epsilon,,,,,,,,,,,,,,,,,,,Type id VarA,Type id VarA,,,,,,,,,,,,,
@@ -54,3 +54,4 @@ epsilon,,,,epsilon,epsilon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,epsilon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,epsilon,,,,,,,,,,,,,,,,,epsilon,,,,,,,,,,,,
 ,,epsilon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,epsilon

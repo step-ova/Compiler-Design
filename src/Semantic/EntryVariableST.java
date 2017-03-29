@@ -41,6 +41,16 @@ public class EntryVariableST extends AbstractSymbolTableScopeEntry {
 	public String getType() {
 		return type;
 	}
+	
+	public String getTypeWithoutArray(){
+		String type = this.type;
+		if(type.contains("[")){
+			int indexOfBracket = type.indexOf('[');
+			return type.substring(0, indexOfBracket);
+		}
+		
+		return type;
+	}
 
 	public int getNumberOfDimensions() {
 		return numberOfDimensions;
