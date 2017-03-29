@@ -2,8 +2,8 @@ package Semantic;
 
 public class EntryClassST extends AbstractSymbolTableScopeEntry {
 
-	public EntryClassST(boolean properlyDeclared, SymbolTableScope childScope) {
-		super(properlyDeclared, childScope);
+	public EntryClassST(boolean properlyDeclared, SymbolTableScope childScope, int lineNumber) {
+		super(properlyDeclared, childScope, lineNumber);
 	}
 
 	@Override

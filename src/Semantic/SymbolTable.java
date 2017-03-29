@@ -73,7 +73,7 @@ public class SymbolTable {
 
 		// create a new class entry for the current table with a child as
 		// the classScope
-		AbstractSymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope);
+		AbstractSymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope, locationOfParse);
 
 		if (search(currentScope, identifier, scopeEntry)) {
 
@@ -96,7 +96,7 @@ public class SymbolTable {
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
 
-		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, returnType, 0, null);
+		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, locationOfParse, returnType, 0, null);
 
 		if (search(currentScope, functionName, functionEntry)) {
 
@@ -120,7 +120,7 @@ public class SymbolTable {
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
 
-		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, returnType,
+		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, locationOfParse, returnType,
 				numberOfParameters, parameters);
 
 		if (search(currentScope, functionName, functionEntry)) {
@@ -137,14 +137,14 @@ public class SymbolTable {
 		currentScope = functionScope;
 	}
 
-	public void insertProgramFunctionAndEnterScope() {
+	public void insertProgramFunctionAndEnterScope(int locationOfParse) {
 
 		// Create new scope with parent as current scope
 		SymbolTableScope classScope = new SymbolTableScope("programScope", currentScope);
 
 		// create a new program entry for the current table with a child as the
 		// programScope
-		AbstractSymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope);
+		AbstractSymbolTableScopeEntry scopeEntry = new EntryClassST(true, classScope, locationOfParse);
 		currentScope.insert("program", scopeEntry);
 
 		// Change the scope to the new created scope
@@ -177,11 +177,11 @@ public class SymbolTable {
 			AbstractSymbolTableScopeEntry variableEntry;
 
 			if (numberOfDimensions == 0) {
-				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable, structure,
+				variableEntry = new EntryVariableST(properlyDefinied, null, locationOfParse, kindOfVariable, structure,
 						identifierArray[0], numberOfDimensions);
 			} else {
 				String type = getVariableOrParameterType(identifier);
-				variableEntry = new EntryVariableST(properlyDefinied, null, kindOfVariable, structure, type,
+				variableEntry = new EntryVariableST(properlyDefinied, null, locationOfParse, kindOfVariable, structure, type,
 						numberOfDimensions);
 			}
 
@@ -328,7 +328,8 @@ public class SymbolTable {
 						v.setProperlyDeclared(true);
 					}
 					else{
-						pw_semantic_error_file.println(classEntryType + " is undefined");
+						int locationOfError = entry.getLineNumber();
+						pw_semantic_error_file.println(classEntryType + " is undefined" + " (line " + locationOfError + ")");
 					}
 				}
 

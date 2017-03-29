@@ -10,9 +10,9 @@ public class EntryVariableST extends AbstractSymbolTableScopeEntry {
 	/*
 	 * Used for non arrays
 	 */
-	public EntryVariableST(boolean properlyDeclared, SymbolTableScope childScope, String kindOfVariable,
+	public EntryVariableST(boolean properlyDeclared, SymbolTableScope childScope, int lineNumber, String kindOfVariable,
 			String structure, String type) {
-		super(properlyDeclared, childScope);
+		super(properlyDeclared, childScope, lineNumber);
 		this.kindOfVariable = kindOfVariable;
 		this.structure = structure;
 		this.type = type;
@@ -21,9 +21,9 @@ public class EntryVariableST extends AbstractSymbolTableScopeEntry {
 	/*
 	 * Used for arrays
 	 */
-	public EntryVariableST(boolean properlyDeclared, SymbolTableScope childScope, String kindOfVariable,
+	public EntryVariableST(boolean properlyDeclared, SymbolTableScope childScope, int lineNumber, String kindOfVariable,
 			String structure, String type, int numberOfDimensions) {
-		super(properlyDeclared, childScope);
+		super(properlyDeclared, childScope, lineNumber);
 		this.kindOfVariable = kindOfVariable;
 		this.structure = structure;
 		this.type = type;

@@ -233,7 +233,9 @@ public class SemanticStack {
 
 		else if (semanticAction.equalsIgnoreCase("CreateProgramFunction")) {
 
-			symbolTable.insertProgramFunctionAndEnterScope();
+			int locationInParse = ((Token) semanticStack.peek()).getTokenPosition();
+			
+			symbolTable.insertProgramFunctionAndEnterScope(locationInParse);
 
 		}
 		else if (semanticAction.equalsIgnoreCase("CheckProperlyDeclaredAll")) {

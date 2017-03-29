@@ -6,9 +6,9 @@ public class EntryFunctionST extends AbstractSymbolTableScopeEntry {
 	private int numberOfParameters;
 	private String parameters;
 
-	public EntryFunctionST(boolean properlyDeclared, SymbolTableScope childScope, String returnType,
+	public EntryFunctionST(boolean properlyDeclared, SymbolTableScope childScope, int lineNumber, String returnType,
 			int numberOfParameters, String parameters) {
-		super(properlyDeclared, childScope);
+		super(properlyDeclared, childScope, lineNumber);
 		this.returnType = returnType;
 		this.numberOfParameters = numberOfParameters;
 		this.parameters = parameters;

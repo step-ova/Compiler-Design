@@ -4,12 +4,15 @@ abstract class AbstractSymbolTableScopeEntry {
 	
 	private boolean properlyDeclared;
 	
+	private int lineNumber;
+	
 	private SymbolTableScope childScope;
 
-	public AbstractSymbolTableScopeEntry(boolean properlyDeclared, SymbolTableScope childScope) {
+	public AbstractSymbolTableScopeEntry(boolean properlyDeclared, SymbolTableScope childScope, int lineNumber) {
 		super();
 		this.properlyDeclared = properlyDeclared;
 		this.childScope = childScope;
+		this.lineNumber = lineNumber;
 	}
 
 	public boolean isProperlyDeclared() {
@@ -26,6 +29,14 @@ abstract class AbstractSymbolTableScopeEntry {
 
 	public void setChildScope(SymbolTableScope childScope) {
 		this.childScope = childScope;
+	}
+	
+	public int getLineNumber() {
+		return lineNumber;
+	}
+
+	public void setLineNumber(int lineNumber) {
+		this.lineNumber = lineNumber;
 	}
 	
 	public abstract String printEntry();
