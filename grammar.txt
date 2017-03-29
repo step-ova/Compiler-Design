@@ -1,0 +1,90 @@
+Prog -> ClassDeclStar ProgBody CheckProperlyDeclaredAll.
+ClassDeclStar -> ClassDecl ClassDeclStar | .
+
+ClassDecl -> class id StartClassEntryAndTable opencurlybrac VarDeclStarFuncDefStar closecurlybrac semicolon CloseCurrentScope .
+
+VarDeclStarFuncDefStar -> Type id VarA | .
+VarA -> VarDeclWithoutTypeId VarDeclStarFuncDefStar | FuncDefWithoutTypeId FuncDefStar .
+
+FuncDefStar -> FuncDef FuncDefStar | .
+
+ProgBody -> program CreateProgramFunction FuncBody semicolon FuncDefStar .
+
+FuncHead -> Type id openparen FParams closeparen CreateFuncTable .
+
+FuncDef -> FuncHead FuncBody semicolon .
+FuncDefWithoutTypeId -> openparen FParams closeparen CreateFuncTable FuncBody semicolon .
+
+FuncBody -> opencurlybrac VarDeclStarstatementStar closecurlybrac CloseCurrentScope .
+StatementStar -> Statement StatementStar | .
+
+VarDeclStarstatementStar -> id A1 | TypeWithoutId A2 | StatementWithoutAssignStat StatementStar | .
+A1 -> id VarDeclWithoutTypeId VarDeclStarstatementStar | Var2 AssignStatWithoutVariable semicolon StatementStar .
+A2 -> id VarDeclWithoutTypeId VarDeclStarstatementStar .
+
+VarDeclWithoutTypeId -> ArraySizeStar CreateVariableEntry semicolon .
+ArraySizeStar -> ArraySize ArraySizeStar | .
+
+Statement -> AssignStat semicolon | if openparen Expr closeparen then StatBlock else StatBlock semicolon | for openparen Type id AssignOp Expr semicolon RelExpr semicolon AssignStat closeparen StatBlock semicolon | get openparen Variable closeparen semicolon | put openparen Expr closeparen semicolon | return openparen Expr closeparen semicolon .
+StatementWithoutAssignStat -> if openparen Expr closeparen then StatBlock else StatBlock semicolon | for openparen Type id AssignOp Expr semicolon RelExpr semicolon AssignStat closeparen StatBlock semicolon | get openparen Variable closeparen semicolon | put openparen Expr closeparen semicolon | return openparen Expr closeparen semicolon .
+
+AssignStat -> Variable AssignOp Expr .
+AssignStatWithoutVariable -> AssignOp Expr .
+
+StatBlock -> opencurlybrac StatementStar closecurlybrac | Statement | .
+
+Expr -> ArithExpr RelExpr2 .
+RelExpr2 -> RelOp ArithExpr | .
+
+RelExpr -> ArithExpr RelOp ArithExpr .
+
+ArithExpr -> Term ArithExpr1 .
+ArithExpr1 -> AddOp Term ArithExpr1 | .
+
+Sign -> plussign | minussign .
+
+Term -> Factor Term1 .
+Term1 -> MultOp Factor Term1 | .
+
+Factor -> VariableFactor | Num | openparen ArithExpr closeparen | not Factor | Sign Factor .
+
+VariableFactor -> id Var1 .
+Var1 -> Indice Var1 | dot VariableFactor | openparen AParams closeparen | .
+
+Variable -> id Var2 .
+Var2 -> Indice Var2 | dot VariableFactor | .
+
+Indice -> openbrac ArithExpr closebrac .
+
+ArraySize -> openbrac integer closebrac .
+
+Type -> int | float | id .
+TypeWithoutId -> int | float .
+
+FParams -> Type id ArraySizeStar CreateParameterEntry FParamsTailStar | .
+FParamsTailStar -> FParamsTail FParamsTailStar | .
+
+AParams -> Expr AParamsTailsStar | .
+AParamsTailsStar -> AParamsTails AParamsTailsStar | .
+
+FParamsTail -> comma Type id ArraySizeStar CreateParameterEntry .
+
+AParamsTails -> comma Expr .
+
+AssignOp -> equal .
+
+RelOp -> equalequal | notequal | lessthan | greaterthan | lessthanequal | greaterthanequal . 
+
+AddOp -> plussign | minussign | or .
+
+MultOp -> multiplysign | dividesign | and .
+
+Num -> integer | float .
+
+StartClassEntryAndTable -> .
+CloseCurrentScope -> .
+CreateVariableEntry -> .
+CreateFuncTable -> .
+CreateParameterEntry -> .
+CreateProgramFunction -> .
+CheckProperlyDeclaredAll -> . 
