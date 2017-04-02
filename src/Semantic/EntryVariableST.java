@@ -86,7 +86,12 @@ public class EntryVariableST extends AbstractSymbolTableScopeEntry {
 		} else {
 			sb.append("true");
 		}
-
+		
+		if(!getCodeGenerationIdentifierName().equals("")){
+			sb.append(" | codeGenerationIdentifierName=");
+			sb.append(getCodeGenerationIdentifierName());
+		}
+		
 		return sb.toString();
 	}
 

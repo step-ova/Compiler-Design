@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import CodeGenerator.CodeGenerator;
 import LexicalAnalyzer.Token;
 import Semantic.SemanticStackEntries.InterfaceSemanticStackEntries;
 import Semantic.SemanticStackEntries.ParameterEntry;
@@ -13,14 +14,18 @@ public class SemanticStack {
 	private Stack<InterfaceSemanticStackEntries> semanticStack = new Stack<>();
 
 	private SymbolTable symbolTable;
+	
+	private CodeGenerator codeGenerator;
 
 	// Constructor
 	public SemanticStack() {
 		symbolTable = new SymbolTable();
+		codeGenerator = new CodeGenerator();
 	}
 
 	public SemanticStack(PrintWriter pw_semantic_error_file, PrintWriter pw_symbol_table_file) {
 		symbolTable = new SymbolTable(pw_semantic_error_file, pw_symbol_table_file);
+		codeGenerator = new CodeGenerator();
 	}
 
 	// Used to push terminals
@@ -35,6 +40,7 @@ public class SemanticStack {
 			firstPass(semanticAction);
 			break;
 		case 1:
+			secondPass(semanticAction);
 			break;
 		case 2:
 			break;
@@ -244,6 +250,82 @@ public class SemanticStack {
 
 		}
 		
+	}
+	
+	private void secondPass(String semanticAction){
+		
+		if (semanticAction.equalsIgnoreCase("closeCurrentScope")) {
+			symbolTable.closeCurrentScope();
+
+		}
+		
+		else if (semanticAction.equalsIgnoreCase("GenerateVariableEntry")) {
+			
+			String variableDeclationTokens = getVariableDeclTokens();
+			
+			String[] varDeclSplit = variableDeclationTokens.split(" ");
+			String type = varDeclSplit[0];
+			String identifier = varDeclSplit[1];
+			String codeGeneratedIdentifierName = "";
+			
+			if(type.equalsIgnoreCase("int") && !variableDeclationTokens.contains("[")){
+				codeGeneratedIdentifierName = codeGenerator.generateIntegerDeclaration(identifier);
+			}
+			
+			//insert generated unique variable into symbol table
+			symbolTable.enterScopeAndSetCodeGeneratedIdentifierName(identifier, codeGeneratedIdentifierName);
+			
+		}
+		
+		/*
+		 * These are used only to enter in the scope
+		 */
+		else if (semanticAction.equalsIgnoreCase("startClassEntryAndTable")) {
+
+			Token identifierToken = (Token) semanticStack.pop();
+
+			String classIdentifier = identifierToken.getTokenLexeme();
+			
+			symbolTable.enterScope(classIdentifier);
+			
+		}
+		
+		else if (semanticAction.equalsIgnoreCase("createParameterEntry")) {
+
+			// int locationInParse = ((Token)
+			// semanticStack.peek()).getTokenPosition();
+
+			String accumulatedString = getVariableDeclTokens();
+
+			InterfaceSemanticStackEntries parameterEntry = new ParameterEntry(accumulatedString);
+
+			semanticStack.push(parameterEntry);
+
+		}
+
+		else if (semanticAction.equalsIgnoreCase("createFuncTable")) {
+
+			int locationInParse = ((Token) semanticStack.peek()).getTokenPosition();
+			ArrayList<InterfaceSemanticStackEntries> allParameters = getAllParameters();
+			int numberOfParameters = allParameters.size();
+
+			// Order of pop matters
+			String functionName = popAndGetTokenLexeme();
+			String returnType = popAndGetTokenLexeme();
+
+			symbolTable.enterScope(functionName);
+
+		}
+
+		else if (semanticAction.equalsIgnoreCase("CreateProgramFunction")) {
+
+			symbolTable.enterScope("program");
+
+		}
+	}
+	
+	public void closeCodeGenerationOutputFile(){
+		codeGenerator.closeCodeGenerationOutputFile();
 	}
 
 }

@@ -4,50 +4,50 @@ GlobalScope->
 			Name: var2  | Kind=variable | Structure=number | Type=float | ProperlyDeclared=true | hasChild=false
 			Name: findMin  | Type=Function | ReturnType=int | NumberOfParameters=1| Parameters=int[100] | ProperlyDeclared=true | hasChild=true
 				findMinScope->
-					Name: minValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: minValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=minValue10
 					Name: array  | Kind=parameter | Structure=array | Type=int[100] | NumberOfDimension=1 | ProperlyDeclared=true | hasChild=false
-					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=idx11
 			Name: var1  | Kind=variable | Structure=array | Type=int[4][5][7][8][9][1][0] | NumberOfDimension=7 | ProperlyDeclared=true | hasChild=false
 			Name: findMax  | Type=Function | ReturnType=int | NumberOfParameters=1| Parameters=int[100] | ProperlyDeclared=true | hasChild=true
 				findMaxScope->
 					Name: array  | Kind=parameter | Structure=array | Type=int[100] | NumberOfDimension=1 | ProperlyDeclared=true | hasChild=false
-					Name: maxValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
-					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: maxValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=maxValue8
+					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=idx9
 	Name: Utility2  | Type=Class | ProperlyDeclared=true | hasChild=true
 		Utility2Scope->
 			Name: var2  | Kind=variable | Structure=number | Type=float | ProperlyDeclared=true | hasChild=false
 			Name: findMin  | Type=Function | ReturnType=int | NumberOfParameters=1| Parameters=int[100] | ProperlyDeclared=true | hasChild=true
 				findMinScope->
-					Name: minValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: minValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=minValue6
 					Name: array  | Kind=parameter | Structure=array | Type=int[100] | NumberOfDimension=1 | ProperlyDeclared=true | hasChild=false
-					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=idx7
 			Name: var1  | Kind=variable | Structure=array | Type=int[4][5][7][8][9][1][0] | NumberOfDimension=7 | ProperlyDeclared=true | hasChild=false
 			Name: findMax  | Type=Function | ReturnType=int | NumberOfParameters=1| Parameters=int[100] | ProperlyDeclared=true | hasChild=true
 				findMaxScope->
 					Name: array  | Kind=parameter | Structure=array | Type=int[100] | NumberOfDimension=1 | ProperlyDeclared=true | hasChild=false
-					Name: maxValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
-					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: maxValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=maxValue4
+					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=idx5
 	Name: Utility1  | Type=Class | ProperlyDeclared=true | hasChild=true
 		Utility1Scope->
 			Name: var2  | Kind=variable | Structure=number | Type=float | ProperlyDeclared=true | hasChild=false
 			Name: findMin  | Type=Function | ReturnType=int | NumberOfParameters=1| Parameters=int[100] | ProperlyDeclared=true | hasChild=true
 				findMinScope->
-					Name: minValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: minValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=minValue2
 					Name: array  | Kind=parameter | Structure=array | Type=int[100] | NumberOfDimension=1 | ProperlyDeclared=true | hasChild=false
-					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=idx3
 			Name: var1  | Kind=variable | Structure=array | Type=int[4][5][7][8][9][1][0] | NumberOfDimension=7 | ProperlyDeclared=true | hasChild=false
 			Name: findMax  | Type=Function | ReturnType=int | NumberOfParameters=1| Parameters=int[100] | ProperlyDeclared=true | hasChild=true
 				findMaxScope->
 					Name: array  | Kind=parameter | Structure=array | Type=int[100] | NumberOfDimension=1 | ProperlyDeclared=true | hasChild=false
-					Name: maxValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
-					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: maxValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=maxValue0
+					Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=idx1
 	Name: program  | Type=Class | ProperlyDeclared=true | hasChild=true
 		programScope->
-			Name: minValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+			Name: minValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=minValue14
 			Name: arrayUtility  | Kind=variable | Structure=class | Type=Utility[2][3][6][7] | NumberOfDimension=4 | ProperlyDeclared=false | hasChild=false
-			Name: maxValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+			Name: maxValue  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=maxValue13
 			Name: utility  | Kind=variable | Structure=class | Type=Utility | ProperlyDeclared=false | hasChild=false
-			Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+			Name: idx  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=idx12
 			Name: sample  | Kind=variable | Structure=array | Type=int[100] | NumberOfDimension=1 | ProperlyDeclared=true | hasChild=false
 	Name: randomize  | Type=Function | ReturnType=float | NumberOfParameters=0 | ProperlyDeclared=true | hasChild=true
 		randomizeScope->

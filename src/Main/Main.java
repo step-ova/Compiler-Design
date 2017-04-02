@@ -50,15 +50,16 @@ public class Main {
 		try {
 			p.parse();
 			
-			incrementParse(lnr, p);
+			resetParse(lnr, p);
 			
 			p.parse();
+			
 		} catch (InvalidTokenException e) {
 			e.printStackTrace();
 		}
 		
+		p.printCodeGeneration();
 		p.printSymbolTable();
-		
 		closeOutputFiles();
 		
 
@@ -115,13 +116,9 @@ public class Main {
 		return lnr;
 	}
 	
-	/*
-	 * Increments the parse count
-	 */
-	public static void incrementParse(LineNumberReader lnr, Parser p){
+	public static void resetParse(LineNumberReader lnr, Parser p){
 		bais.reset(); //2nd pass
 		lnr.setLineNumber(0); //reset line
-		p.incrementParseCount();
 	}
 
 }

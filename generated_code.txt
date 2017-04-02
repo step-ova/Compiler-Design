@@ -1,0 +1,19 @@
+entry
+hlt
+
+maxValue0	dw	0
+idx1	dw	0
+minValue2	dw	0
+idx3	dw	0
+maxValue4	dw	0
+idx5	dw	0
+minValue6	dw	0
+idx7	dw	0
+maxValue8	dw	0
+idx9	dw	0
+minValue10	dw	0
+idx11	dw	0
+idx12	dw	0
+maxValue13	dw	0
+minValue14	dw	0
+

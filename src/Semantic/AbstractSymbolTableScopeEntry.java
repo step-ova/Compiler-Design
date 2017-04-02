@@ -6,6 +6,8 @@ abstract class AbstractSymbolTableScopeEntry {
 	
 	private int lineNumber;
 	
+	private String codeGenerationIdentifierName;
+	
 	private SymbolTableScope childScope;
 
 	public AbstractSymbolTableScopeEntry(boolean properlyDeclared, SymbolTableScope childScope, int lineNumber) {
@@ -13,6 +15,15 @@ abstract class AbstractSymbolTableScopeEntry {
 		this.properlyDeclared = properlyDeclared;
 		this.childScope = childScope;
 		this.lineNumber = lineNumber;
+		codeGenerationIdentifierName = "";
+	}
+
+	public String getCodeGenerationIdentifierName() {
+		return codeGenerationIdentifierName;
+	}
+
+	public void setCodeGenerationIdentifierName(String codeGenerationIdentifierName) {
+		this.codeGenerationIdentifierName = codeGenerationIdentifierName;
 	}
 
 	public boolean isProperlyDeclared() {

@@ -340,5 +340,38 @@ public class SymbolTable {
 	public void checkIfAllIsProperlyDeclared() {
 		tryToProperlyDeclareAllEntriesInSymbolTable(globalScope);
 	}
+	
+	/*
+	 * Enters the identifier's scope if it exists by changing the
+	 * current scope it is in. Otherwise it adds the code generated
+	 * identifier name to the symbol table
+	 */
+	public void enterScopeAndSetCodeGeneratedIdentifierName(String identifier, String codeGeneratedIdentifierName){
+		
+		if(currentScope.hasSymbol(identifier) ){
+			AbstractSymbolTableScopeEntry absSTSE = currentScope.getScopeEntry(identifier);
+			Class<?> identifierClass = absSTSE.getClass();
+			
+			//Variable entries are the only ones that do not have child scopes
+			if(!(identifierClass == EntryVariableST.class)){
+				currentScope = absSTSE.getChildScope();
+			}
+			
+			//set code generated identifier name
+			absSTSE.setCodeGenerationIdentifierName(codeGeneratedIdentifierName);
+		}
+	}
+	
+	public void enterScope(String identifier){
+		if(currentScope.hasSymbol(identifier) ){
+			AbstractSymbolTableScopeEntry absSTSE = currentScope.getScopeEntry(identifier);
+			Class<?> identifierClass = absSTSE.getClass();
+			
+			//Variable entries are the only ones that do not have child scopes
+			if(!(identifierClass == EntryVariableST.class)){
+				currentScope = absSTSE.getChildScope();
+			}
+		}
+	}
 
 }

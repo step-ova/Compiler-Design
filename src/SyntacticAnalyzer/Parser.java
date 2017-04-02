@@ -23,7 +23,7 @@ public class Parser {
 	private PrintWriter pw_derivation_file;
 	private PrintWriter pw_syntax_error_file;
 	
-	int parseCount = 0;
+	private int parseCount = 0;
 
 	@SuppressWarnings("rawtypes")
 	Stack<Enum> stack = new Stack<Enum>();
@@ -170,7 +170,7 @@ public class Parser {
 		semanticStack.printSymbolTable();
 	}
 	
-	public void incrementParseCount(){
-		parseCount++;
+	public void printCodeGeneration(){
+		semanticStack.closeCodeGenerationOutputFile();
 	}
 }

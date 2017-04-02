@@ -121,6 +121,7 @@ public class Symbols {
 		CreateProgramFunction,
 		CreateParameterEntry,
 		CheckProperlyDeclaredAll,
+		GenerateVariableEntry,
 
 	
 	}

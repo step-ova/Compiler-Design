@@ -49,6 +49,7 @@ CLOSEBRAC
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarFuncDefStar
 Type
@@ -59,6 +60,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarFuncDefStar
 Type
@@ -94,6 +96,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 TypeWithoutId
@@ -104,6 +107,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 ID
@@ -381,6 +385,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 TypeWithoutId
@@ -391,6 +396,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 ID
@@ -698,6 +704,7 @@ CLOSEBRAC
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarFuncDefStar
 Type
@@ -708,6 +715,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarFuncDefStar
 Type
@@ -743,6 +751,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 TypeWithoutId
@@ -753,6 +762,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 ID
@@ -1030,6 +1040,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 TypeWithoutId
@@ -1040,6 +1051,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 ID
@@ -1347,6 +1359,7 @@ CLOSEBRAC
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarFuncDefStar
 Type
@@ -1357,6 +1370,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarFuncDefStar
 Type
@@ -1392,6 +1406,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 TypeWithoutId
@@ -1402,6 +1417,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 ID
@@ -1679,6 +1695,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 TypeWithoutId
@@ -1689,6 +1706,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 ID
@@ -1967,6 +1985,7 @@ CLOSEBRAC
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 TypeWithoutId
@@ -1977,6 +1996,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 TypeWithoutId
@@ -1987,6 +2007,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 TypeWithoutId
@@ -1997,6 +2018,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 ID
@@ -2006,6 +2028,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 ID
@@ -2035,6 +2058,7 @@ CLOSEBRAC
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 StatementWithoutAssignStat
@@ -2663,6 +2687,7 @@ VarDeclWithoutTypeId
 ArraySizeStar
 EPSILON
 createVariableEntry
+GenerateVariableEntry
 SEMICOLON
 VarDeclStarstatementStar
 ID

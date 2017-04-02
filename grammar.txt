@@ -22,7 +22,7 @@ VarDeclStarstatementStar -> id A1 | TypeWithoutId A2 | StatementWithoutAssignSta
 A1 -> id VarDeclWithoutTypeId VarDeclStarstatementStar | Var2 AssignStatWithoutVariable semicolon StatementStar .
 A2 -> id VarDeclWithoutTypeId VarDeclStarstatementStar .
 
-VarDeclWithoutTypeId -> ArraySizeStar CreateVariableEntry semicolon .
+VarDeclWithoutTypeId -> ArraySizeStar CreateVariableEntry GenerateVariableEntry semicolon .
 ArraySizeStar -> ArraySize ArraySizeStar | .
 
 Statement -> AssignStat semicolon | if openparen Expr closeparen then StatBlock else StatBlock semicolon | for openparen Type id AssignOp Expr semicolon RelExpr semicolon AssignStat closeparen StatBlock semicolon | get openparen Variable closeparen semicolon | put openparen Expr closeparen semicolon | return openparen Expr closeparen semicolon .
@@ -88,3 +88,4 @@ CreateFuncTable -> .
 CreateParameterEntry -> .
 CreateProgramFunction -> .
 CheckProperlyDeclaredAll -> . 
+GenerateVariableEntry -> .

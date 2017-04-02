@@ -13,7 +13,7 @@ class id StartClassEntryAndTable opencurlybrac VarDeclStarFuncDefStar closecurly
 ,id A1,,epsilon,,,,,StatementWithoutAssignStat StatementStar,,,StatementWithoutAssignStat StatementStar,StatementWithoutAssignStat StatementStar,StatementWithoutAssignStat StatementStar,StatementWithoutAssignStat StatementStar,,,,,,,,TypeWithoutId A2,TypeWithoutId A2,,,,,,,,,,,,,
 ,id VarDeclWithoutTypeId VarDeclStarstatementStar,,,,,,,,,,,,,,,,,Var2 AssignStatWithoutVariable semicolon StatementStar,Var2 AssignStatWithoutVariable semicolon StatementStar,,,,,,Var2 AssignStatWithoutVariable semicolon StatementStar,,,,,,,,,,,
 ,id VarDeclWithoutTypeId VarDeclStarstatementStar,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,ArraySizeStar CreateVariableEntry semicolon,,,,,,,,,,,,,,,ArraySizeStar CreateVariableEntry semicolon,,,,,,,,,,,,,,,,,
+,,,,ArraySizeStar CreateVariableEntry GenerateVariableEntry semicolon,,,,,,,,,,,,,,,ArraySizeStar CreateVariableEntry GenerateVariableEntry semicolon,,,,,,,,,,,,,,,,,
 ,,,,epsilon,,,epsilon,,,,,,,,,,,,ArraySize ArraySizeStar,,,,,epsilon,,,,,,,,,,,,
 ,AssignStat semicolon,,,,,,,if openparen Expr closeparen then StatBlock else StatBlock semicolon,,,for openparen Type id AssignOp Expr semicolon RelExpr semicolon AssignStat closeparen StatBlock semicolon,get openparen Variable closeparen semicolon,put openparen Expr closeparen semicolon,return openparen Expr closeparen semicolon,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,if openparen Expr closeparen then StatBlock else StatBlock semicolon,,,for openparen Type id AssignOp Expr semicolon RelExpr semicolon AssignStat closeparen StatBlock semicolon,get openparen Variable closeparen semicolon,put openparen Expr closeparen semicolon,return openparen Expr closeparen semicolon,,,,,,,,,,,,,,,,,,,,,,
@@ -55,3 +55,4 @@ epsilon,,,,epsilon,epsilon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,epsilon,,,,,,,,,,,,,,,,,epsilon,,,,,,,,,,,,
 ,,epsilon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,epsilon
+,,,,epsilon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
