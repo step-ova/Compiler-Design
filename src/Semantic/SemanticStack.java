@@ -2,6 +2,7 @@ package Semantic;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 
 import CodeGenerator.CodeGenerator;
@@ -240,43 +241,52 @@ public class SemanticStack {
 		else if (semanticAction.equalsIgnoreCase("CreateProgramFunction")) {
 
 			int locationInParse = ((Token) semanticStack.peek()).getTokenPosition();
-			
+
 			symbolTable.insertProgramFunctionAndEnterScope(locationInParse);
 
-		}
-		else if (semanticAction.equalsIgnoreCase("CheckProperlyDeclaredAll")) {
+		} else if (semanticAction.equalsIgnoreCase("CheckProperlyDeclaredAll")) {
 
 			symbolTable.checkIfAllIsProperlyDeclared();
 
 		}
-		
+
 	}
-	
-	private void secondPass(String semanticAction){
-		
+
+	private void secondPass(String semanticAction) {
+
 		if (semanticAction.equalsIgnoreCase("closeCurrentScope")) {
 			symbolTable.closeCurrentScope();
 
 		}
-		
+
 		else if (semanticAction.equalsIgnoreCase("GenerateVariableEntry")) {
-			
+
 			String variableDeclationTokens = getVariableDeclTokens();
-			
+
 			String[] varDeclSplit = variableDeclationTokens.split(" ");
 			String type = varDeclSplit[0];
 			String identifier = varDeclSplit[1];
 			String codeGeneratedIdentifierName = "";
-			
-			if(type.equalsIgnoreCase("int") && !variableDeclationTokens.contains("[")){
+
+			if (type.equalsIgnoreCase("int") && !variableDeclationTokens.contains("[")) {
 				codeGeneratedIdentifierName = codeGenerator.generateIntegerDeclaration(identifier);
 			}
-			
-			//insert generated unique variable into symbol table
+
+			// insert generated unique variable into symbol table
 			symbolTable.enterScopeAndSetCodeGeneratedIdentifierName(identifier, codeGeneratedIdentifierName);
-			
+
 		}
-		
+
+		else if (semanticAction.equalsIgnoreCase("CheckVariable")) {
+
+			ArrayList<Token> variable = getVariable();
+			int size = variable.size();
+
+			if (size == 1) {
+				symbolTable.searchHigherScopesSingleVariableOnly(variable.get(0));
+			}
+
+		}
 		/*
 		 * These are used only to enter in the scope
 		 */
@@ -285,11 +295,11 @@ public class SemanticStack {
 			Token identifierToken = (Token) semanticStack.pop();
 
 			String classIdentifier = identifierToken.getTokenLexeme();
-			
+
 			symbolTable.enterScope(classIdentifier);
-			
+
 		}
-		
+
 		else if (semanticAction.equalsIgnoreCase("createParameterEntry")) {
 
 			// int locationInParse = ((Token)
@@ -323,9 +333,51 @@ public class SemanticStack {
 
 		}
 	}
-	
-	public void closeCodeGenerationOutputFile(){
+
+	public void closeCodeGenerationOutputFile() {
 		codeGenerator.closeCodeGenerationOutputFile();
+	}
+
+	/*
+	 * Gets tokens from the stack
+	 */
+	private ArrayList<Token> getVariable() {
+
+		ArrayList<Token> listOfTokens = new ArrayList<Token>();
+
+		while (true) {
+			InterfaceSemanticStackEntries topOfStack = null;
+			while (!isSemanticStackTopOfTokenType("ID")) {
+				addTokenToArrayListForVariableChecking(listOfTokens, topOfStack);
+			}
+
+			// append id too
+			addTokenToArrayListForVariableChecking(listOfTokens, topOfStack);
+
+			// If we have a dot, then there is more to accumulate
+			if (isSemanticStackTopOfTokenType("dot")) {
+				continue;
+			} else {
+				break;
+			}
+
+		}
+
+		Collections.reverse(listOfTokens);
+		return listOfTokens;
+
+	}
+
+	/*
+	 * used for variableChecking
+	 */
+	private void addTokenToArrayListForVariableChecking(ArrayList<Token> listOfTokens,
+			InterfaceSemanticStackEntries topOfStack) {
+		topOfStack = semanticStack.pop();
+		if (topOfStack.getClass() == Token.class) {
+			Token top = (Token) topOfStack;
+			listOfTokens.add(top);
+		}
 	}
 
 }

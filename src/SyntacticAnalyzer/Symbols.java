@@ -122,6 +122,7 @@ public class Symbols {
 		CreateParameterEntry,
 		CheckProperlyDeclaredAll,
 		GenerateVariableEntry,
+		CheckVariable ,
 
 	
 	}

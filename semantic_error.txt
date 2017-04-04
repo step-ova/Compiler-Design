@@ -1,2 +1,14 @@
 Utility is undefined (line 106)
 Utility is undefined (line 105)
+undefinied variable maxValue at line 25
+undefinied variable maxValue at line 26
+undefinied variable maxValue at line 58
+undefinied variable maxValue at line 59
+undefinied variable maxValue at line 91
+undefinied variable maxValue at line 92
+undefinied variable t at line 107
+undefinied variable t at line 107
+undefinied variable t at line 107
+undefinied variable t at line 109
+undefinied variable t at line 110
+undefinied variable t at line 110

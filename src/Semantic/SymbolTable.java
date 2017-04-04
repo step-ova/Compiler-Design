@@ -2,6 +2,8 @@ package Semantic;
 
 import java.io.PrintWriter;
 
+import LexicalAnalyzer.Token;
+
 public class SymbolTable {
 
 	// parent = null
@@ -41,6 +43,48 @@ public class SymbolTable {
 
 		return hasSymbol;
 
+	}
+	
+	/*
+	 * returns true if found, but if it is in the same scope
+	 * then return true if it was defined before it was used  
+	 * 
+	 */
+	public boolean searchHigherScopesSingleVariableOnly(Token tok){
+		SymbolTableScope searchCurrentScope = currentScope;
+		//token
+		String symbol = tok.getTokenLexeme();
+		int lineNumber = tok.getTokenPosition();
+		
+		//Entry
+		boolean hasSymbol = searchCurrentScope.hasSymbol(symbol);
+		
+		if(hasSymbol){
+			//return true if it was defined before it was used
+			int scopeEntryLineNumber = searchCurrentScope.getScopeEntry(symbol).getLineNumber();
+			
+			if(scopeEntryLineNumber <= lineNumber){
+				return true;
+			}
+			else{
+				pw_semantic_error_file.println("forward declaration variable " + symbol + " at line " + lineNumber);
+				return false;
+			}
+		}
+		
+		while (!hasSymbol) {
+			searchCurrentScope = searchCurrentScope.getParentScope();
+
+			if (searchCurrentScope == null) {
+				pw_semantic_error_file.println("undefinied variable " + symbol + " at line " + lineNumber);
+				return false;
+			}
+
+			hasSymbol = searchCurrentScope.hasSymbol(symbol);
+		}
+		
+		return hasSymbol;
+		
 	}
 
 	/*
