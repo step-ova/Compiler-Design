@@ -399,20 +399,6 @@ public class SemanticStack {
 		}
 	}
 	
-	/*
-	 * returns the the index of the first dot
-	 */
-	private int indexOfDot(ArrayList<Token> tokens){
-		
-		for(int i = 0; i < tokens.size(); i++){
-			if(tokens.get(i).getTokenName().equalsIgnoreCase("dot")){
-				return i;
-			}
-		}
-		
-		return -1;
-
-	}
 	
 	private String getTokensAsString(ArrayList<Token> tokens){
 		StringBuilder sb = new StringBuilder();
