@@ -1,6 +1,7 @@
 package Semantic;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import LexicalAnalyzer.Token;
 
@@ -44,34 +45,33 @@ public class SymbolTable {
 		return hasSymbol;
 
 	}
-	
+
 	/*
-	 * returns true if found, but if it is in the same scope
-	 * then return true if it was defined before it was used  
+	 * returns true if found, but if it is in the same scope then return true if
+	 * it was defined before it was used
 	 * 
 	 */
-	public boolean searchHigherScopesSingleVariableOnly(Token tok){
+	public boolean searchHigherScopesSingleVariableOnly(Token tok) {
 		SymbolTableScope searchCurrentScope = currentScope;
-		//token
+		// token
 		String symbol = tok.getTokenLexeme();
 		int lineNumber = tok.getTokenPosition();
-		
-		//Entry
+
+		// Entry
 		boolean hasSymbol = searchCurrentScope.hasSymbol(symbol);
-		
-		if(hasSymbol){
-			//return true if it was defined before it was used
+
+		if (hasSymbol) {
+			// return true if it was defined before it was used
 			int scopeEntryLineNumber = searchCurrentScope.getScopeEntry(symbol).getLineNumber();
-			
-			if(scopeEntryLineNumber <= lineNumber){
+
+			if (scopeEntryLineNumber <= lineNumber) {
 				return true;
-			}
-			else{
+			} else {
 				pw_semantic_error_file.println("forward declaration variable " + symbol + " at line " + lineNumber);
 				return false;
 			}
 		}
-		
+
 		while (!hasSymbol) {
 			searchCurrentScope = searchCurrentScope.getParentScope();
 
@@ -82,9 +82,70 @@ public class SymbolTable {
 
 			hasSymbol = searchCurrentScope.hasSymbol(symbol);
 		}
-		
+
 		return hasSymbol;
-		
+
+	}
+
+	public boolean searchHigherScopesArrayWithoutClass(ArrayList<Token> tokens, String s) {
+		SymbolTableScope searchCurrentScope = currentScope;
+		// token
+		String symbol = tokens.get(0).getTokenLexeme();
+		int lineNumber = tokens.get(0).getTokenPosition();
+
+		int numberOfDimensions = checkNumberOfDimensionsArray(s);
+
+		// Entry
+		boolean hasSymbol = searchCurrentScope.hasSymbol(symbol);
+
+		if (hasSymbol) {
+			// return true if it was defined before it was used
+			int scopeEntryLineNumber = searchCurrentScope.getScopeEntry(symbol).getLineNumber();
+
+			EntryVariableST entry = (EntryVariableST) searchCurrentScope.getScopeEntry(symbol);
+
+			int numberOfDimensionsEntry = entry.getNumberOfDimensions();
+
+			if (numberOfDimensions > numberOfDimensionsEntry) {
+				pw_semantic_error_file
+						.println("wrong number of dimensions variable " + symbol + " at line " + lineNumber);
+				return false;
+			}
+
+			else if (scopeEntryLineNumber <= lineNumber) {
+				return true;
+			} else {
+				pw_semantic_error_file.println("forward declaration variable " + symbol + " at line " + lineNumber);
+				return false;
+			}
+		}
+
+		while (!hasSymbol) {
+			searchCurrentScope = searchCurrentScope.getParentScope();
+
+			if (searchCurrentScope == null) {
+				pw_semantic_error_file.println("undefinied variable " + symbol + " at line " + lineNumber);
+				return false;
+			}
+
+			hasSymbol = searchCurrentScope.hasSymbol(symbol);
+		}
+
+		// After the loop if it has found the symbol, then check correct number
+		// of lines only
+		if (hasSymbol) {
+			EntryVariableST entry = (EntryVariableST) searchCurrentScope.getScopeEntry(symbol);
+
+			int numberOfDimensionsEntry = entry.getNumberOfDimensions();
+
+			if (numberOfDimensions > numberOfDimensionsEntry) {
+				pw_semantic_error_file
+						.println("wrong number of dimensions variable " + symbol + " at line " + lineNumber);
+			}
+		}
+
+		return hasSymbol;
+
 	}
 
 	/*
@@ -140,7 +201,8 @@ public class SymbolTable {
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
 
-		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, locationOfParse, returnType, 0, null);
+		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, locationOfParse,
+				returnType, 0, null);
 
 		if (search(currentScope, functionName, functionEntry)) {
 
@@ -164,8 +226,8 @@ public class SymbolTable {
 
 		SymbolTableScope functionScope = new SymbolTableScope(identifierScope, currentScope);
 
-		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, locationOfParse, returnType,
-				numberOfParameters, parameters);
+		AbstractSymbolTableScopeEntry functionEntry = new EntryFunctionST(true, functionScope, locationOfParse,
+				returnType, numberOfParameters, parameters);
 
 		if (search(currentScope, functionName, functionEntry)) {
 
@@ -225,8 +287,8 @@ public class SymbolTable {
 						identifierArray[0], numberOfDimensions);
 			} else {
 				String type = getVariableOrParameterType(identifier);
-				variableEntry = new EntryVariableST(properlyDefinied, null, locationOfParse, kindOfVariable, structure, type,
-						numberOfDimensions);
+				variableEntry = new EntryVariableST(properlyDefinied, null, locationOfParse, kindOfVariable, structure,
+						type, numberOfDimensions);
 			}
 
 			if (search(currentScope, identifierArray[1], variableEntry)) {
@@ -370,10 +432,10 @@ public class SymbolTable {
 					String classEntryType = entry.getTypeWithoutArray();
 					if (checkIfClassNameIsDefinied(classEntryType)) {
 						v.setProperlyDeclared(true);
-					}
-					else{
+					} else {
 						int locationOfError = entry.getLineNumber();
-						pw_semantic_error_file.println(classEntryType + " is undefined" + " (line " + locationOfError + ")");
+						pw_semantic_error_file
+								.println(classEntryType + " is undefined" + " (line " + locationOfError + ")");
 					}
 				}
 
@@ -384,35 +446,35 @@ public class SymbolTable {
 	public void checkIfAllIsProperlyDeclared() {
 		tryToProperlyDeclareAllEntriesInSymbolTable(globalScope);
 	}
-	
+
 	/*
-	 * Enters the identifier's scope if it exists by changing the
-	 * current scope it is in. Otherwise it adds the code generated
-	 * identifier name to the symbol table
+	 * Enters the identifier's scope if it exists by changing the current scope
+	 * it is in. Otherwise it adds the code generated identifier name to the
+	 * symbol table
 	 */
-	public void enterScopeAndSetCodeGeneratedIdentifierName(String identifier, String codeGeneratedIdentifierName){
-		
-		if(currentScope.hasSymbol(identifier) ){
+	public void enterScopeAndSetCodeGeneratedIdentifierName(String identifier, String codeGeneratedIdentifierName) {
+
+		if (currentScope.hasSymbol(identifier)) {
 			AbstractSymbolTableScopeEntry absSTSE = currentScope.getScopeEntry(identifier);
 			Class<?> identifierClass = absSTSE.getClass();
-			
-			//Variable entries are the only ones that do not have child scopes
-			if(!(identifierClass == EntryVariableST.class)){
+
+			// Variable entries are the only ones that do not have child scopes
+			if (!(identifierClass == EntryVariableST.class)) {
 				currentScope = absSTSE.getChildScope();
 			}
-			
-			//set code generated identifier name
+
+			// set code generated identifier name
 			absSTSE.setCodeGenerationIdentifierName(codeGeneratedIdentifierName);
 		}
 	}
-	
-	public void enterScope(String identifier){
-		if(currentScope.hasSymbol(identifier) ){
+
+	public void enterScope(String identifier) {
+		if (currentScope.hasSymbol(identifier)) {
 			AbstractSymbolTableScopeEntry absSTSE = currentScope.getScopeEntry(identifier);
 			Class<?> identifierClass = absSTSE.getClass();
-			
-			//Variable entries are the only ones that do not have child scopes
-			if(!(identifierClass == EntryVariableST.class)){
+
+			// Variable entries are the only ones that do not have child scopes
+			if (!(identifierClass == EntryVariableST.class)) {
 				currentScope = absSTSE.getChildScope();
 			}
 		}

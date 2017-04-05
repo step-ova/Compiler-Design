@@ -15,7 +15,7 @@ public class SemanticStack {
 	private Stack<InterfaceSemanticStackEntries> semanticStack = new Stack<>();
 
 	private SymbolTable symbolTable;
-	
+
 	private CodeGenerator codeGenerator;
 
 	// Constructor
@@ -280,10 +280,28 @@ public class SemanticStack {
 		else if (semanticAction.equalsIgnoreCase("CheckVariable")) {
 
 			ArrayList<Token> variable = getVariable();
+			
 			int size = variable.size();
 
 			if (size == 1) {
 				symbolTable.searchHigherScopesSingleVariableOnly(variable.get(0));
+			}
+			else{
+				
+				String s = getTokensAsString(variable);
+				
+				//Then we are dealing with a class
+				if(s.contains(".")){
+					
+				}
+				
+				//we have an array
+				else{
+
+					symbolTable.searchHigherScopesArrayWithoutClass(variable, s);
+					
+				}
+				
 			}
 
 		}
@@ -362,8 +380,9 @@ public class SemanticStack {
 			}
 
 		}
-
+		
 		Collections.reverse(listOfTokens);
+
 		return listOfTokens;
 
 	}
@@ -379,5 +398,30 @@ public class SemanticStack {
 			listOfTokens.add(top);
 		}
 	}
+	
+	/*
+	 * returns the the index of the first dot
+	 */
+	private int indexOfDot(ArrayList<Token> tokens){
+		
+		for(int i = 0; i < tokens.size(); i++){
+			if(tokens.get(i).getTokenName().equalsIgnoreCase("dot")){
+				return i;
+			}
+		}
+		
+		return -1;
 
+	}
+	
+	private String getTokensAsString(ArrayList<Token> tokens){
+		StringBuilder sb = new StringBuilder();
+		for(Token t : tokens){
+			sb.append(t.getTokenLexeme());
+			sb.append(' ');
+		}
+		sb.setLength(sb.length()-1);
+		
+		return sb.toString();
+	}
 }
