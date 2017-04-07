@@ -290,9 +290,9 @@ public class SemanticStack {
 				
 				String s = getTokensAsString(variable);
 				
-				//Then we are dealing with a class
+				//TODO:Then we are dealing with a class
 				if(s.contains(".")){
-					
+					ArrayList<Integer> indicesOfDots = getIndexOfDots(s);
 				}
 				
 				//we have an array
@@ -409,5 +409,19 @@ public class SemanticStack {
 		sb.setLength(sb.length()-1);
 		
 		return sb.toString();
+	}
+	
+	private ArrayList<Integer>getIndexOfDots(String s){
+		String[] split = s.split(" ");
+		ArrayList<Integer> indices = new ArrayList<Integer>();
+		
+		for(int i = 0; i< split.length; i++){
+			if(split[i].equals(".")){
+				indices.add(i);
+			}
+		}
+
+		return indices;
+		
 	}
 }
