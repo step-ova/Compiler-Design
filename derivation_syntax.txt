@@ -2226,6 +2226,7 @@ OPENPAREN
 AParams
 EPSILON
 CLOSEPAREN
+CheckFunction
 Term1
 EPSILON
 ArithExpr1
@@ -2281,6 +2282,7 @@ EPSILON
 AParamsTailsStar
 EPSILON
 CLOSEPAREN
+CheckFunction
 Term1
 EPSILON
 ArithExpr1
@@ -2327,6 +2329,7 @@ EPSILON
 AParamsTailsStar
 EPSILON
 CLOSEPAREN
+CheckFunction
 Term1
 EPSILON
 ArithExpr1

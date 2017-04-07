@@ -123,6 +123,7 @@ public class Symbols {
 		CheckProperlyDeclaredAll,
 		GenerateVariableEntry,
 		CheckVariable ,
+		CheckFunction,
 
 	
 	}

@@ -49,7 +49,7 @@ Term1 -> MultOp Factor Term1 | .
 Factor -> VariableFactor | Num | openparen ArithExpr closeparen | not Factor | Sign Factor .
 
 VariableFactor -> id Var1 .
-Var1 -> Indice Var1 | dot VariableFactor | openparen AParams closeparen | CheckVariable .
+Var1 -> Indice Var1 | dot VariableFactor | openparen AParams closeparen CheckFunction | CheckVariable .
 
 Variable -> id Var2 .
 Var2 -> Indice Var2 | dot VariableFactor | CheckVariable .
@@ -90,3 +90,4 @@ CreateProgramFunction -> .
 CheckProperlyDeclaredAll -> . 
 GenerateVariableEntry -> .
 CheckVariable -> .
+CheckFunction -> .
