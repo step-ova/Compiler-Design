@@ -374,6 +374,40 @@ public class SemanticStack {
 				
 			}
 			
+			//Then we have an assignStat of an expression
+			else if(nextToken.getTokenLexeme().equals("=")){
+				
+				Token v1 = expresssionTokens.remove(expresssionTokens.size()-1);
+				Token op = expresssionTokens.remove(expresssionTokens.size()-1);
+				Token v2 = expresssionTokens.remove(expresssionTokens.size()-1);
+				
+				String val1 = v1.getTokenName().equalsIgnoreCase("integer") ? ""+ v1.getTokenLexeme() :  symbolTable.getVariableCodeGenerationIdentifierName(v1.getTokenLexeme());
+				String val2 = v2.getTokenName().equalsIgnoreCase("integer") ? ""+ v2.getTokenLexeme() :  symbolTable.getVariableCodeGenerationIdentifierName(v2.getTokenLexeme());
+				
+				
+				String prev = codeGenerator.generateExpression(val2, op.getTokenLexeme(), val1);
+				
+				while(expresssionTokens.size() != 0){
+					op = expresssionTokens.remove(expresssionTokens.size()-1);
+					v2 = expresssionTokens.remove(expresssionTokens.size()-1);
+					
+					val2 = v2.getTokenName().equalsIgnoreCase("integer") ? ""+ v2.getTokenLexeme() :  symbolTable.getVariableCodeGenerationIdentifierName(v2.getTokenLexeme());
+					prev = codeGenerator.generateExpression(val2, op.getTokenLexeme(), prev);
+				}
+				
+				semanticStack.pop(); //pop =
+				//LHS
+				Token identifier = (Token) semanticStack.pop();
+				String lhsCodeGenerationIdentifierName = symbolTable.getVariableCodeGenerationIdentifierName(identifier.getTokenLexeme());
+				
+				codeGenerator.assignStatSingleVariable(lhsCodeGenerationIdentifierName, prev);
+			}
+			
+			//we have a general expression 
+			else{
+				
+			}
+			
 		}
 		
 	}
