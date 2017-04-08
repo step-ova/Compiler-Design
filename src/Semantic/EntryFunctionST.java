@@ -40,4 +40,28 @@ public class EntryFunctionST extends AbstractSymbolTableScopeEntry {
 		return sb.toString();
 	}
 
+	public String getReturnType() {
+		return returnType;
+	}
+
+	public int getNumberOfParameters() {
+		return numberOfParameters;
+	}
+
+	public String getParameters() {
+		return parameters;
+	}
+
+	public void setReturnType(String returnType) {
+		this.returnType = returnType;
+	}
+
+	public void setNumberOfParameters(int numberOfParameters) {
+		this.numberOfParameters = numberOfParameters;
+	}
+
+	public void setParameters(String parameters) {
+		this.parameters = parameters;
+	}
+
 }

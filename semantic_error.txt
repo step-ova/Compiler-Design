@@ -10,5 +10,8 @@ undefinied variable t at line 107
 undefinied variable t at line 107
 undefinied variable t at line 107
 undefinied variable t at line 109
+undefinied variable t at line 109
+undefinied variable t at line 110
+undefinied variable t at line 110
 undefinied variable t at line 110
 undefinied variable t at line 110

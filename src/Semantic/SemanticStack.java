@@ -305,6 +305,36 @@ public class SemanticStack {
 			}
 
 		}
+		
+		else if (semanticAction.equalsIgnoreCase("CheckFunction")) {
+
+			ArrayList<Token> variable = getFunction();
+			Token checkIfFirstParen =variable.get(1);
+			
+			String s = getTokensAsString(variable);
+			
+			//Then we are not dealing with any class calls
+			//Only check if the highest scope has the function with the right parameters
+			if(checkIfFirstParen.getTokenLexeme().equalsIgnoreCase("(")){
+						
+				//then no variables are involved
+				if(s.contains("( )")){
+					symbolTable.checkIfFuntionWithoutParametersIsProperlyDeclared(variable.get(0));
+				}
+				
+				//then variables are involved
+				else{
+					symbolTable.checkIfFuntionWithParametersIsProperlyDeclared(variable, getIndexOfParameters(s), s);
+				}
+			}
+			
+			//TODO: we have something in the form class.function()
+			else{
+				
+			}
+
+		}
+		
 		/*
 		 * These are used only to enter in the scope
 		 */
@@ -382,6 +412,44 @@ public class SemanticStack {
 		}
 		
 		Collections.reverse(listOfTokens);
+		
+		pushAllTokensBackToStack(listOfTokens);
+		
+
+		return listOfTokens;
+
+	}
+	
+	/*
+	 * Get tokens associated with function call
+	 * This includes class variables calling a function
+	 * e.g: class.function(a,b,c)
+	 */
+	private ArrayList<Token> getFunction() {
+
+		ArrayList<Token> listOfTokens = new ArrayList<Token>();
+
+		while (true) {
+			InterfaceSemanticStackEntries topOfStack = null;
+			while (!isSemanticStackTopOfTokenType("ID")) {
+				addTokenToArrayListForVariableChecking(listOfTokens, topOfStack);
+			}
+
+			// append id too
+			addTokenToArrayListForVariableChecking(listOfTokens, topOfStack);
+
+			// If we have a dot, then there is more to accumulate
+			if (isSemanticStackTopOfTokenType("dot")||isSemanticStackTopOfTokenType("openParen")||isSemanticStackTopOfTokenType("comma")) {
+				continue;
+			} 
+			
+			else {
+				break;
+			}
+
+		}
+		
+		Collections.reverse(listOfTokens);
 
 		return listOfTokens;
 
@@ -423,5 +491,26 @@ public class SemanticStack {
 
 		return indices;
 		
+	}
+	
+	private int getIndexOfParameters(String s){
+		String[] split = s.split(" ");
+		int numberOfParameters = 1;
+		
+		for(int i = 0; i< split.length; i++){
+			if(split[i].equals(",")){
+				numberOfParameters++;
+			}
+		}
+
+		return numberOfParameters;
+		
+	}
+	
+	private void pushAllTokensBackToStack(ArrayList<Token> listOfTokens){
+		
+		for(Token t : listOfTokens){
+			semanticStack.push(t);
+		}
 	}
 }
