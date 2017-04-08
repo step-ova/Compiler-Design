@@ -124,6 +124,7 @@ public class Symbols {
 		GenerateVariableEntry,
 		CheckVariable ,
 		CheckFunction,
+		GenerateExpression,
 
 	
 	}

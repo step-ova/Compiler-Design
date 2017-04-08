@@ -44,10 +44,12 @@ public class SemanticStack {
 			secondPass(semanticAction);
 			break;
 		case 2:
+			thirdPass(semanticAction);
 			break;
 		}
 
 	}
+
 
 	private boolean isSemanticStackTopOfTokenType(String type) {
 		InterfaceSemanticStackEntries topOfStack = semanticStack.peek();
@@ -253,13 +255,12 @@ public class SemanticStack {
 	}
 
 	private void secondPass(String semanticAction) {
+		
+		
+		enterScopeFromSemanticAction(semanticAction);
+		
 
-		if (semanticAction.equalsIgnoreCase("closeCurrentScope")) {
-			symbolTable.closeCurrentScope();
-
-		}
-
-		else if (semanticAction.equalsIgnoreCase("GenerateVariableEntry")) {
+		if (semanticAction.equalsIgnoreCase("GenerateVariableEntry")) {
 
 			String variableDeclationTokens = getVariableDeclTokens();
 
@@ -335,51 +336,22 @@ public class SemanticStack {
 
 		}
 		
-		/*
-		 * These are used only to enter in the scope
-		 */
-		else if (semanticAction.equalsIgnoreCase("startClassEntryAndTable")) {
-
-			Token identifierToken = (Token) semanticStack.pop();
-
-			String classIdentifier = identifierToken.getTokenLexeme();
-
-			symbolTable.enterScope(classIdentifier);
-
+	}
+	
+	/*
+	 * Used for expression solving and code generation
+	 */
+	private void thirdPass(String semanticAction) {		
+		
+		enterScopeFromSemanticAction(semanticAction);
+		
+		if (semanticAction.equalsIgnoreCase("GenerateExpression")) {
+			symbolTable.closeCurrentScope();
+			ArrayList<Token> t = getGenerateExpressionTokens();
+			
+			//System.out.println(getTokensAsString(t));
 		}
-
-		else if (semanticAction.equalsIgnoreCase("createParameterEntry")) {
-
-			// int locationInParse = ((Token)
-			// semanticStack.peek()).getTokenPosition();
-
-			String accumulatedString = getVariableDeclTokens();
-
-			InterfaceSemanticStackEntries parameterEntry = new ParameterEntry(accumulatedString);
-
-			semanticStack.push(parameterEntry);
-
-		}
-
-		else if (semanticAction.equalsIgnoreCase("createFuncTable")) {
-
-			int locationInParse = ((Token) semanticStack.peek()).getTokenPosition();
-			ArrayList<InterfaceSemanticStackEntries> allParameters = getAllParameters();
-			int numberOfParameters = allParameters.size();
-
-			// Order of pop matters
-			String functionName = popAndGetTokenLexeme();
-			String returnType = popAndGetTokenLexeme();
-
-			symbolTable.enterScope(functionName);
-
-		}
-
-		else if (semanticAction.equalsIgnoreCase("CreateProgramFunction")) {
-
-			symbolTable.enterScope("program");
-
-		}
+		
 	}
 
 	public void closeCodeGenerationOutputFile() {
@@ -454,6 +426,21 @@ public class SemanticStack {
 		return listOfTokens;
 
 	}
+	
+	private ArrayList<Token> getGenerateExpressionTokens() {
+
+		ArrayList<Token> listOfTokens = new ArrayList<Token>();
+		
+		InterfaceSemanticStackEntries topOfStack = null;
+		while (!isSemanticStackTopOfTokenType("equal")||isSemanticStackTopOfTokenType("openParen")) {
+			addTokenToArrayListForVariableChecking(listOfTokens, topOfStack);
+		}
+		
+		Collections.reverse(listOfTokens);
+
+		return listOfTokens;
+
+	}
 
 	/*
 	 * used for variableChecking
@@ -511,6 +498,60 @@ public class SemanticStack {
 		
 		for(Token t : listOfTokens){
 			semanticStack.push(t);
+		}
+	}
+	
+	private void enterScopeFromSemanticAction(String semanticAction){
+		/*
+		 * These are used only to enter in the scope
+		 */
+		
+		if (semanticAction.equalsIgnoreCase("closeCurrentScope")) {
+			symbolTable.closeCurrentScope();
+
+		}
+		
+		else if (semanticAction.equalsIgnoreCase("startClassEntryAndTable")) {
+
+			Token identifierToken = (Token) semanticStack.pop();
+
+			String classIdentifier = identifierToken.getTokenLexeme();
+
+			symbolTable.enterScope(classIdentifier);
+
+		}
+
+		else if (semanticAction.equalsIgnoreCase("createParameterEntry")) {
+
+			// int locationInParse = ((Token)
+			// semanticStack.peek()).getTokenPosition();
+
+			String accumulatedString = getVariableDeclTokens();
+
+			InterfaceSemanticStackEntries parameterEntry = new ParameterEntry(accumulatedString);
+
+			semanticStack.push(parameterEntry);
+
+		}
+
+		else if (semanticAction.equalsIgnoreCase("createFuncTable")) {
+
+			int locationInParse = ((Token) semanticStack.peek()).getTokenPosition();
+			ArrayList<InterfaceSemanticStackEntries> allParameters = getAllParameters();
+			int numberOfParameters = allParameters.size();
+
+			// Order of pop matters
+			String functionName = popAndGetTokenLexeme();
+			String returnType = popAndGetTokenLexeme();
+
+			symbolTable.enterScope(functionName);
+
+		}
+
+		else if (semanticAction.equalsIgnoreCase("CreateProgramFunction")) {
+
+			symbolTable.enterScope("program");
+
 		}
 	}
 }
