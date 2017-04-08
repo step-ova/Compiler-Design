@@ -346,10 +346,34 @@ public class SemanticStack {
 		enterScopeFromSemanticAction(semanticAction);
 		
 		if (semanticAction.equalsIgnoreCase("GenerateExpression")) {
-			symbolTable.closeCurrentScope();
-			ArrayList<Token> t = getGenerateExpressionTokens();
+
+			ArrayList<Token> expresssionTokens = getGenerateExpressionTokens();
+			Token nextToken = (Token) semanticStack.peek();
 			
-			//System.out.println(getTokensAsString(t));
+			if(expresssionTokens.size() == 1 && nextToken.getTokenLexeme().equals("=")){
+				semanticStack.pop(); //pop =
+				Token rhsToken = expresssionTokens.get(0);
+				
+				//LHS
+				Token identifier = (Token) semanticStack.pop();
+				String lhsCodeGenerationIdentifierName = symbolTable.getVariableCodeGenerationIdentifierName(identifier.getTokenLexeme());
+				
+				if(rhsToken.getTokenName().equalsIgnoreCase("id")){
+					String rhsCodeGenerationIdentifierName = symbolTable.getVariableCodeGenerationIdentifierName(rhsToken.getTokenLexeme());	
+					codeGenerator.assignStatSingleVariable(lhsCodeGenerationIdentifierName, rhsCodeGenerationIdentifierName);
+				}
+				else if(rhsToken.getTokenName().equalsIgnoreCase("integer")){
+					int rhs = Integer.parseInt(rhsToken.getTokenLexeme());
+					codeGenerator.assignStatSingleInt(lhsCodeGenerationIdentifierName, rhs);
+				}
+				
+				//TODO: we have float
+				else{
+					
+				}
+				
+			}
+			
 		}
 		
 	}

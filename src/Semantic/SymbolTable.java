@@ -531,5 +531,9 @@ public class SymbolTable {
 		
 	}
 	
+	public String getVariableCodeGenerationIdentifierName(String identifier){
+		return currentScope.getScopeEntry(identifier).getCodeGenerationIdentifierName();
+	}
+	
 
 }

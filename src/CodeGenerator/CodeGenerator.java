@@ -3,6 +3,9 @@ package CodeGenerator;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import LexicalAnalyzer.Token;
 
 public class CodeGenerator {
 	
@@ -40,6 +43,36 @@ public class CodeGenerator {
 		
 		return uniqueVariableName;
 		
+	}
+	
+	public void assignStatSingleVariable(String lhs, String rhs){
+		
+		programCode.append("lw r1, ");
+		programCode.append(rhs);
+		programCode.append("(r0)");
+		programCode.append('\n');
+		
+		programCode.append("sw ");
+		programCode.append(lhs);
+		programCode.append("(r0),r1");
+		programCode.append('\n');
+
+	}
+	
+	public void assignStatSingleInt(String lhs, int rhs){
+		
+		programCode.append("sub r1,r1,r1");
+		programCode.append('\n');
+		
+		programCode.append("addi r1,r1,");
+		programCode.append(rhs);
+		programCode.append('\n');
+		
+		programCode.append("sw ");
+		programCode.append(lhs);
+		programCode.append("(r0),r1");
+		programCode.append('\n');
+
 	}
 	
 	public void closeCodeGenerationOutputFile(){

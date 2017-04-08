@@ -1,4 +1,14 @@
 entry
+sub r1,r1,r1
+addi r1,r1,1
+sw a0(r0),r1
+sub r1,r1,r1
+addi r1,r1,2
+sw b1(r0),r1
+lw r1, b1(r0)
+sw a0(r0),r1
+lw r1, a0(r0)
+sw b1(r0),r1
 hlt
 
 a0	dw	0
