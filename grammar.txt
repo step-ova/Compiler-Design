@@ -33,7 +33,7 @@ AssignStatWithoutVariable -> AssignOp Expr .
 
 StatBlock -> opencurlybrac StatementStar closecurlybrac | Statement | .
 
-Expr -> ArithExpr RelExpr2 .
+Expr -> ArithExpr RelExpr2 GenerateExpression.
 RelExpr2 -> RelOp ArithExpr | .
 
 RelExpr -> ArithExpr RelOp ArithExpr .
@@ -91,3 +91,4 @@ CheckProperlyDeclaredAll -> .
 GenerateVariableEntry -> .
 CheckVariable -> .
 CheckFunction -> .
+GenerateExpression -> .
