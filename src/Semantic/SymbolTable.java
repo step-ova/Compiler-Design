@@ -481,59 +481,58 @@ public class SymbolTable {
 	}
 
 	public void checkIfFuntionWithoutParametersIsProperlyDeclared(Token t) {
-		
+
 		AbstractSymbolTableScopeEntry functionEntry = globalScope.getScopeEntry(t.getTokenLexeme());
-		
-		if(functionEntry == null || functionEntry.getClass() != EntryFunctionST.class){
+
+		if (functionEntry == null || functionEntry.getClass() != EntryFunctionST.class) {
 			pw_semantic_error_file
-			.println(t.getTokenLexeme() + " function is undefined" + " (line " + t.getTokenPosition() + ")");
+					.println(t.getTokenLexeme() + " function is undefined" + " (line " + t.getTokenPosition() + ")");
 		}
-		
+
 	}
 
-	public void checkIfFuntionWithParametersIsProperlyDeclared(ArrayList<Token> variable, int numberOfParameters, String allTokensAsString) {
+	public void checkIfFuntionWithParametersIsProperlyDeclared(ArrayList<Token> variable, int numberOfParameters,
+			String allTokensAsString) {
 		Token t = variable.get(0);
-		
+
 		AbstractSymbolTableScopeEntry functionEntry = globalScope.getScopeEntry(t.getTokenLexeme());
-		
-		if(functionEntry == null || functionEntry.getClass() != EntryFunctionST.class){
+
+		if (functionEntry == null || functionEntry.getClass() != EntryFunctionST.class) {
 			pw_semantic_error_file
-			.println(t.getTokenLexeme() + " function is undefined" + " (line " + t.getTokenPosition() + ")");
+					.println(t.getTokenLexeme() + " function is undefined" + " (line " + t.getTokenPosition() + ")");
 		}
-		
+
 		EntryFunctionST func = (EntryFunctionST) functionEntry;
 		int numberOfParametersEntry = func.getNumberOfParameters();
-		
-		if(numberOfParameters != numberOfParametersEntry){
-			pw_semantic_error_file
-			.println(t.getTokenLexeme() + " function is not with the right number of parameters" + " (line " + t.getTokenPosition() + ")");
+
+		if (numberOfParameters != numberOfParametersEntry) {
+			pw_semantic_error_file.println(t.getTokenLexeme() + " function is not with the right number of parameters"
+					+ " (line " + t.getTokenPosition() + ")");
 		}
-		
-		//TODO: check all parameter types
-		else{
-			
+
+		// TODO: check all parameter types
+		else {
+
 			int indexOfParen = allTokensAsString.indexOf("(");
-			String allTokensParemeters = allTokensAsString.substring(indexOfParen +1, allTokensAsString.length()-1).trim();
-			
-			//Then we are dealing with only 1 parameter
-			//and allTokensParameter contains the parameter
-			if(!allTokensAsString.contains(",")){
-				
+			String allTokensParemeters = allTokensAsString.substring(indexOfParen + 1, allTokensAsString.length() - 1)
+					.trim();
+
+			// Then we are dealing with only 1 parameter
+			// and allTokensParameter contains the parameter
+			if (!allTokensAsString.contains(",")) {
+
 			}
-			//we have to split all parameters
-			else{
-				
+			// we have to split all parameters
+			else {
+
 			}
 
-			
 		}
-		
-		
+
 	}
-	
-	public String getVariableCodeGenerationIdentifierName(String identifier){
+
+	public String getVariableCodeGenerationIdentifierName(String identifier) {
 		return currentScope.getScopeEntry(identifier).getCodeGenerationIdentifierName();
 	}
-	
 
 }
