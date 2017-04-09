@@ -49,31 +49,18 @@ public class CodeGenerator {
 	
 	public void assignStatSingleVariable(String lhs, String rhs){
 		
-		programCode.append("lw r1,");
-		programCode.append(rhs);
-		programCode.append("(r0)");
-		programCode.append('\n');
+		load("r1", rhs);
 		
-		programCode.append("sw ");
-		programCode.append(lhs);
-		programCode.append("(r0),r1");
-		programCode.append('\n');
+		assignStat("r1", lhs);
 
 	}
 	
 	public void assignStatSingleInt(String lhs, int rhs){
+		String rhsStr = "" + rhs;
 		
-		programCode.append("sub r1,r1,r1");
-		programCode.append('\n');
+		subAddi("r1", rhsStr);
 		
-		programCode.append("addi r1,r1,");
-		programCode.append(rhs);
-		programCode.append('\n');
-		
-		programCode.append("sw ");
-		programCode.append(lhs);
-		programCode.append("(r0),r1");
-		programCode.append('\n');
+		assignStat("r1", lhs);
 
 	}
 	
@@ -83,22 +70,14 @@ public class CodeGenerator {
 			subAddi("r1", val1);
 		}
 		else{
-			//load
-			programCode.append("lw r1,");
-			programCode.append(val1);
-			programCode.append("(r0)");
-			programCode.append('\n');
-
+			load("r1", val1);
 		}
 		
 		if(isInteger(val2)){
 			subAddi("r2", val2);
 		}
 		else{
-			programCode.append("lw r2, ");
-			programCode.append(val2);
-			programCode.append("(r0)");
-			programCode.append('\n');
+			load("r2", val2);
 		}
 
 		//add or sub
@@ -114,10 +93,8 @@ public class CodeGenerator {
 		
 		//Generate new and store it
 		previousStored = generateIntegerDeclaration("t");
-		programCode.append("sw ");
-		programCode.append(previousStored);
-		programCode.append("(r0),r3");
-		programCode.append('\n');
+		
+		assignStat("r3", previousStored);
 		
 		return previousStored;
 	}
@@ -145,6 +122,10 @@ public class CodeGenerator {
 		return sb.toString();
 	}
 	
+	public String getPrevious(){
+		return previousStored;
+	}
+	
 	public boolean isInteger( String input ) {
 	    try {
 	        Integer.parseInt( input );
@@ -170,6 +151,23 @@ public class CodeGenerator {
 		programCode.append(reg);
 		programCode.append(",");
 		programCode.append(val);
+		programCode.append('\n');
+	}
+	
+	private void assignStat(String reg, String lhs){
+		programCode.append("sw ");
+		programCode.append(lhs);
+		programCode.append("(r0),");
+		programCode.append(reg);
+		programCode.append('\n');
+	}
+	
+	private void load(String reg, String val){
+		programCode.append("lw ");
+		programCode.append(reg);
+		programCode.append(",");
+		programCode.append(val);
+		programCode.append("(r0)");
 		programCode.append('\n');
 	}
 	
