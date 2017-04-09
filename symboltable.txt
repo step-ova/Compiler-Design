@@ -2,5 +2,3 @@ GlobalScope->
 	Name: program  | Type=Class | ProperlyDeclared=true | hasChild=true
 		programScope->
 			Name: a  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=a0
-			Name: b  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=b1
-			Name: c  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=c2

@@ -128,7 +128,26 @@ public class CodeGenerator {
 			programCode.append("mul r3,");
 		} else if (op.equals("/")) {
 			programCode.append("div r3,");
+		} else if (op.equals("and")) {
+			programCode.append("and r3,");
+		} else if (op.equals("or")) {
+			programCode.append("or r3,");
+		} else if (op.equals("not")) {
+			programCode.append("not r3,");
+		} else if (op.equals("==")) {
+			programCode.append("ceq r3,");
+		} else if (op.equals("<>")) {
+			programCode.append("cne r3,");
+		} else if (op.equals("<")) {
+			programCode.append("clt r3,");
+		} else if (op.equals("<=")) {
+			programCode.append("cle r3,");
+		} else if (op.equals(">")) {
+			programCode.append("cgt r3,");
+		} else if (op.equals(">=")) {
+			programCode.append("cge r3,");
 		}
+
 		programCode.append("r1,r2");
 		programCode.append('\n');
 
