@@ -118,11 +118,8 @@ Factor
 Num
 INTEGER
 Term1
-EPSILON
-ArithExpr1
-AddOp
-MINUSSIGN
-Term
+MultOp
+DIVIDESIGN
 Factor
 Num
 INTEGER
@@ -136,11 +133,8 @@ Factor
 Num
 INTEGER
 Term1
-EPSILON
-ArithExpr1
-AddOp
-MINUSSIGN
-Term
+MultOp
+MULTIPLYSIGN
 Factor
 Num
 INTEGER

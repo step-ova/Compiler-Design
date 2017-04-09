@@ -122,8 +122,12 @@ public class CodeGenerator {
 		// add or sub
 		if (op.equals("+")) {
 			programCode.append("add r3,");
-		} else {
+		} else if (op.equals("-")) {
 			programCode.append("sub r3,");
+		} else if (op.equals("*")) {
+			programCode.append("mul r3,");
+		} else if (op.equals("/")) {
+			programCode.append("div r3,");
 		}
 		programCode.append("r1,r2");
 		programCode.append('\n');
