@@ -18,6 +18,8 @@ public class CodeGenerator {
 	private int uniqueVariableCounter = 0;
 	
 	private String previousStored = "";
+	private String elseClause = ""; //used for if statements
+	private String endifClause = ""; //used for if statements
 	
 	public CodeGenerator(){
 		declarationsCode = new StringBuilder();
@@ -45,6 +47,46 @@ public class CodeGenerator {
 		
 		return uniqueVariableName;
 		
+	}
+	
+	public void genIf1(){
+		load("r1", previousStored);
+		programCode.append("bz r1,");
+		
+		elseClause = generateUniqueVariable("else");
+		programCode.append(elseClause);
+		programCode.append("\n");
+		
+	}
+	
+	public void genIf2(){
+		endifClause = generateUniqueVariable("endif");
+		programCode.append("j ");
+		programCode.append(endifClause);
+		programCode.append("\n");
+		
+		programCode.append(elseClause);
+		programCode.append("\n");
+	}
+	
+	public void genIf3(){
+		programCode.append(endifClause);
+		programCode.append("\n");
+	}
+	
+	public void expressionSingleVariable(String rhs){
+		load("r1", rhs);
+		
+		previousStored = generateIntegerDeclaration("t");
+		assignStat("r1", previousStored);
+	}
+	
+	public void expressionSingleInt(int rhs){
+		String rhsStr = "" + rhs;
+		subAddi("r1", rhsStr);
+		
+		previousStored = generateIntegerDeclaration("t");
+		assignStat("r1", previousStored);
 	}
 	
 	public void assignStatSingleVariable(String lhs, String rhs){

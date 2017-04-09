@@ -53,6 +53,93 @@ add r3,r1,r2
 sw t11(r0),r3
 lw r1,t11(r0)
 sw c2(r0),r1
+sub r1,r1,r1
+addi r1,r1,5
+sub r2,r2,r2
+addi r2,r2,6
+sub r3,r1,r2
+sw t12(r0),r3
+sub r1,r1,r1
+addi r1,r1,4
+lw r2,t12(r0)
+add r3,r1,r2
+sw t13(r0),r3
+sub r1,r1,r1
+addi r1,r1,3
+lw r2,t13(r0)
+sub r3,r1,r2
+sw t14(r0),r3
+sub r1,r1,r1
+addi r1,r1,2
+lw r2,t14(r0)
+add r3,r1,r2
+sw t15(r0),r3
+sub r1,r1,r1
+addi r1,r1,1
+lw r2,t15(r0)
+add r3,r1,r2
+sw t16(r0),r3
+lw r1,t16(r0)
+bz r1,else17
+sub r1,r1,r1
+addi r1,r1,5
+sub r2,r2,r2
+addi r2,r2,6
+sub r3,r1,r2
+sw t18(r0),r3
+sub r1,r1,r1
+addi r1,r1,4
+lw r2,t18(r0)
+add r3,r1,r2
+sw t19(r0),r3
+sub r1,r1,r1
+addi r1,r1,3
+lw r2,t19(r0)
+sub r3,r1,r2
+sw t20(r0),r3
+sub r1,r1,r1
+addi r1,r1,2
+lw r2,t20(r0)
+add r3,r1,r2
+sw t21(r0),r3
+sub r1,r1,r1
+addi r1,r1,1
+lw r2,t21(r0)
+add r3,r1,r2
+sw t22(r0),r3
+lw r1,t22(r0)
+sw c2(r0),r1
+j endif23
+else17
+endif23
+sub r1,r1,r1
+addi r1,r1,5
+sub r2,r2,r2
+addi r2,r2,6
+sub r3,r1,r2
+sw t24(r0),r3
+sub r1,r1,r1
+addi r1,r1,4
+lw r2,t24(r0)
+add r3,r1,r2
+sw t25(r0),r3
+sub r1,r1,r1
+addi r1,r1,3
+lw r2,t25(r0)
+sub r3,r1,r2
+sw t26(r0),r3
+sub r1,r1,r1
+addi r1,r1,2
+lw r2,t26(r0)
+add r3,r1,r2
+sw t27(r0),r3
+sub r1,r1,r1
+addi r1,r1,1
+lw r2,t27(r0)
+add r3,r1,r2
+sw t28(r0),r3
+lw r1,t28(r0)
+sw c2(r0),r1
 hlt
 
 a0	dw	0
@@ -67,4 +154,19 @@ t8	dw	0
 t9	dw	0
 t10	dw	0
 t11	dw	0
+t12	dw	0
+t13	dw	0
+t14	dw	0
+t15	dw	0
+t16	dw	0
+t18	dw	0
+t19	dw	0
+t20	dw	0
+t21	dw	0
+t22	dw	0
+t24	dw	0
+t25	dw	0
+t26	dw	0
+t27	dw	0
+t28	dw	0
 

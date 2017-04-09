@@ -50,7 +50,6 @@ public class SemanticStack {
 
 	}
 
-
 	private boolean isSemanticStackTopOfTokenType(String type) {
 		InterfaceSemanticStackEntries topOfStack = semanticStack.peek();
 
@@ -255,10 +254,8 @@ public class SemanticStack {
 	}
 
 	private void secondPass(String semanticAction) {
-		
-		
+
 		enterScopeFromSemanticAction(semanticAction);
-		
 
 		if (semanticAction.equalsIgnoreCase("GenerateVariableEntry")) {
 
@@ -281,135 +278,165 @@ public class SemanticStack {
 		else if (semanticAction.equalsIgnoreCase("CheckVariable")) {
 
 			ArrayList<Token> variable = getVariable();
-			
+
 			int size = variable.size();
 
 			if (size == 1) {
 				symbolTable.searchHigherScopesSingleVariableOnly(variable.get(0));
-			}
-			else{
-				
+			} else {
+
 				String s = getTokensAsString(variable);
-				
-				//TODO:Then we are dealing with a class
-				if(s.contains(".")){
+
+				// TODO:Then we are dealing with a class
+				if (s.contains(".")) {
 					ArrayList<Integer> indicesOfDots = getIndexOfDots(s);
 				}
-				
-				//we have an array
-				else{
+
+				// we have an array
+				else {
 
 					symbolTable.searchHigherScopesArrayWithoutClass(variable, s);
-					
+
 				}
-				
+
 			}
 
 		}
-		
+
 		else if (semanticAction.equalsIgnoreCase("CheckFunction")) {
 
 			ArrayList<Token> variable = getFunction();
-			Token checkIfFirstParen =variable.get(1);
-			
+			Token checkIfFirstParen = variable.get(1);
+
 			String s = getTokensAsString(variable);
-			
-			//Then we are not dealing with any class calls
-			//Only check if the highest scope has the function with the right parameters
-			if(checkIfFirstParen.getTokenLexeme().equalsIgnoreCase("(")){
-						
-				//then no variables are involved
-				if(s.contains("( )")){
+
+			// Then we are not dealing with any class calls
+			// Only check if the highest scope has the function with the right
+			// parameters
+			if (checkIfFirstParen.getTokenLexeme().equalsIgnoreCase("(")) {
+
+				// then no variables are involved
+				if (s.contains("( )")) {
 					symbolTable.checkIfFuntionWithoutParametersIsProperlyDeclared(variable.get(0));
 				}
-				
-				//then variables are involved
-				else{
+
+				// then variables are involved
+				else {
 					symbolTable.checkIfFuntionWithParametersIsProperlyDeclared(variable, getIndexOfParameters(s), s);
 				}
 			}
-			
-			//TODO: we have something in the form class.function()
-			else{
-				
+
+			// TODO: we have something in the form class.function()
+			else {
+
 			}
 
 		}
-		
+
 	}
-	
+
 	/*
 	 * Used for expression solving and code generation
 	 */
-	private void thirdPass(String semanticAction) {		
-		
+	private void thirdPass(String semanticAction) {
+
 		enterScopeFromSemanticAction(semanticAction);
-		
+
 		if (semanticAction.equalsIgnoreCase("GenerateExpression")) {
 
 			ArrayList<Token> expresssionTokens = getGenerateExpressionTokens();
 			Token nextToken = (Token) semanticStack.peek();
-			
-			if(expresssionTokens.size() == 1 && nextToken.getTokenLexeme().equals("=")){
-				semanticStack.pop(); //pop =
+
+			if (expresssionTokens.size() == 1 && nextToken.getTokenLexeme().equals("=")) {
+				semanticStack.pop(); // pop =
 				Token rhsToken = expresssionTokens.get(0);
-				
-				//LHS
+
+				// LHS
 				Token identifier = (Token) semanticStack.pop();
-				String lhsCodeGenerationIdentifierName = symbolTable.getVariableCodeGenerationIdentifierName(identifier.getTokenLexeme());
-				
-				if(rhsToken.getTokenName().equalsIgnoreCase("id")){
-					String rhsCodeGenerationIdentifierName = symbolTable.getVariableCodeGenerationIdentifierName(rhsToken.getTokenLexeme());	
-					codeGenerator.assignStatSingleVariable(lhsCodeGenerationIdentifierName, rhsCodeGenerationIdentifierName);
-				}
-				else if(rhsToken.getTokenName().equalsIgnoreCase("integer")){
+				String lhsCodeGenerationIdentifierName = symbolTable
+						.getVariableCodeGenerationIdentifierName(identifier.getTokenLexeme());
+
+				if (rhsToken.getTokenName().equalsIgnoreCase("id")) {
+					String rhsCodeGenerationIdentifierName = symbolTable
+							.getVariableCodeGenerationIdentifierName(rhsToken.getTokenLexeme());
+					codeGenerator.assignStatSingleVariable(lhsCodeGenerationIdentifierName,
+							rhsCodeGenerationIdentifierName);
+				} else if (rhsToken.getTokenName().equalsIgnoreCase("integer")) {
 					int rhs = Integer.parseInt(rhsToken.getTokenLexeme());
 					codeGenerator.assignStatSingleInt(lhsCodeGenerationIdentifierName, rhs);
 				}
-				
-				//TODO: we have float
-				else{
-					
+
+				// TODO: we have float
+				else {
+
 				}
-				
+
 			}
-			
-			//Then we have an assignStat of an expression
-			else if(nextToken.getTokenLexeme().equals("=")){
-				
-				Token v1 = expresssionTokens.remove(expresssionTokens.size()-1);
-				Token op = expresssionTokens.remove(expresssionTokens.size()-1);
-				Token v2 = expresssionTokens.remove(expresssionTokens.size()-1);
-				
-				String val1 = v1.getTokenName().equalsIgnoreCase("integer") ? ""+ v1.getTokenLexeme() :  symbolTable.getVariableCodeGenerationIdentifierName(v1.getTokenLexeme());
-				String val2 = v2.getTokenName().equalsIgnoreCase("integer") ? ""+ v2.getTokenLexeme() :  symbolTable.getVariableCodeGenerationIdentifierName(v2.getTokenLexeme());
-				
-				
+
+			// The we don't have an assignStat and it is a single expression
+			else if (expresssionTokens.size() == 1) {
+				Token rhsToken = expresssionTokens.get(0);
+
+				if (rhsToken.getTokenName().equalsIgnoreCase("id")) {
+					String rhsCodeGenerationIdentifierName = symbolTable
+							.getVariableCodeGenerationIdentifierName(rhsToken.getTokenLexeme());
+					codeGenerator.expressionSingleVariable(rhsCodeGenerationIdentifierName);
+				} else if (rhsToken.getTokenName().equalsIgnoreCase("integer")) {
+					int rhs = Integer.parseInt(rhsToken.getTokenLexeme());
+					codeGenerator.expressionSingleInt(rhs);
+				}
+			}
+
+			// Then we multiple size expression (assignStat or not)
+			else {
+
+				Token v1 = expresssionTokens.remove(expresssionTokens.size() - 1);
+				Token op = expresssionTokens.remove(expresssionTokens.size() - 1);
+				Token v2 = expresssionTokens.remove(expresssionTokens.size() - 1);
+
+				String val1 = v1.getTokenName().equalsIgnoreCase("integer") ? "" + v1.getTokenLexeme()
+						: symbolTable.getVariableCodeGenerationIdentifierName(v1.getTokenLexeme());
+				String val2 = v2.getTokenName().equalsIgnoreCase("integer") ? "" + v2.getTokenLexeme()
+						: symbolTable.getVariableCodeGenerationIdentifierName(v2.getTokenLexeme());
+
 				String prev = codeGenerator.generateExpression(val2, op.getTokenLexeme(), val1);
-				
-				while(expresssionTokens.size() != 0){
-					op = expresssionTokens.remove(expresssionTokens.size()-1);
-					v2 = expresssionTokens.remove(expresssionTokens.size()-1);
-					
-					val2 = v2.getTokenName().equalsIgnoreCase("integer") ? ""+ v2.getTokenLexeme() :  symbolTable.getVariableCodeGenerationIdentifierName(v2.getTokenLexeme());
+
+				while (expresssionTokens.size() != 0) {
+					op = expresssionTokens.remove(expresssionTokens.size() - 1);
+					v2 = expresssionTokens.remove(expresssionTokens.size() - 1);
+
+					val2 = v2.getTokenName().equalsIgnoreCase("integer") ? "" + v2.getTokenLexeme()
+							: symbolTable.getVariableCodeGenerationIdentifierName(v2.getTokenLexeme());
 					prev = codeGenerator.generateExpression(val2, op.getTokenLexeme(), prev);
 				}
-				
-				semanticStack.pop(); //pop =
-				//LHS
-				Token identifier = (Token) semanticStack.pop();
-				String lhsCodeGenerationIdentifierName = symbolTable.getVariableCodeGenerationIdentifierName(identifier.getTokenLexeme());
-				
-				codeGenerator.assignStatSingleVariable(lhsCodeGenerationIdentifierName, prev);
+
+				// If it was an assignStat
+				if (nextToken.getTokenLexeme().equals("=")) {
+					semanticStack.pop(); // pop =
+					// LHS
+					Token identifier = (Token) semanticStack.pop();
+					String lhsCodeGenerationIdentifierName = symbolTable
+							.getVariableCodeGenerationIdentifierName(identifier.getTokenLexeme());
+
+					codeGenerator.assignStatSingleVariable(lhsCodeGenerationIdentifierName, prev);
+				}
+
 			}
-			
-			//we have a general expression 
-			else{
-				
-			}
-			
+
 		}
-		
+
+		else if (semanticAction.equalsIgnoreCase("GenIf1")) {
+			codeGenerator.genIf1();
+		}
+
+		else if (semanticAction.equalsIgnoreCase("GenIf2")) {
+			codeGenerator.genIf2();
+		}
+
+		else if (semanticAction.equalsIgnoreCase("GenIf3")) {
+			codeGenerator.genIf3();
+		}
+
 	}
 
 	public void closeCodeGenerationOutputFile() {
@@ -440,20 +467,18 @@ public class SemanticStack {
 			}
 
 		}
-		
+
 		Collections.reverse(listOfTokens);
-		
+
 		pushAllTokensBackToStack(listOfTokens);
-		
 
 		return listOfTokens;
 
 	}
-	
+
 	/*
-	 * Get tokens associated with function call
-	 * This includes class variables calling a function
-	 * e.g: class.function(a,b,c)
+	 * Get tokens associated with function call This includes class variables
+	 * calling a function e.g: class.function(a,b,c)
 	 */
 	private ArrayList<Token> getFunction() {
 
@@ -469,31 +494,32 @@ public class SemanticStack {
 			addTokenToArrayListForVariableChecking(listOfTokens, topOfStack);
 
 			// If we have a dot, then there is more to accumulate
-			if (isSemanticStackTopOfTokenType("dot")||isSemanticStackTopOfTokenType("openParen")||isSemanticStackTopOfTokenType("comma")) {
+			if (isSemanticStackTopOfTokenType("dot") || isSemanticStackTopOfTokenType("openParen")
+					|| isSemanticStackTopOfTokenType("comma")) {
 				continue;
-			} 
-			
+			}
+
 			else {
 				break;
 			}
 
 		}
-		
+
 		Collections.reverse(listOfTokens);
 
 		return listOfTokens;
 
 	}
-	
+
 	private ArrayList<Token> getGenerateExpressionTokens() {
 
 		ArrayList<Token> listOfTokens = new ArrayList<Token>();
-		
+
 		InterfaceSemanticStackEntries topOfStack = null;
-		while (!isSemanticStackTopOfTokenType("equal")||isSemanticStackTopOfTokenType("openParen")) {
+		while (!isSemanticStackTopOfTokenType("equal") && !isSemanticStackTopOfTokenType("openparen")) {
 			addTokenToArrayListForVariableChecking(listOfTokens, topOfStack);
 		}
-		
+
 		Collections.reverse(listOfTokens);
 
 		return listOfTokens;
@@ -511,64 +537,63 @@ public class SemanticStack {
 			listOfTokens.add(top);
 		}
 	}
-	
-	
-	private String getTokensAsString(ArrayList<Token> tokens){
+
+	private String getTokensAsString(ArrayList<Token> tokens) {
 		StringBuilder sb = new StringBuilder();
-		for(Token t : tokens){
+		for (Token t : tokens) {
 			sb.append(t.getTokenLexeme());
 			sb.append(' ');
 		}
-		sb.setLength(sb.length()-1);
-		
+		sb.setLength(sb.length() - 1);
+
 		return sb.toString();
 	}
-	
-	private ArrayList<Integer>getIndexOfDots(String s){
+
+	private ArrayList<Integer> getIndexOfDots(String s) {
 		String[] split = s.split(" ");
 		ArrayList<Integer> indices = new ArrayList<Integer>();
-		
-		for(int i = 0; i< split.length; i++){
-			if(split[i].equals(".")){
+
+		for (int i = 0; i < split.length; i++) {
+			if (split[i].equals(".")) {
 				indices.add(i);
 			}
 		}
 
 		return indices;
-		
+
 	}
-	
-	private int getIndexOfParameters(String s){
+
+	private int getIndexOfParameters(String s) {
 		String[] split = s.split(" ");
 		int numberOfParameters = 1;
-		
-		for(int i = 0; i< split.length; i++){
-			if(split[i].equals(",")){
+
+		for (int i = 0; i < split.length; i++) {
+			if (split[i].equals(",")) {
 				numberOfParameters++;
 			}
 		}
 
 		return numberOfParameters;
-		
+
 	}
-	
-	private void pushAllTokensBackToStack(ArrayList<Token> listOfTokens){
-		
-		for(Token t : listOfTokens){
+
+	private void pushAllTokensBackToStack(ArrayList<Token> listOfTokens) {
+
+		for (Token t : listOfTokens) {
 			semanticStack.push(t);
 		}
 	}
-	
-	private void enterScopeFromSemanticAction(String semanticAction){
+
+	private void enterScopeFromSemanticAction(String semanticAction) {
 		/*
 		 * These are used only to enter in the scope
 		 */
-		
+
 		if (semanticAction.equalsIgnoreCase("closeCurrentScope")) {
 			symbolTable.closeCurrentScope();
 
 		}
-		
+
 		else if (semanticAction.equalsIgnoreCase("startClassEntryAndTable")) {
 
 			Token identifierToken = (Token) semanticStack.pop();

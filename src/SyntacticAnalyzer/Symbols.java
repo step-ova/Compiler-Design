@@ -125,6 +125,9 @@ public class Symbols {
 		CheckVariable ,
 		CheckFunction,
 		GenerateExpression,
+		GenIf1,
+		GenIf2,
+		GenIf3,
 
 	
 	}

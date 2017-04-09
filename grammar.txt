@@ -25,8 +25,8 @@ A2 -> id VarDeclWithoutTypeId VarDeclStarstatementStar .
 VarDeclWithoutTypeId -> ArraySizeStar CreateVariableEntry GenerateVariableEntry semicolon .
 ArraySizeStar -> ArraySize ArraySizeStar | .
 
-Statement -> AssignStat semicolon | if openparen Expr closeparen then StatBlock else StatBlock semicolon | for openparen Type id AssignOp Expr semicolon RelExpr semicolon AssignStat closeparen StatBlock semicolon | get openparen Variable closeparen semicolon | put openparen Expr closeparen semicolon | return openparen Expr closeparen semicolon .
-StatementWithoutAssignStat -> if openparen Expr closeparen then StatBlock else StatBlock semicolon | for openparen Type id AssignOp Expr semicolon RelExpr semicolon AssignStat closeparen StatBlock semicolon | get openparen Variable closeparen semicolon | put openparen Expr closeparen semicolon | return openparen Expr closeparen semicolon .
+Statement -> AssignStat semicolon | if openparen Expr closeparen GenIf1 then StatBlock else GenIf2 StatBlock semicolon GenIf3 | for openparen Type id AssignOp Expr semicolon RelExpr semicolon AssignStat closeparen StatBlock semicolon | get openparen Variable closeparen semicolon | put openparen Expr closeparen semicolon | return openparen Expr closeparen semicolon .
+StatementWithoutAssignStat -> if openparen Expr closeparen GenIf1 then StatBlock else GenIf2 StatBlock semicolon GenIf3 | for openparen Type id AssignOp Expr semicolon RelExpr semicolon AssignStat closeparen StatBlock semicolon | get openparen Variable closeparen semicolon | put openparen Expr closeparen semicolon | return openparen Expr closeparen semicolon .
 
 AssignStat -> Variable AssignOp Expr .
 AssignStatWithoutVariable -> AssignOp Expr .
@@ -92,3 +92,6 @@ GenerateVariableEntry -> .
 CheckVariable -> .
 CheckFunction -> .
 GenerateExpression -> .
+GenIf1 -> .
+GenIf2 -> .
+GenIf3 -> .
