@@ -67,6 +67,13 @@ public class Parser {
 			if (pw_derivation_file != null && parseCount == 0) {
 				pw_derivation_file.println(symbolName);
 			}
+			
+			//remove comments
+			String comment = tok.getTokenLexeme();
+			if(comment.equals("//") || comment.equals("*/") || comment.equals("/*")){
+				tok = getNextTokenAndPrintToTokenOutputFile();
+				continue;
+			}
 
 			// Semantic part
 			if (allSymbols.isSemanticAction(symbolName)) {
