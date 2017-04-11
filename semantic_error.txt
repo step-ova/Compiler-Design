@@ -1,12 +1,11 @@
-Semantic error: Duplicate class found: SomeClass (line 5)
-Duplicate variable found: x (line 11)
-Duplicate variable found: x (line 12)
-Duplicate variable found: x (line 13)
-Duplicate identifier found for function name: func1 (line 19)
-Duplicate variable found: a (line 21)
-Duplicate variable found: x (line 29)
-Duplicate variable found: x (line 30)
-Duplicate variable found: x (line 31)
-Duplicate identifier found for function name: randomize (line 42)
-Duplicate identifier found for function name: randomize (line 46)
-Duplicate variable found: a (line 48)
+undefinied variable maxValue at line 25
+undefinied variable maxValue at line 26
+undefinied variable t at line 39
+undefinied variable t at line 39
+undefinied variable t at line 39
+undefinied variable t at line 41
+undefinied variable t at line 41
+undefinied variable t at line 42
+undefinied variable t at line 42
+undefinied variable t at line 42
+undefinied variable t at line 42

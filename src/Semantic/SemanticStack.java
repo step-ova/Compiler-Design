@@ -328,7 +328,7 @@ public class SemanticStack {
 
 			// TODO: we have something in the form class.function()
 			else {
-
+				
 			}
 
 		}

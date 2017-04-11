@@ -1,13 +1,11 @@
 entry
 hlt
 
-x0	dw	0
-x1	dw	0
-x2	dw	0
-x3	dw	0
-a4	dw	0
-x5	dw	0
-x6	dw	0
-x7	dw	0
-a8	dw	0
+maxValue0	dw	0
+idx1	dw	0
+minValue2	dw	0
+idx3	dw	0
+idx4	dw	0
+maxValue5	dw	0
+minValue6	dw	0
 
