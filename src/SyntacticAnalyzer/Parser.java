@@ -22,6 +22,7 @@ public class Parser {
 	private PrintWriter pw_token_output_file;
 	private PrintWriter pw_derivation_file;
 	private PrintWriter pw_syntax_error_file;
+	private PrintWriter pw_error_file;
 	
 	private int parseCount = 0;
 
@@ -38,7 +39,7 @@ public class Parser {
 
 	}
 
-	public Parser(Tokenizer t, PrintWriter pw_token_output_file, PrintWriter pw_derivation_file,
+	public Parser(Tokenizer t, PrintWriter pw_token_output_file, PrintWriter pw_error_file, PrintWriter pw_derivation_file,
 			PrintWriter pw_syntax_error_file, SemanticStack semanticStack) {
 
 		this.t = t;
@@ -50,6 +51,8 @@ public class Parser {
 		this.pw_derivation_file = pw_derivation_file;
 
 		this.pw_syntax_error_file = pw_syntax_error_file;
+		
+		this.pw_error_file = pw_error_file;
 
 		this.semanticStack = semanticStack;
 	}
@@ -114,13 +117,15 @@ public class Parser {
 			}
 		}
 
+		parseCount++;
+		
 		if (!tok.getTokenName().equals("$") || error == true) {
 			return false;
 		} else {
-			parseCount++;
 			stack = new Stack<Enum>();
 			return true;
 		}
+		
 
 	}
 
@@ -164,12 +169,28 @@ public class Parser {
 	}
 
 	private Token getNextTokenAndPrintToTokenOutputFile() throws InvalidTokenException {
-		Token temp;
-		temp = t.getNextToken();
-		if (pw_token_output_file != null && parseCount == 0) {
-			pw_token_output_file.println(temp.toString());
+		Token temp = null;
+		boolean invalidToken = false;
+		
+		while(!invalidToken){
+			try
+			{
+				temp = t.getNextToken();
+				invalidToken = true;
+				if (pw_token_output_file != null && parseCount == 0) {
+					pw_token_output_file.println(temp.toString());
+				}
+				
+			}
+			catch (InvalidTokenException e) {
+				if (pw_error_file != null && parseCount == 0) {
+					pw_error_file.println(e.getMessage());
+				}
+				
+			}
 		}
-
+		
+		
 		return temp;
 	}
 

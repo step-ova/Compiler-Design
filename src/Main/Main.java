@@ -42,7 +42,7 @@ public class Main {
 		Tokenizer t = new Tokenizer(lnr);
 
 		SemanticStack semanticStack = new SemanticStack(pw_semantic_error_file, pw_symbol_table_file);
-		Parser p = new Parser(t, pw_token_output_file, pw_derivation_file, pw_syntax_error_file, semanticStack);
+		Parser p = new Parser(t, pw_token_output_file, pw_error_file, pw_derivation_file, pw_syntax_error_file, semanticStack);
 
 		try {
 			p.parse();
@@ -51,9 +51,9 @@ public class Main {
 
 			p.parse();
 
-			resetParse(lnr, p);
-
-			p.parse();
+//			resetParse(lnr, p);
+//
+//			p.parse();
 
 		} catch (InvalidTokenException e) {
 			e.printStackTrace();
@@ -75,7 +75,6 @@ public class Main {
 			pw_symbol_table_file = new PrintWriter(new FileOutputStream(OUTPUT_SYMBOL_TABLE));
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -109,7 +108,6 @@ public class Main {
 			lnr = new LineNumberReader(new InputStreamReader(bais));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

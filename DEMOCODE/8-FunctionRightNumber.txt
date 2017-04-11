@@ -1,0 +1,13 @@
+program {
+
+	int x;
+
+	x = foo();
+
+	x = foo(123);
+
+};
+
+int foo(){
+	
+};

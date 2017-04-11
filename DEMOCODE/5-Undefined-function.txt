@@ -1,0 +1,11 @@
+program {
+
+	SomeClass o;
+	
+  	x =  2 + undefniedFunction1();
+
+	y =  2 + undefniedFunction2(a,b);
+
+	z = myClass.c; //NOT WORKING
+	
+};

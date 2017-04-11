@@ -1,0 +1,23 @@
+program {
+
+	int a;
+	int b;
+	int c;
+	int d;
+	int e;
+
+	a = 3;
+	b = a;
+	c = a + b + 2;
+	d = 1*2 + c/2 - a or 2 or b*4 
+		== 1*2 + c/2 - a and 2 and b*4;
+
+	if (a == b) then {
+		c = a + b + 2;
+	} else {
+		d = 1*2 + c/2 - a or 2 or b*4 
+		== 1*2 + c/2 - a and 2 and b*4;
+	};
+
+
+};

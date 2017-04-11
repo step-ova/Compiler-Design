@@ -185,7 +185,6 @@ public class SymbolTable {
 			String error = "Semantic error: Duplicate class found: " + identifier + " (line " + locationOfParse + ")";
 
 			pw_semantic_error_file.println(error);
-			System.out.println(error);
 
 		}
 
@@ -210,7 +209,6 @@ public class SymbolTable {
 					+ ")";
 
 			pw_semantic_error_file.println(error);
-			System.out.println(error);
 
 		}
 
@@ -235,7 +233,6 @@ public class SymbolTable {
 					+ ")";
 
 			pw_semantic_error_file.println(error);
-			System.out.println(error);
 
 		}
 
@@ -300,7 +297,6 @@ public class SymbolTable {
 				}
 
 				pw_semantic_error_file.println(error);
-				System.out.println(error);
 			}
 
 			// new variable entry with no child (null)
@@ -500,6 +496,7 @@ public class SymbolTable {
 		if (functionEntry == null || functionEntry.getClass() != EntryFunctionST.class) {
 			pw_semantic_error_file
 					.println(t.getTokenLexeme() + " function is undefined" + " (line " + t.getTokenPosition() + ")");
+			return;
 		}
 
 		EntryFunctionST func = (EntryFunctionST) functionEntry;

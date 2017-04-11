@@ -393,6 +393,7 @@ public class SemanticStack {
 				Token v1 = expresssionTokens.remove(expresssionTokens.size() - 1);
 				Token op = expresssionTokens.remove(expresssionTokens.size() - 1);
 				Token v2 = expresssionTokens.remove(expresssionTokens.size() - 1);
+				
 
 				String val1 = v1.getTokenName().equalsIgnoreCase("integer") ? "" + v1.getTokenLexeme()
 						: symbolTable.getVariableCodeGenerationIdentifierName(v1.getTokenLexeme());

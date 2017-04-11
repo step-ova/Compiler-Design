@@ -1,4 +1,19 @@
 GlobalScope->
+	Name: SomeClass  | Type=Class | ProperlyDeclared=true | hasChild=true
+		SomeClassScope->
+	Name: TestClass  | Type=Class | ProperlyDeclared=true | hasChild=true
+		TestClassScope->
+			Name: x  | Kind=variable | Structure=class | Type=SomeClass | ProperlyDeclared=true | hasChild=false
+			Name: func1  | Type=Function | ReturnType=float | NumberOfParameters=2| Parameters=int,int | ProperlyDeclared=true | hasChild=true
+				func1Scope->
+					Name: a  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=a4
+					Name: b  | Kind=parameter | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false
+					Name: x  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=x3
 	Name: program  | Type=Class | ProperlyDeclared=true | hasChild=true
 		programScope->
-			Name: a  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=a0
+			Name: x  | Kind=variable | Structure=class | Type=SomeClass | ProperlyDeclared=true | hasChild=false
+	Name: randomize  | Type=Function | ReturnType=float | NumberOfParameters=2| Parameters=float,int | ProperlyDeclared=true | hasChild=true
+		randomizeScope->
+			Name: a  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=a8
+			Name: b  | Kind=parameter | Structure=number | Type=float | ProperlyDeclared=true | hasChild=false
+			Name: x  | Kind=variable | Structure=number | Type=int | ProperlyDeclared=true | hasChild=false | codeGenerationIdentifierName=x7

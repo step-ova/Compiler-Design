@@ -7,7 +7,7 @@ import dk.brics.automaton.RegExp;
 
 public class Tokenizer {
 	
-	public static final String INVALID_CHARACTER = "Invalid characther: ";
+	public static final String INVALID_CHARACTER = "Invalid character: ";
 	public static final String COMPILER_ERROR_NOT_CLOSED_COMMENT = "COMPILER ERROR: End of file reached. Missing \"*/\" to close multi line comment";
 	public static final String COMPILER_ERROR_CLOSE_COMMENT_WITHOUT_OPEN = "COMPILER ERROR: There is a close comment \"*/\" without one being opened";
 	
